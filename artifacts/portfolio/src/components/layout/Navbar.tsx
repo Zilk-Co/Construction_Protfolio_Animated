@@ -49,23 +49,35 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-10">
+          <div
+            className={`hidden md:flex items-center gap-1 transition-all duration-500 ${
+              !scrolled
+                ? "bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-2 shadow-lg shadow-black/10"
+                : ""
+            }`}
+          >
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-xs tracking-[0.2em] uppercase font-medium transition-all duration-200 relative group ${
+                className={`relative text-xs tracking-[0.2em] uppercase font-medium transition-all duration-200 group px-4 py-1.5 rounded-full ${
                   isActive(link.href)
-                    ? "text-[hsl(38,72%,52%)]"
-                    : "text-[hsl(220,12%,65%)] hover:text-foreground"
+                    ? !scrolled
+                      ? "bg-white/15 text-white"
+                      : "text-[hsl(38,72%,52%)]"
+                    : !scrolled
+                      ? "text-white/80 hover:bg-white/10 hover:text-white"
+                      : "text-[hsl(220,12%,65%)] hover:text-foreground"
                 }`}
               >
                 {link.label}
-                <span
-                  className={`absolute -bottom-1 left-0 h-px bg-[hsl(38,72%,52%)] transition-all duration-300 ${
-                    isActive(link.href) ? "w-full" : "w-0 group-hover:w-full"
-                  }`}
-                />
+                {scrolled && (
+                  <span
+                    className={`absolute -bottom-1 left-4 right-4 h-px bg-[hsl(38,72%,52%)] transition-all duration-300 ${
+                      isActive(link.href) ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                    }`}
+                  />
+                )}
               </Link>
             ))}
           </div>
