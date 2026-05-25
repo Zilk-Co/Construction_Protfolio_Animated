@@ -18,7 +18,41 @@ tags:
     description: Project images
   - name: admin
     description: Admin authentication
+  - name: settings
+    description: Site settings and contact information
 paths:
+  /settings:
+    get:
+      operationId: getSettings
+      tags: [settings]
+      summary: Get site settings
+      responses:
+        "200":
+          description: Site settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+
+  /admin/settings:
+    put:
+      operationId: updateSettings
+      tags: [settings, admin]
+      summary: Update site settings (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiteSettings"
+      responses:
+        "200":
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+
   /healthz:
     get:
       operationId: healthCheck
@@ -752,3 +786,19 @@ components:
       properties:
         authenticated:
           type: boolean
+
+    SiteSettings:
+      type: object
+      properties:
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        hours:
+          type: string
+        heroSubtitle:
+          type: string

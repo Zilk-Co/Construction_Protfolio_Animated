@@ -9,6 +9,41 @@ import * as zod from 'zod';
 
 
 /**
+ * @summary Get site settings
+ */
+export const GetSettingsResponse = zod.object({
+  "phone": zod.string().optional(),
+  "email": zod.string().optional(),
+  "address": zod.string().optional(),
+  "city": zod.string().optional(),
+  "hours": zod.string().optional(),
+  "heroSubtitle": zod.string().optional()
+})
+
+
+/**
+ * @summary Update site settings (admin only)
+ */
+export const UpdateSettingsBody = zod.object({
+  "phone": zod.string().optional(),
+  "email": zod.string().optional(),
+  "address": zod.string().optional(),
+  "city": zod.string().optional(),
+  "hours": zod.string().optional(),
+  "heroSubtitle": zod.string().optional()
+})
+
+export const UpdateSettingsResponse = zod.object({
+  "phone": zod.string().optional(),
+  "email": zod.string().optional(),
+  "address": zod.string().optional(),
+  "city": zod.string().optional(),
+  "hours": zod.string().optional(),
+  "heroSubtitle": zod.string().optional()
+})
+
+
+/**
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({

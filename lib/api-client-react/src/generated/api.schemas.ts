@@ -162,6 +162,15 @@ export interface AdminSession {
   authenticated: boolean;
 }
 
+export interface SiteSettings {
+  phone?: string;
+  email?: string;
+  address?: string;
+  city?: string;
+  hours?: string;
+  heroSubtitle?: string;
+}
+
 export type ListProjectsParams = {
 published?: boolean;
 category_id?: number;

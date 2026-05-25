@@ -19,10 +19,9 @@ import AdminProjectEdit from "@/pages/admin/project-edit";
 import AdminProjectImages from "@/pages/admin/project-images";
 import AdminMachinery from "@/pages/admin/machinery";
 import AdminMachineryEdit from "@/pages/admin/machinery-edit";
+import AdminSettings from "@/pages/admin/settings";
 
 const queryClient = new QueryClient();
-
-const isAdminPath = (location: string) => location.startsWith("/admin");
 
 function Router() {
   return (
@@ -31,13 +30,13 @@ function Router() {
       <Navbar />
       <CustomCursor />
       <Switch>
-        {/* Public routes — with top padding for navbar */}
+        {/* Public routes */}
         <Route path="/" component={Home} />
         <Route path="/projects">
           <div className="pt-24"><Projects /></div>
         </Route>
         <Route path="/projects/:slug">
-          {(params) => <ProjectDetail />}
+          {() => <ProjectDetail />}
         </Route>
         <Route path="/machinery">
           <div className="pt-24"><MachineryPage /></div>
@@ -46,8 +45,11 @@ function Router() {
           <div className="pt-24"><Contact /></div>
         </Route>
 
-        {/* Admin routes — no extra top padding, AdminLayout handles it */}
+        {/* Admin login — accessible via /admin-panel (primary) and /admin-login (legacy) */}
+        <Route path="/admin-panel" component={AdminLogin} />
         <Route path="/admin-login" component={AdminLogin} />
+
+        {/* Admin routes */}
         <Route path="/admin" component={AdminDashboard} />
         <Route path="/admin/projects/new" component={AdminProjectNew} />
         <Route path="/admin/projects/:id/edit" component={AdminProjectEdit} />
@@ -55,6 +57,7 @@ function Router() {
         <Route path="/admin/machinery" component={AdminMachinery} />
         <Route path="/admin/machinery/new" component={AdminMachineryEdit} />
         <Route path="/admin/machinery/:id/edit" component={AdminMachineryEdit} />
+        <Route path="/admin/settings" component={AdminSettings} />
 
         <Route component={NotFound} />
       </Switch>

@@ -5,6 +5,7 @@ import projectsRouter from "./projects";
 import imagesRouter from "./images";
 import machineryRouter from "./machinery";
 import adminRouter from "./admin";
+import settingsRouter from "./settings";
 
 const router: IRouter = Router();
 
@@ -14,5 +15,6 @@ router.use(projectsRouter);
 router.use(imagesRouter);
 router.use(machineryRouter);
 router.use(adminRouter);
+router.use(settingsRouter);
 
 export default router;

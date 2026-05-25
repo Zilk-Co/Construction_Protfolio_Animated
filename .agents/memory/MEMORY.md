@@ -1,2 +1,5 @@
 - [Portfolio seeding](portfolio-seeding.md) — seed via Node fetch, not bash curl; apostrophes break bash JSON escaping
 - [Machinery longDescription](machinery-long-desc.md) — longDescription added to DB schema, OpenAPI spec, codegen run; cast as `any` in admin form until types regenerated
+- [Admin login z-index](admin-z-index.md) — admin login must use position:fixed z-index:100 overlay; canvas is fixed z-index:0 and covers non-positioned elements; use inline styles not Tailwind classes for text color.
+- [Settings system](settings-system.md) — key-value settings table, GET /settings public, PUT /admin/settings protected; defaults hardcoded in route so works without DB rows.
+- [Admin access](admin-access.md) — login via /admin-panel (primary), /admin-login (legacy); credentials admin / "admin 123"; dashboard at /admin; Settings page at /admin/settings.

@@ -4,7 +4,7 @@ import { AdminLoginBody } from "@workspace/api-zod";
 const router: IRouter = Router();
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME ?? "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "admin123";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "admin 123";
 
 router.post("/admin/login", async (req, res): Promise<void> => {
   const parsed = AdminLoginBody.safeParse(req.body);

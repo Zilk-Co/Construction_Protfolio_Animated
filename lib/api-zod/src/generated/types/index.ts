@@ -22,3 +22,4 @@ export * from './projectImageUpdate';
 export * from './projectInput';
 export * from './projectSummary';
 export * from './publishToggle';
+export * from './siteSettings';
