@@ -1,0 +1,2 @@
+- [Portfolio seeding](portfolio-seeding.md) — seed via Node fetch, not bash curl; apostrophes break bash JSON escaping
+- [Machinery longDescription](machinery-long-desc.md) — longDescription added to DB schema, OpenAPI spec, codegen run; cast as `any` in admin form until types regenerated

@@ -699,6 +699,8 @@ components:
           type: ["string", "null"]
         description:
           type: ["string", "null"]
+        longDescription:
+          type: ["string", "null"]
         imageUrl:
           type: ["string", "null"]
         year:
@@ -721,6 +723,8 @@ components:
         category:
           type: string
         description:
+          type: string
+        longDescription:
           type: string
         imageUrl:
           type: string

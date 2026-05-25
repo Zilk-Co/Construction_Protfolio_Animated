@@ -4,17 +4,39 @@ import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Calendar } from "lucide-react";
+
+const DATE_RANGES = [
+  { label: "All Years", value: "all" },
+  { label: "Before 2010", value: "pre2010" },
+  { label: "2010 – 2015", value: "2010-2015" },
+  { label: "2015 – 2020", value: "2015-2020" },
+  { label: "After 2020", value: "post2020" },
+];
+
+function matchesDateRange(year: string | null | undefined, range: string) {
+  if (range === "all" || !year) return range === "all";
+  const y = parseInt(year, 10);
+  if (isNaN(y)) return false;
+  if (range === "pre2010") return y < 2010;
+  if (range === "2010-2015") return y >= 2010 && y <= 2015;
+  if (range === "2015-2020") return y > 2015 && y <= 2020;
+  if (range === "post2020") return y > 2020;
+  return true;
+}
 
 export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedRange, setSelectedRange] = useState("all");
 
   const { data: categories = [] } = useListCategories();
   const { data: projects = [], isLoading } = useListProjects({ published: true });
 
-  const filteredProjects = selectedCategory
-    ? projects.filter(p => p.categoryId === selectedCategory)
-    : projects;
+  const filteredProjects = projects.filter(p => {
+    const catOk = selectedCategory === null || p.categoryId === selectedCategory;
+    const dateOk = matchesDateRange(p.year, selectedRange);
+    return catOk && dateOk;
+  });
 
   return (
     <PageTransition>
@@ -22,50 +44,53 @@ export default function Projects() {
         <div className="px-6 max-w-screen-2xl mx-auto">
           {/* Header */}
           <header className="mb-16 mt-6">
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-3"
-            >
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-3">
               Portfolio
             </motion.p>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-5xl md:text-7xl font-serif font-bold tracking-tight uppercase mb-10"
-            >
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-5xl md:text-7xl font-serif font-bold tracking-tight uppercase mb-10">
               All Projects
             </motion.h1>
 
-            {/* Category filter bar */}
+            {/* Category filter */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15 }}
-              className="flex flex-wrap items-center gap-2 border-t border-b border-[hsl(220,15%,18%)] py-4"
+              className="flex flex-wrap items-center gap-2 border-t border-[hsl(220,15%,18%)] pt-4 pb-3"
             >
               <SlidersHorizontal size={12} className="text-[hsl(220,12%,45%)] mr-2 shrink-0" />
               <button
                 onClick={() => setSelectedCategory(null)}
-                className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${
-                  selectedCategory === null
-                    ? "bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] font-bold"
-                    : "border border-[hsl(220,15%,22%)] text-[hsl(220,12%,55%)] hover:border-[hsl(38,72%,52%)/50%] hover:text-foreground"
-                }`}
+                className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${selectedCategory === null ? "bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] font-bold" : "border border-[hsl(220,15%,22%)] text-[hsl(220,12%,55%)] hover:border-[hsl(38,72%,52%)/50%] hover:text-foreground"}`}
               >
-                All
+                All Types
               </button>
               {categories.map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${
-                    selectedCategory === cat.id
-                      ? "bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] font-bold"
-                      : "border border-[hsl(220,15%,22%)] text-[hsl(220,12%,55%)] hover:border-[hsl(38,72%,52%)/50%] hover:text-foreground"
-                  }`}
+                  className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${selectedCategory === cat.id ? "bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] font-bold" : "border border-[hsl(220,15%,22%)] text-[hsl(220,12%,55%)] hover:border-[hsl(38,72%,52%)/50%] hover:text-foreground"}`}
                 >
                   {cat.name}
+                </button>
+              ))}
+            </motion.div>
+
+            {/* Date range filter */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-wrap items-center gap-2 border-b border-[hsl(220,15%,18%)] pb-4"
+            >
+              <Calendar size={12} className="text-[hsl(220,12%,45%)] mr-2 shrink-0" />
+              {DATE_RANGES.map(r => (
+                <button
+                  key={r.value}
+                  onClick={() => setSelectedRange(r.value)}
+                  className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${selectedRange === r.value ? "bg-[hsl(220,15%,22%)] text-foreground font-bold border border-[hsl(220,15%,30%)]" : "border border-transparent text-[hsl(220,12%,45%)] hover:text-foreground"}`}
+                >
+                  {r.label}
                 </button>
               ))}
               <span className="ml-auto text-xs text-[hsl(220,12%,40%)]">
@@ -109,10 +134,9 @@ export default function Projects() {
                           <span className="text-sm font-serif uppercase text-[hsl(220,12%,40%)]">{project.title}</span>
                         </div>
                       )}
-                      {/* Sector badge */}
-                      {project.sector && (
+                      {project.categoryName && (
                         <span className="absolute top-3 left-3 text-[9px] tracking-[0.2em] uppercase bg-[hsl(220,18%,9%)/80%] text-[hsl(38,72%,52%)] px-2.5 py-1 backdrop-blur-sm">
-                          {project.sector}
+                          {project.categoryName}
                         </span>
                       )}
                     </div>
@@ -131,13 +155,12 @@ export default function Projects() {
 
               {filteredProjects.length === 0 && (
                 <div className="col-span-full py-24 text-center">
-                  <p className="text-[hsl(220,12%,45%)] text-sm tracking-widest uppercase">No projects in this category</p>
+                  <p className="text-[hsl(220,12%,45%)] text-sm tracking-widest uppercase">No projects match this filter</p>
                 </div>
               )}
             </div>
           )}
         </div>
-
         <Footer />
       </div>
     </PageTransition>

@@ -52,7 +52,7 @@ export function Navbar() {
           <div
             className={`hidden md:flex items-center gap-1 transition-all duration-500 ${
               !scrolled
-                ? "bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-2 shadow-lg shadow-black/10"
+                ? "bg-black/40 backdrop-blur-md border border-white/15 rounded-full px-3 py-2 shadow-lg shadow-black/30"
                 : ""
             }`}
           >
@@ -63,10 +63,10 @@ export function Navbar() {
                 className={`relative text-xs tracking-[0.2em] uppercase font-medium transition-all duration-200 group px-4 py-1.5 rounded-full ${
                   isActive(link.href)
                     ? !scrolled
-                      ? "bg-white/15 text-white"
+                      ? "bg-[hsl(38,72%,52%)/25%] text-[hsl(38,72%,80%)]"
                       : "text-[hsl(38,72%,52%)]"
                     : !scrolled
-                      ? "text-white/80 hover:bg-white/10 hover:text-white"
+                      ? "text-white hover:bg-white/10 hover:text-[hsl(38,72%,75%)]"
                       : "text-[hsl(220,12%,65%)] hover:text-foreground"
                 }`}
               >

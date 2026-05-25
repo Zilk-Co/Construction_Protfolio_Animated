@@ -15,6 +15,8 @@ export interface MachineryItem {
   /** @nullable */
   description?: string | null;
   /** @nullable */
+  longDescription?: string | null;
+  /** @nullable */
   imageUrl?: string | null;
   /** @nullable */
   year?: string | null;

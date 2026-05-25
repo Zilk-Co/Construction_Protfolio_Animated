@@ -32,6 +32,7 @@ export default function AdminMachineryEdit() {
     slug: "",
     category: "",
     description: "",
+    longDescription: "",
     imageUrl: "",
     year: "",
     condition: "",
@@ -45,6 +46,7 @@ export default function AdminMachineryEdit() {
         slug: existing.slug || "",
         category: existing.category || "",
         description: existing.description || "",
+        longDescription: (existing as any).longDescription || "",
         imageUrl: existing.imageUrl || "",
         year: existing.year || "",
         condition: existing.condition || "",
@@ -199,15 +201,28 @@ export default function AdminMachineryEdit() {
             )}
           </div>
 
-          {/* Description */}
+          {/* Short Description */}
           <div>
-            <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Description</label>
+            <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Short Description <span className="text-[hsl(220,12%,35%)] normal-case tracking-normal">(shown on cards)</span></label>
             <textarea
               name="description"
               value={form.description}
               onChange={handleChange}
-              rows={4}
-              placeholder="Capacity, specifications, and operational notes..."
+              rows={3}
+              placeholder="Brief summary — capacity, type, key specs..."
+              className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] text-foreground px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors resize-none placeholder:text-[hsl(220,12%,30%)]"
+            />
+          </div>
+
+          {/* Long Description */}
+          <div>
+            <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Full Description <span className="text-[hsl(220,12%,35%)] normal-case tracking-normal">(detailed narrative)</span></label>
+            <textarea
+              name="longDescription"
+              value={form.longDescription}
+              onChange={handleChange}
+              rows={7}
+              placeholder="Detailed specifications, operational history, use cases, maintenance notes..."
               className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] text-foreground px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors resize-none placeholder:text-[hsl(220,12%,30%)]"
             />
           </div>

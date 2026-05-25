@@ -6,6 +6,7 @@ import NotFound from "@/pages/not-found";
 
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { Navbar } from "@/components/layout/Navbar";
+import { ParticleBackground } from "@/components/layout/ParticleBackground";
 import Home from "@/pages/home";
 import Projects from "@/pages/projects";
 import ProjectDetail from "@/pages/project-detail";
@@ -26,6 +27,7 @@ const isAdminPath = (location: string) => location.startsWith("/admin");
 function Router() {
   return (
     <>
+      <ParticleBackground />
       <Navbar />
       <CustomCursor />
       <Switch>

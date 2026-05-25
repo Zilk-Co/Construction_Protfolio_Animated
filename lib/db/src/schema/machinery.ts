@@ -8,6 +8,7 @@ export const machineryTable = pgTable("machinery", {
   slug: text("slug").notNull().unique(),
   category: text("category"),
   description: text("description"),
+  longDescription: text("long_description"),
   imageUrl: text("image_url"),
   year: text("year"),
   condition: text("condition"),

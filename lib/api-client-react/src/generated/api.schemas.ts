@@ -127,6 +127,8 @@ export interface MachineryItem {
   /** @nullable */
   description?: string | null;
   /** @nullable */
+  longDescription?: string | null;
+  /** @nullable */
   imageUrl?: string | null;
   /** @nullable */
   year?: string | null;
@@ -142,6 +144,7 @@ export interface MachineryInput {
   slug: string;
   category?: string;
   description?: string;
+  longDescription?: string;
   imageUrl?: string;
   year?: string;
   condition?: string;

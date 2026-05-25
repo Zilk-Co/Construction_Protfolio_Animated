@@ -32,6 +32,7 @@ router.get("/machinery", async (req, res): Promise<void> => {
     slug: r.slug,
     category: r.category,
     description: r.description,
+    longDescription: r.longDescription,
     imageUrl: r.imageUrl,
     year: r.year,
     condition: r.condition,
@@ -61,7 +62,7 @@ router.get("/machinery/:slug", async (req, res): Promise<void> => {
     res.status(404).json({ error: "Machinery not found" });
     return;
   }
-  res.json({ ...item, imageUrl: item.imageUrl });
+  res.json({ ...item });
 });
 
 router.put("/machinery/:id/update", async (req, res): Promise<void> => {

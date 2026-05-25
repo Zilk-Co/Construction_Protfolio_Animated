@@ -13,6 +13,7 @@ export interface MachineryInput {
   slug: string;
   category?: string;
   description?: string;
+  longDescription?: string;
   imageUrl?: string;
   year?: string;
   condition?: string;
