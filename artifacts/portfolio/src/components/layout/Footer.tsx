@@ -51,17 +51,13 @@ export function Footer() {
             <h4 className="text-[10px] tracking-[0.3em] uppercase text-[hsl(220,12%,45%)] mb-5 font-medium">
               Location
             </h4>
-            <div className="flex items-start gap-2 text-sm text-[hsl(220,12%,60%)] mb-3">
-              <MapPin size={14} className="mt-0.5 shrink-0 text-[hsl(38,72%,52%)]" />
-              <div>
-                <p>Business Bay, Tower 12</p>
-                <p>Dubai, UAE 00000</p>
-              </div>
-            </div>
             <div className="flex items-start gap-2 text-sm text-[hsl(220,12%,60%)]">
               <MapPin size={14} className="mt-0.5 shrink-0 text-[hsl(38,72%,52%)]" />
               <div>
-                <p>3rd Floor, Tech Park</p>
+                <p className="font-medium text-[hsl(220,12%,75%)]">Karachi</p>
+                <p>House 53, Street 12</p>
+                <p>Naval Colony, Sector 2</p>
+                <p>Baldia, Hub River Road</p>
                 <p>Karachi, Pakistan</p>
               </div>
             </div>
@@ -75,11 +71,11 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="tel:+97100000000"
+                  href="tel:+922134567890"
                   className="flex items-center gap-2 text-sm text-[hsl(220,12%,60%)] hover:text-[hsl(38,72%,52%)] transition-colors"
                 >
                   <Phone size={13} className="shrink-0" />
-                  +971 (0) 00 000 0000
+                  +92 21 3456 7890
                 </a>
               </li>
               <li>
@@ -110,7 +106,7 @@ export function Footer() {
           </p>
           <div className="flex gap-6">
             <span className="text-xs text-[hsl(220,12%,40%)]">Architecture &amp; Construction</span>
-            <span className="text-xs text-[hsl(220,12%,40%)]">Dubai · Karachi</span>
+            <span className="text-xs text-[hsl(220,12%,40%)]">Karachi, Pakistan</span>
           </div>
         </div>
       </div>

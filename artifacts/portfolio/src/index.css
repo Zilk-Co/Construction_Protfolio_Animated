@@ -104,7 +104,7 @@
   }
   body {
     @apply font-sans antialiased text-foreground;
-    background-color: transparent;
+    background-color: hsl(220, 18%, 9%);
   }
   ::selection {
     background: hsl(38 72% 52% / 0.3);
