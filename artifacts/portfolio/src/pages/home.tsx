@@ -108,9 +108,9 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
               {displayProjects.map((project, i) => (
-                <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }}>
+                <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }} whileHover={{ y: -8 }} className="transition-transform duration-300">
                   <Link href={`/projects/${project.slug}`} className="block group">
-                    <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,18%)] group-hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
+                    <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,18%)] group-hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300 shadow-lg group-hover:shadow-[hsl(38,72%,52%)/20%]">
                       <motion.div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${project.heroImage})` }} whileHover={{ scale: 1.05 }} transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,9%)/60%] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
@@ -132,8 +132,7 @@ export default function Home() {
         </section>
 
         {/* Machinery Section */}
-        {featuredMachinery.length > 0 && (
-          <section className="py-24 px-6 bg-[hsl(220,18%,10%)]/70 border-y border-[hsl(220,15%,18%)] backdrop-blur-sm">
+        <section className="py-24 px-6 bg-[hsl(220,18%,10%)]/70 border-y border-[hsl(220,15%,18%)] backdrop-blur-sm">
             <div className="max-w-screen-2xl mx-auto">
               <div className="flex justify-between items-end mb-14">
                 <div>
@@ -195,7 +194,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-        )}
 
         {/* CTA strip */}
         <section className="py-20 px-6 bg-[hsl(220,18%,11%)] border-y border-[hsl(220,15%,18%)]">
