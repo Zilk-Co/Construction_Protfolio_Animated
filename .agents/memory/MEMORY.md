@@ -1,6 +1,0 @@
-- [Portfolio seeding](portfolio-seeding.md) — seed via Node fetch, not bash curl; apostrophes break bash JSON escaping
-- [Machinery longDescription](machinery-long-desc.md) — longDescription added to DB schema, OpenAPI spec, codegen run; cast as `any` in admin form until types regenerated
-- [Canvas z-index bug](canvas-z-index.md) — canvas MUST be z-index:-1 (not 0); position:fixed z-index:0 paints ABOVE normal-flow content, hiding all text sections. body background-color must be hsl(220,18%,9%) (not transparent) when canvas is z-index:-1.
-- [Admin login z-index](admin-z-index.md) — admin login must use position:fixed z-index:100 overlay; use inline styles not Tailwind classes for text color.
-- [Settings system](settings-system.md) — key-value settings table, GET /settings public, PUT /admin/settings protected; defaults hardcoded in route so works without DB rows.
-- [Admin access](admin-access.md) — login via /admin-panel (primary), /admin-login (legacy); credentials admin / "admin 123"; dashboard at /admin; Settings page at /admin/settings.
