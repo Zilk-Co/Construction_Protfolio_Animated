@@ -1,5 +1,6 @@
 import { useListMachinery } from "@workspace/api-client-react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
@@ -117,54 +118,55 @@ export default function Machinery() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filtered.map((item, i) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08, duration: 0.6 }}
-                    className="bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group"
-                    data-testid={`card-machinery-${item.id}`}
-                  >
-                    <div className="aspect-[16/10] overflow-hidden bg-[hsl(220,15%,16%)] relative">
-                      <motion.img
-                        src={item.imageUrl || fallbackImage}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                        whileHover={{ scale: 1.04 }}
-                        transition={{ duration: 0.6 }}
-                        onError={e => { (e.target as HTMLImageElement).src = fallbackImage; }}
-                      />
-                      {item.category && (
-                        <span className="absolute top-3 left-3 text-[10px] tracking-[0.2em] uppercase bg-black/80 px-2.5 py-1 backdrop-blur-sm" style={{ color: "hsl(38,72%,62%)" }}>
-                          {item.category}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="p-5">
-                      <h3 className="font-serif font-bold text-lg uppercase tracking-tight mb-1 text-white group-hover:text-[hsl(38,72%,58%)] transition-colors">
-                        {item.name}
-                      </h3>
-
-                      <div className="flex gap-4 text-xs text-gray-500 mt-1 mb-3">
-                        {item.year && <span>{item.year}</span>}
-                        {item.condition && (
-                          <>
-                            <span className="text-gray-700">·</span>
-                            <span className={`${item.condition === "Excellent" ? "text-green-400" : item.condition === "Good" ? "text-blue-400" : "text-gray-400"}`}>
-                              {item.condition}
-                            </span>
-                          </>
+                  <Link key={item.id} href={`/machinery/${item.slug}`}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.08, duration: 0.6 }}
+                      className="bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group h-full"
+                      data-testid={`card-machinery-${item.id}`}
+                    >
+                      <div className="aspect-[16/10] overflow-hidden bg-[hsl(220,15%,16%)] relative">
+                        <motion.img
+                          src={item.imageUrl || fallbackImage}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          whileHover={{ scale: 1.04 }}
+                          transition={{ duration: 0.6 }}
+                          onError={e => { (e.target as HTMLImageElement).src = fallbackImage; }}
+                        />
+                        {item.category && (
+                          <span className="absolute top-3 left-3 text-[10px] tracking-[0.2em] uppercase bg-black/80 px-2.5 py-1 backdrop-blur-sm" style={{ color: "hsl(38,72%,62%)" }}>
+                            {item.category}
+                          </span>
                         )}
                       </div>
 
-                      {item.description && (
-                        <p className="text-sm text-gray-400 leading-relaxed line-clamp-2">
-                          {item.description}
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
+                      <div className="p-5">
+                        <h3 className="font-serif font-bold text-lg uppercase tracking-tight mb-1 text-white group-hover:text-[hsl(38,72%,58%)] transition-colors">
+                          {item.name}
+                        </h3>
+
+                        <div className="flex gap-4 text-xs text-gray-500 mt-1 mb-3">
+                          {item.year && <span>{item.year}</span>}
+                          {item.condition && (
+                            <>
+                              <span className="text-gray-700">·</span>
+                              <span className={`${item.condition === "Excellent" ? "text-green-400" : item.condition === "Good" ? "text-blue-400" : "text-gray-400"}`}>
+                                {item.condition}
+                              </span>
+                            </>
+                          )}
+                        </div>
+
+                        {item.description && (
+                          <p className="text-sm text-gray-400 leading-relaxed line-clamp-2">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  </Link>
                 ))}
               </div>
             )}
