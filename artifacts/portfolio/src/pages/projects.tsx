@@ -35,11 +35,11 @@ export default function Projects() {
   const { data: categories = [] } = useListCategories();
   const { data: projects = [], isLoading } = useListProjects({ published: true });
 
-  const filteredProjects = projects.filter(p => {
+  const filteredProjects = Array.isArray(projects) ? projects.filter(p => {
     const catOk = selectedCategory === null || p.categoryId === selectedCategory;
     const dateOk = matchesDateRange(p.year, selectedRange);
     return catOk && dateOk;
-  });
+  }) : [];
 
   return (
     <PageTransition>
@@ -102,7 +102,7 @@ export default function Projects() {
               >
                 All Types
               </button>
-              {categories.map(cat => (
+              {Array.isArray(categories) && categories.map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
