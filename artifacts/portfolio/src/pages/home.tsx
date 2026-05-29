@@ -14,7 +14,7 @@ export default function Home() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const displayProjects =
-    featuredProjects.length > 0
+    Array.isArray(featuredProjects) && featuredProjects.length > 0
       ? featuredProjects.slice(0, 5)
       : [
           { id: 1, title: "Obsidian Cultural Centre", slug: "obsidian-cultural-centre", location: "Dubai, UAE", heroImage: "https://images.unsplash.com/photo-1470723710355-95304d8aece4?w=1600" },
@@ -24,7 +24,7 @@ export default function Home() {
           { id: 5, title: "Quay District", slug: "quay-district-towers", location: "Auckland", heroImage: "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600" },
         ] as any[];
 
-  const featuredMachinery = machinery.slice(0, 4);
+  const featuredMachinery = Array.isArray(machinery) ? machinery.slice(0, 4) : [];
 
   return (
     <PageTransition>
@@ -107,7 +107,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
-              {featuredProjects.map((project, i) => (
+              {displayProjects.map((project, i) => (
                 <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }}>
                   <Link href={`/projects/${project.slug}`} className="block group">
                     <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,18%)] group-hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
