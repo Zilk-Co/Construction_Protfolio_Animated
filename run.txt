@@ -1,12 +1,12 @@
 ============================================================
-  Arch Portfolio — Replit Run Commands
+  Arch Portfolio — Windows Run Commands
 ============================================================
 
 --- Step 1: Install Dependencies ---
 pnpm install
 
 --- Step 2: Push Database Schema to Neon ---
-  (DATABASE_URL already set in .env)
+$env:DATABASE_URL="postgresql://neondb_owner:npg_xZbLOGadcJ20@ep-mute-rice-aof9rs3r-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 pnpm --filter @workspace/db run push
 
 --- Step 3: Start Backend API Server (Terminal 1) ---
@@ -15,6 +15,7 @@ $env:PORT="5000"
 $env:SESSION_SECRET="arch-portfolio-secret-dev"
 $env:ADMIN_USERNAME="admin"
 $env:ADMIN_PASSWORD="admin123"
+$env:NODE_ENV="development"
 pnpm --filter @workspace/api-server run dev
 
 --- Step 4: Start Frontend Dev Server (Terminal 2) ---
