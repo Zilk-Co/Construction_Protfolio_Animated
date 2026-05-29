@@ -15,8 +15,8 @@ export default function Machinery() {
   const { data: machinery = [], isLoading } = useListMachinery({ published: true });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const categories = Array.from(new Set(machinery.map(m => m.category).filter(Boolean) as string[]));
-  const filtered = selectedCategory ? machinery.filter(m => m.category === selectedCategory) : machinery;
+  const categories = Array.isArray(machinery) ? Array.from(new Set(machinery.map(m => m.category).filter(Boolean) as string[])) : [];
+  const filtered = Array.isArray(machinery) ? (selectedCategory ? machinery.filter(m => m.category === selectedCategory) : machinery) : [];
 
   return (
     <PageTransition>

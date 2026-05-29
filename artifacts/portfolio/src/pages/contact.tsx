@@ -125,25 +125,6 @@ export default function Contact() {
                   </li>
                 </ul>
               </div>
-
-              {/* Map embed */}
-              <div>
-                <p className="text-[10px] tracking-[0.35em] uppercase mb-1" style={{ color: "hsl(38,85%,62%)" }}>Find Us</p>
-                <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-4" />
-                <div className="aspect-[4/3] border border-[hsl(220,15%,22%)] overflow-hidden">
-                  <iframe
-                    title="Karachi Office Location"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14481.167963498!2d66.9940!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f7a8c4c2f8f%3A0x0!2sNaval+Colony%2C+Baldia%2C+Karachi!5e0!3m2!1sen!2s!4v1600000000000!5m2!1sen!2s"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
-                <p className="text-[10px] text-gray-500 mt-2">Hub River Road, Baldia, Naval Colony, Sector 2, Karachi</p>
-              </div>
             </div>
 
             {/* Contact Form */}
@@ -205,6 +186,28 @@ export default function Contact() {
                   </div>
                 </form>
               )}
+            </div>
+          </div>
+        </section>
+
+        {/* Map Section */}
+        <section className="py-12 px-6 bg-[hsl(220,18%,8%)]">
+          <div className="max-w-screen-2xl mx-auto">
+            <div className="w-[80%] mx-auto">
+              <p className="text-[10px] tracking-[0.35em] uppercase mb-4 text-center" style={{ color: "hsl(38,85%,62%)" }}>Find Us</p>
+              <div className="aspect-[16/9] border border-[hsl(220,15%,22%)] overflow-hidden">
+                <iframe
+                  title="Karachi Office Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14481.167963498!2d66.9940!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f7a8c4c2f8f%3A0x0!2sNaval+Colony%2C+Baldia%2C+Karachi!5e0!3m2!1sen!2s!4v1600000000000!5m2!1sen!2s"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
+              <p className="text-[10px] text-gray-500 mt-2 text-center">Hub River Road, Baldia, Naval Colony, Sector 2, Karachi</p>
             </div>
           </div>
         </section>
