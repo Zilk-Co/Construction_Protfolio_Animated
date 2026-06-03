@@ -8,6 +8,8 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+app.set("trust proxy", 1);
+
 app.use(
   pinoHttp({
     logger,
@@ -44,8 +46,10 @@ app.use(
     secret: (process.env as any).SESSION_SECRET ?? "arch-portfolio-secret-dev",
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
       secure: (process.env as any).NODE_ENV === "production",
+      sameSite: (process.env as any).NODE_ENV === "production" ? "none" : "lax",
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     },
