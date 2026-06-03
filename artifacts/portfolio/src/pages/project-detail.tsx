@@ -5,14 +5,16 @@ import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useRef, useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { buildFallbackProject } from "@/lib/fallbackData";
 
 export default function ProjectDetail() {
   const params = useParams();
   const slug = params.slug || "";
 
-  const { data: project, isLoading } = useGetProject(slug, {
+  const { data: apiProject, isLoading } = useGetProject(slug, {
     query: { enabled: !!slug, queryKey: getGetProjectQueryKey(slug) }
   });
+  const project = apiProject ?? buildFallbackProject(slug);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });

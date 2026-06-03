@@ -5,6 +5,7 @@ import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
 import { SlidersHorizontal, Calendar } from "lucide-react";
+import { FALLBACK_PROJECTS } from "@/lib/fallbackData";
 
 const PROJECTS_HERO_BG =
   "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=85";
@@ -35,7 +36,9 @@ export default function Projects() {
   const { data: categories = [] } = useListCategories();
   const { data: projects = [], isLoading } = useListProjects({ published: true });
 
-  const filteredProjects = Array.isArray(projects) ? projects.filter(p => {
+  const projectsToShow = Array.isArray(projects) && projects.length > 0 ? projects : FALLBACK_PROJECTS;
+
+  const filteredProjects = Array.isArray(projectsToShow) ? projectsToShow.filter(p => {
     const catOk = selectedCategory === null || p.categoryId === selectedCategory;
     const dateOk = matchesDateRange(p.year, selectedRange);
     return catOk && dateOk;

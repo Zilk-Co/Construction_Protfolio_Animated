@@ -5,6 +5,7 @@ import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
 import { ArrowRight, Settings2 } from "lucide-react";
+import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
 
 const MACHINERY_FALLBACK = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800";
 
@@ -24,7 +25,7 @@ export default function Home() {
           { id: 5, title: "Quay District", slug: "quay-district-towers", location: "Auckland", heroImage: "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600" },
         ] as any[];
 
-  const featuredMachinery = Array.isArray(machinery) ? machinery.slice(0, 4) : [];
+  const featuredMachinery = Array.isArray(machinery) && machinery.length > 0 ? machinery.slice(0, 4) : FALLBACK_MACHINERY.slice(0, 4);
 
   return (
     <PageTransition>
@@ -108,7 +109,7 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
               {displayProjects.map((project, i) => (
-                <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }} whileHover={{ y: -8 }} transition={{ duration: 0.2 }} className="transition-transform duration-200">
+                <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }} whileHover={{ y: -8, transition: { duration: 0.2 } }} className="transition-transform duration-200">
                   <Link href={`/projects/${project.slug}`} className="block group">
                     <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,18%)] group-hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300 shadow-lg group-hover:shadow-[hsl(38,72%,52%)/20%]">
                       <motion.div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${project.heroImage})` }} whileHover={{ scale: 1.05 }} transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }} />
