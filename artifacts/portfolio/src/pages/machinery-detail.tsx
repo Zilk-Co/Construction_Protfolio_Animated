@@ -2,10 +2,12 @@ import { useParams, Link } from "wouter";
 import { useGetMachinery } from "@workspace/api-client-react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Wrench, Calendar, Tag, Star } from "lucide-react";
+import { buildFallbackMachinery } from "@/lib/fallbackData";
 
 export default function MachineryDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: item, isLoading, isError } = useGetMachinery(slug || "");
+  const { data: apiItem, isLoading } = useGetMachinery(slug || "");
+  const item = apiItem ?? buildFallbackMachinery(slug || "");
 
   const gallery: string[] = (() => {
     if (!item?.galleryImages) return [];
@@ -20,7 +22,7 @@ export default function MachineryDetail() {
     );
   }
 
-  if (isError || !item) {
+  if (!item) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-6">
         <p className="text-neutral-500 text-sm tracking-widest uppercase">Equipment not found</p>
