@@ -15,7 +15,7 @@ Set these env vars in **both** Vercel and Railway projects:
 
 | Variable        | Value                                                                                       |
 | --------------- | ------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`  | `postgresql://neondb_owner:npg_xZbLOGadcJ20@ep-mute-rice-aof9rs3r-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require` |
+| `DATABASE_URL`  | `postgresql://neondb_owner:npg_YDm2KId5lqOe@ep-still-hill-aob7qrjb-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require` |
 
 Push the schema once (locally):
 ```bash
@@ -79,7 +79,7 @@ cookie: {
 ## 5. Local dev (this machine)
 
 ```bash
-$env:DATABASE_URL="postgresql://neondb_owner:npg_xZbLOGadcJ20@ep-mute-rice-aof9rs3r-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+$env:DATABASE_URL="postgresql://neondb_owner:npg_YDm2KId5lqOe@ep-still-hill-aob7qrjb-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 $env:PORT="5000"; $env:SESSION_SECRET="dev"; $env:ADMIN_USERNAME="admin"; $env:ADMIN_PASSWORD="admin123"; $env:NODE_ENV="development"
 pnpm --filter @workspace/api-server run dev   # terminal 1
 

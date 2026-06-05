@@ -48,8 +48,8 @@ export default function Projects() {
     <PageTransition>
       <div className="min-h-screen text-foreground">
 
-        {/* Hero Banner */}
-        <section className="relative pt-44 pb-24 px-6 overflow-hidden">
+         {/* Hero Banner */}
+         <section className="relative pt-28 pb-16 px-6 overflow-hidden md:pt-44 md:pb-24">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${PROJECTS_HERO_BG})` }}
@@ -175,7 +175,7 @@ export default function Projects() {
                           <span className="text-sm font-serif uppercase text-gray-600">{project.title}</span>
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-400" />
                       {project.categoryName && (
                         <span className="absolute top-3 left-3 text-[9px] tracking-[0.2em] uppercase bg-black/75 px-2.5 py-1 backdrop-blur-sm" style={{ color: "hsl(38,72%,62%)" }}>
                           {project.categoryName}
