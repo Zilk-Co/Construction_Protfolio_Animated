@@ -7,8 +7,6 @@ import { useState } from "react";
 import { Settings2 } from "lucide-react";
 import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
 
-const MotionLink = motion.create(Link as any);
-
 const MACHINERY_HERO_BG =
   "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=85";
 
@@ -27,8 +25,8 @@ export default function Machinery() {
     <PageTransition>
       <div className="min-h-screen text-foreground">
 
-        {/* Hero Banner */}
-        <section className="relative pt-44 pb-24 px-6 overflow-hidden">
+         {/* Hero Banner */}
+         <section className="relative pt-28 pb-16 px-6 overflow-hidden md:pt-44 md:pb-24">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${MACHINERY_HERO_BG})` }}
@@ -123,15 +121,17 @@ export default function Machinery() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filtered.map((item, i) => (
-                  <MotionLink
-                    key={item.id}
-                    href={`/machinery/${item.slug}`}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08, duration: 0.6 }}
-                    className="block bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group h-full focus:outline-none focus:ring-2 focus:ring-[hsl(38,72%,52%)] focus:ring-offset-2 focus:ring-offset-[hsl(220,18%,9%)]"
-                    data-testid={`card-machinery-${item.id}`}
-                  >
+                   <motion.div
+                     key={item.id}
+                     initial={{ opacity: 0, y: 30 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     transition={{ delay: i * 0.08, duration: 0.6 }}
+                     className="block bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group h-full focus:outline-none focus:ring-2 focus:ring-[hsl(38,72%,52%)] focus:ring-offset-2 focus:ring-offset-[hsl(220,18%,9%)]"
+                   >
+                     <Link
+                       href={`/machinery/${item.slug}`}
+                       className="block h-full w-full"
+                     >
                     <div className="aspect-[16/10] overflow-hidden bg-[hsl(220,15%,16%)] relative">
                       <motion.img
                         src={item.imageUrl || fallbackImage}
@@ -170,13 +170,14 @@ export default function Machinery() {
                           {item.description}
                         </p>
                       )}
-                    </div>
-                  </MotionLink>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
+                     </div>
+                   </Link>
+                 </motion.div>
+                 ))}
+               </div>
+             )}
+           </div>
+         </section>
 
         <Footer />
       </div>

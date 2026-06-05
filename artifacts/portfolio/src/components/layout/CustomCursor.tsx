@@ -2,6 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export function CustomCursor() {
+  // Hide cursor on touch devices
+  const isTouchDevice = typeof window !== 'undefined' && 
+    (window.matchMedia('(pointer: coarse)').matches || 
+     'ontouchstart' in window || 
+     navigator.maxTouchPoints > 0);
+
+  if (isTouchDevice) {
+    return null;
+  }
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);

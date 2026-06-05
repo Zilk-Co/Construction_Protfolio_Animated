@@ -57,8 +57,8 @@ export default function Home() {
                       animate={{ scale: isHovered ? 1.06 : 1 }}
                       transition={{ duration: 1.4, ease: "easeOut" }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,7%)/85%] via-transparent to-transparent transition-opacity duration-700" />
-                    <div className={`absolute inset-0 bg-[hsl(220,18%,9%)/30%] transition-opacity duration-700 ${isHovered ? "opacity-0" : "opacity-100"}`} />
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent transition-opacity duration-700" />
+                     <div className={`absolute inset-0 bg-black/30 transition-opacity duration-700 ${isHovered ? "opacity-0" : "opacity-100"}`} />
                     <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
                       <motion.div animate={{ opacity: 1, y: isHovered ? 0 : 5 }} transition={{ duration: 0.4 }}>
                         <motion.p animate={{ opacity: isHovered ? 1 : 0.82 }} className="text-[11px] tracking-[0.3em] uppercase text-[hsl(38,72%,65%)] mb-2 whitespace-nowrap overflow-hidden text-ellipsis font-semibold" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.7)" }}>
