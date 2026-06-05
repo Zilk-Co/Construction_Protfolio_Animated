@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "cd ../.. && pnpm install --frozen-lockfile && pnpm --filter @workspace/api-server run build && pnpm --filter @workspace/portfolio run build",
-  "outputDirectory": "dist",
+  "outputDirectory": "dist/public",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "framework": "vite",
   "rewrites": [
