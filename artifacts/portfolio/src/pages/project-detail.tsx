@@ -69,7 +69,7 @@ export default function ProjectDetail() {
               y,
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,7%)] via-[hsl(220,18%,9%)/30%] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,7%)] via-[hsl(220,18%,9%)/85%] to-[hsl(220,18%,7%)/40%]" />
           <div className="absolute inset-0 flex flex-col justify-end px-6 pb-16 max-w-screen-2xl mx-auto w-full">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -77,11 +77,17 @@ export default function ProjectDetail() {
               transition={{ delay: 0.2, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
               {project.categoryName && (
-                <p className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-4">
+                <p
+                  className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-4"
+                  style={{ textShadow: "0 1px 12px rgba(0,0,0,0.95)" }}
+                >
                   {project.categoryName}
                 </p>
               )}
-              <h1 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold tracking-tight uppercase leading-none">
+              <h1
+                className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold tracking-tight uppercase leading-none text-white"
+                style={{ textShadow: "0 4px 30px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)" }}
+              >
                 {project.title}
               </h1>
             </motion.div>
