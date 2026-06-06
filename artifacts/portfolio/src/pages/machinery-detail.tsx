@@ -7,7 +7,8 @@ import { buildFallbackMachinery } from "@/lib/fallbackData";
 export default function MachineryDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: apiItem, isLoading } = useGetMachinery(slug || "");
-  const item = apiItem ?? buildFallbackMachinery(slug || "");
+  const item =
+    apiItem?.name ? apiItem : buildFallbackMachinery(slug || "");
 
   const gallery: string[] = (() => {
     if (!item?.galleryImages) return [];

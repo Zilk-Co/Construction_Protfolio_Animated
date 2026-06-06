@@ -37,8 +37,8 @@ pnpm --filter @workspace/db run push
    - `DATABASE_URL` = *(see table above)*
    - `SESSION_SECRET` = *(any long random string)*
    - `ADMIN_USERNAME` = `admin`
-   - `ADMIN_PASSWORD` = *(a strong password)*
-   - `NODE_ENV` = `production`
+   - `ADMIN_PASSWORD` = *(a strong password — no spaces; e.g. `admin123`)*
+   - `NODE_ENV` = `production` *(required for secure admin session cookies)*
 4. **Healthcheck:** `/api/healthz` (already configured in `railway.json`).
 5. After deploy, copy the public URL, e.g. `https://api-server-production-xxxx.up.railway.app`.
 
@@ -55,7 +55,8 @@ pnpm --filter @workspace/db run push
    - **Install Command:** `pnpm install --frozen-lockfile`
 3. **Environment Variables:**
    - `VITE_API_BASE_URL` = *(your Railway API URL from step 2, **no trailing slash**, e.g. `https://api-server-production-xxxx.up.railway.app`)*
-4. Deploy. The SPA rewrites (`vercel.json`) send all routes to `index.html`.
+   - The build script uses this value to proxy `/api/*` on Vercel to Railway (same-origin), so admin cookies work without cross-site issues.
+4. Deploy. After changing `VITE_API_BASE_URL`, **redeploy** — Vite bakes env vars at build time.
 
 ---
 
