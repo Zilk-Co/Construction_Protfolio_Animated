@@ -1,8 +1,9 @@
 import { useParams, Link } from "wouter";
 import { useGetMachinery } from "@workspace/api-client-react";
-import { motion } from "framer-motion";
-import { ArrowLeft, Wrench, Calendar, Tag, Star } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, Wrench, Calendar, Tag, Star, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { buildFallbackMachinery } from "@/lib/fallbackData";
+import { useState } from "react";
 
 export default function MachineryDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -14,6 +15,12 @@ export default function MachineryDetail() {
     if (!item?.galleryImages) return [];
     try { return JSON.parse(item.galleryImages); } catch { return []; }
   })();
+
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const openLightbox = (i: number) => setLightboxIndex(i);
+  const closeLightbox = () => setLightboxIndex(null);
+  const prev = () => setLightboxIndex(i => i !== null ? (i - 1 + gallery.length) % gallery.length : null);
+  const next = () => setLightboxIndex(i => i !== null ? (i + 1) % gallery.length : null);
 
   if (isLoading) {
     return (
@@ -118,14 +125,24 @@ export default function MachineryDetail() {
                 <p className="text-[10px] tracking-[0.35em] uppercase text-neutral-500 mb-6">Gallery</p>
                 <div className="grid grid-cols-2 gap-3">
                   {gallery.map((url, i) => (
-                    <div key={i} className="aspect-video overflow-hidden bg-[hsl(220,18%,12%)]">
+                    <button
+                      key={i}
+                      onClick={() => openLightbox(i)}
+                      className="aspect-video overflow-hidden bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] hover:border-[hsl(38,72%,52%)] transition-colors group cursor-zoom-in relative block w-full"
+                      data-testid={`gallery-image-${i}`}
+                    >
                       <img
                         src={url}
                         alt={`${item.name} ${i + 1}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
                       />
-                    </div>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                        <span className="text-white text-[10px] tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+                          Click to view
+                        </span>
+                      </div>
+                    </button>
                   ))}
                 </div>
               </motion.div>
@@ -196,6 +213,63 @@ export default function MachineryDetail() {
           </motion.div>
         </div>
       </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+            onClick={closeLightbox}
+          >
+            <button
+              onClick={closeLightbox}
+              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-10"
+              aria-label="Close"
+            >
+              <X size={28} />
+            </button>
+
+            {gallery.length > 1 && (
+              <>
+                <button
+                  onClick={e => { e.stopPropagation(); prev(); }}
+                  className="absolute left-4 text-white/60 hover:text-white transition-colors z-10 p-3"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={36} />
+                </button>
+                <button
+                  onClick={e => { e.stopPropagation(); next(); }}
+                  className="absolute right-4 text-white/60 hover:text-white transition-colors z-10 p-3"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={36} />
+                </button>
+              </>
+            )}
+
+            <motion.img
+              key={lightboxIndex}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.25 }}
+              src={gallery[lightboxIndex]}
+              alt={`${item.name} — view ${lightboxIndex + 1}`}
+              className="max-w-[90vw] max-h-[88vh] object-contain"
+              onClick={e => e.stopPropagation()}
+            />
+
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40 text-xs tracking-widest uppercase">
+              {lightboxIndex + 1} / {gallery.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

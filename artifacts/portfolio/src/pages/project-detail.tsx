@@ -160,16 +160,16 @@ export default function ProjectDetail() {
             <h3 className="text-[10px] tracking-[0.35em] uppercase text-[hsl(220,12%,45%)] mb-10">
               Photography
             </h3>
-            <div className="columns-1 md:columns-2 gap-6 space-y-6">
+            <div className="columns-1 md:columns-2 gap-6">
               {sortedImages.map((img, i) => (
                 <motion.button
                   key={img.id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: i * 0.08, duration: 0.7 }}
+                  transition={{ delay: i * 0.06, duration: 0.6 }}
                   onClick={() => openLightbox(i)}
-                  className="break-inside-avoid overflow-hidden bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] hover:border-[hsl(38,72%,52%)/50%] transition-colors duration-300 w-full text-left group cursor-zoom-in"
+                  className="mb-6 break-inside-avoid overflow-hidden bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] hover:border-[hsl(38,72%,52%)/50%] transition-colors duration-300 w-full text-left block group cursor-zoom-in"
                 >
                   <img
                     src={img.imageUrl}
