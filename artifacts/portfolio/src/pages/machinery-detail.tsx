@@ -47,7 +47,7 @@ export default function MachineryDetail() {
         ) : (
           <div className="absolute inset-0 bg-[hsl(220,18%,12%)]" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,9%)] via-[hsl(220,18%,9%)]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,9%)] via-[hsl(220,18%,9%)]/80 to-[hsl(220,18%,9%)]/30" />
 
         <div className="absolute bottom-0 left-0 right-0 px-6 md:px-16 pb-12">
           <motion.div
@@ -63,9 +63,17 @@ export default function MachineryDetail() {
               Machinery
             </Link>
             {item.category && (
-              <p className="text-[hsl(38,72%,52%)] text-xs tracking-[0.35em] uppercase mb-3">{item.category}</p>
+              <p
+                className="text-[hsl(38,72%,52%)] text-xs tracking-[0.35em] uppercase mb-3"
+                style={{ textShadow: "0 1px 12px rgba(0,0,0,0.95)" }}
+              >
+                {item.category}
+              </p>
             )}
-            <h1 className="text-4xl md:text-6xl font-serif font-bold tracking-tight uppercase text-white leading-none">
+            <h1
+              className="text-4xl md:text-6xl font-serif font-bold tracking-tight uppercase text-white leading-none"
+              style={{ textShadow: "0 4px 24px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)" }}
+            >
               {item.name}
             </h1>
           </motion.div>
