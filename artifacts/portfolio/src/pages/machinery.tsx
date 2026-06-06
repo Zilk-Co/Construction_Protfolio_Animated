@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
 import { Settings2 } from "lucide-react";
 import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const MACHINERY_HERO_BG =
   "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=85";
@@ -15,6 +16,7 @@ const fallbackImage = "https://images.unsplash.com/photo-1541888946425-d81bb1924
 export default function Machinery() {
   const { data: machinery = [], isLoading } = useListMachinery({ published: true });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const t = usePageContent("machinery");
 
   const machineryToShow = Array.isArray(machinery) && machinery.length > 0 ? machinery : FALLBACK_MACHINERY;
 
@@ -41,7 +43,7 @@ export default function Machinery() {
               className="text-[11px] tracking-[0.45em] uppercase font-semibold mb-5"
               style={{ color: "hsl(38,85%,68%)", textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}
             >
-              Equipment & Fleet
+              {t.get("hero_eyebrow", "Equipment & Fleet")}
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -50,7 +52,7 @@ export default function Machinery() {
               className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight uppercase mb-6 text-white"
               style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
             >
-              Machinery
+              {t.get("hero_title", "Machinery")}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -59,7 +61,7 @@ export default function Machinery() {
               className="text-lg text-gray-200 max-w-2xl leading-relaxed"
               style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
             >
-              Our fleet of specialised construction equipment supports projects across the region, from excavation and piling to concrete works and heavy lifting.
+              {t.get("hero_subtitle", "Our fleet of specialised construction equipment supports projects across the region, from excavation and piling to concrete works and heavy lifting.")}
             </motion.p>
           </div>
         </section>
@@ -77,7 +79,7 @@ export default function Machinery() {
                 }`}
                 style={selectedCategory === null ? { color: "hsl(38,72%,58%)" } : {}}
               >
-                All Equipment
+                {t.get("filter_all_label", "All Equipment")}
               </button>
               {categories.map(cat => (
                 <button
@@ -115,7 +117,7 @@ export default function Machinery() {
             ) : filtered.length === 0 ? (
               <div className="py-32 text-center">
                 <Settings2 size={40} className="mx-auto text-gray-700 mb-4" />
-                <p className="text-gray-500 text-sm tracking-widest uppercase">No machinery listed yet</p>
+                <p className="text-gray-500 text-sm tracking-widest uppercase">{t.get("empty_state", "No machinery listed yet")}</p>
                 <p className="text-gray-600 text-xs mt-2">Add equipment from the admin panel</p>
               </div>
             ) : (

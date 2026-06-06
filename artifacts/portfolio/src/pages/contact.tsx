@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useState } from "react";
 import { useGetSettings } from "@workspace/api-client-react";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const CONTACT_HERO_BG =
   "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=85";
@@ -12,6 +13,7 @@ export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const { data: settings } = useGetSettings();
+  const t = usePageContent("contact");
 
   const phone = settings?.phone ?? "+92 21 3456 7890";
   const email = settings?.email ?? "info@zainmanzoor.co";
@@ -48,7 +50,7 @@ export default function Contact() {
               className="text-[11px] tracking-[0.45em] uppercase font-semibold mb-5"
               style={{ color: "hsl(38,85%,68%)", textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}
             >
-              Get in Touch
+              {t.get("hero_eyebrow", "Get in Touch")}
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -57,7 +59,7 @@ export default function Contact() {
               className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight uppercase mb-6 text-white"
               style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
             >
-              Contact Us
+              {t.get("hero_title", "Contact Us")}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -83,10 +85,10 @@ export default function Contact() {
 
               {/* Office */}
               <div>
-                <p className="text-[10px] tracking-[0.35em] uppercase mb-1" style={{ color: "hsl(38,85%,62%)" }}>Our Office</p>
+                <p className="text-[10px] tracking-[0.35em] uppercase mb-1" style={{ color: "hsl(38,85%,62%)" }}>{t.get("office_eyebrow", "Our Office")}</p>
                 <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
                 <div className="border-l-2 border-[hsl(38,72%,52%)] pl-5">
-                  <p className="font-serif font-bold uppercase text-sm tracking-wide mb-3 text-white">Karachi</p>
+                  <p className="font-serif font-bold uppercase text-sm tracking-wide mb-3 text-white">{t.get("office_city", "Karachi")}</p>
                   <div className="flex items-start gap-2.5">
                     <MapPin size={14} className="mt-0.5 shrink-0" style={{ color: "hsl(38,72%,58%)" }} />
                     <p className="text-sm leading-relaxed text-gray-300">{address}</p>
@@ -96,7 +98,7 @@ export default function Contact() {
 
               {/* Direct Contact */}
               <div>
-                <p className="text-[10px] tracking-[0.35em] uppercase mb-1" style={{ color: "hsl(38,85%,62%)" }}>Direct Contact</p>
+                <p className="text-[10px] tracking-[0.35em] uppercase mb-1" style={{ color: "hsl(38,85%,62%)" }}>{t.get("direct_eyebrow", "Direct Contact")}</p>
                 <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
                 <ul className="space-y-4">
                   <li>
@@ -129,7 +131,7 @@ export default function Contact() {
 
             {/* Contact Form */}
             <div className="lg:col-span-3">
-              <p className="text-[10px] tracking-[0.35em] uppercase mb-1" style={{ color: "hsl(38,85%,62%)" }}>Send a Message</p>
+              <p className="text-[10px] tracking-[0.35em] uppercase mb-1" style={{ color: "hsl(38,85%,62%)" }}>{t.get("message_eyebrow", "Send a Message")}</p>
               <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-8" />
               {submitted ? (
                 <motion.div
@@ -140,8 +142,8 @@ export default function Contact() {
                   <div className="w-12 h-12 border-2 border-[hsl(38,72%,52%)] mx-auto mb-4 flex items-center justify-center">
                     <span style={{ color: "hsl(38,72%,58%)" }} className="text-xl">✓</span>
                   </div>
-                  <h3 className="font-serif text-xl uppercase tracking-tight mb-2 text-white">Message Received</h3>
-                  <p className="text-sm text-gray-400">We will get back to you within 24 hours.</p>
+                  <h3 className="font-serif text-xl uppercase tracking-tight mb-2 text-white">{t.get("message_success_title", "Message Received")}</h3>
+                  <p className="text-sm text-gray-400">{t.get("message_success_body", "We will get back to you within 24 hours.")}</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -194,7 +196,7 @@ export default function Contact() {
         <section className="py-12 px-6 bg-[hsl(220,18%,8%)]">
           <div className="max-w-screen-2xl mx-auto">
             <div className="w-[80%] mx-auto">
-              <p className="text-[10px] tracking-[0.35em] uppercase mb-4 text-center" style={{ color: "hsl(38,85%,62%)" }}>Find Us</p>
+              <p className="text-[10px] tracking-[0.35em] uppercase mb-4 text-center" style={{ color: "hsl(38,85%,62%)" }}>{t.get("map_eyebrow", "Find Us")}</p>
               <div className="aspect-[16/9] border border-[hsl(220,15%,22%)] overflow-hidden">
                 <iframe
                   title="Karachi Office Location"
@@ -207,7 +209,7 @@ export default function Contact() {
                   referrerPolicy="no-referrer-when-downgrade"
                 />
               </div>
-              <p className="text-[10px] text-gray-500 mt-2 text-center">Hub River Road, Baldia, Naval Colony, Sector 2, Karachi</p>
+              <p className="text-[10px] text-gray-500 mt-2 text-center">{t.get("map_caption", "Hub River Road, Baldia, Naval Colony, Sector 2, Karachi")}</p>
             </div>
           </div>
         </section>

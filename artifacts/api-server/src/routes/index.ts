@@ -6,6 +6,7 @@ import imagesRouter from "./images";
 import machineryRouter from "./machinery";
 import adminRouter from "./admin";
 import settingsRouter from "./settings";
+import pageContentRouter from "./page_content";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(imagesRouter);
 router.use(machineryRouter);
 router.use(adminRouter);
 router.use(settingsRouter);
+router.use(pageContentRouter);
 
 export default router;
