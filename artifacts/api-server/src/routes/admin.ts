@@ -1,5 +1,6 @@
 import { Router, type IRouter } from "express";
 import { AdminLoginBody, ChangeAdminPasswordBody } from "@workspace/api-zod";
+import { logger } from "../lib/logger";
 
 const router: IRouter = Router();
 
@@ -33,6 +34,8 @@ router.post("/admin/login", async (req, res): Promise<void> => {
   }
 
   if (parsed.data.username !== ADMIN_USERNAME || parsed.data.password !== ADMIN_PASSWORD) {
+    logger.warn({ ip, attempts: record.attempts + 1, expectedUser: ADMIN_USERNAME, gotUser: parsed.data.username, passwordLen: parsed.data.password.length }, "admin login failed");
+
     const newAttempts = record.attempts + 1;
     const lockDuration = getLockDuration(newAttempts);
     loginAttempts.set(ip, {
