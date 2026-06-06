@@ -23,6 +23,7 @@ import AdminProjectImages from "@/pages/admin/project-images";
 import AdminMachinery from "@/pages/admin/machinery";
 import AdminMachineryEdit from "@/pages/admin/machinery-edit";
 import AdminSettings from "@/pages/admin/settings";
+import AdminPageContent from "@/pages/admin/page-content";
 
 const queryClient = new QueryClient();
 
@@ -69,6 +70,7 @@ function Router() {
         <Route path="/admin/machinery/new" component={AdminMachineryEdit} />
         <Route path="/admin/machinery/:id/edit" component={AdminMachineryEdit} />
         <Route path="/admin/settings" component={AdminSettings} />
+        <Route path="/admin/page-content" component={AdminPageContent} />
 
         <Route component={NotFound} />
       </Switch>

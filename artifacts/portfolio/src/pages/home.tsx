@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
 import { ArrowRight, Settings2 } from "lucide-react";
 import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const MACHINERY_FALLBACK = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800";
 
@@ -13,6 +14,7 @@ export default function Home() {
   const { data: featuredProjects = [], isLoading } = useListFeaturedProjects();
   const { data: machinery = [] } = useListMachinery({ published: true });
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const t = usePageContent("home");
 
   const displayProjects =
     Array.isArray(featuredProjects) && featuredProjects.length > 0
@@ -84,14 +86,14 @@ export default function Home() {
         <section className="border-b border-[hsl(220,15%,18%)] px-6 py-12">
           <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
-              <p className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-2">Zain Manzoor Co.</p>
-              <h2 className="text-2xl md:text-4xl font-serif font-bold uppercase tracking-tight">Architecture &amp; Construction</h2>
+              <p className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-2">{t.get("intro_eyebrow", "Zain Manzoor Co.")}</p>
+              <h2 className="text-2xl md:text-4xl font-serif font-bold uppercase tracking-tight">{t.get("intro_title", "Architecture & Construction")}</h2>
             </div>
             <p className="text-sm text-[hsl(220,12%,55%)] max-w-md leading-relaxed">
-              A multi-disciplinary practice delivering landmark architectural and construction projects across the Middle East and South Asia since 2005.
+              {t.get("intro_body", "A multi-disciplinary practice delivering landmark architectural and construction projects across the Middle East and South Asia since 2005.")}
             </p>
             <Link href="/projects" className="shrink-0 inline-flex items-center gap-3 border border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] px-6 py-3 text-xs tracking-[0.2em] uppercase hover:bg-[hsl(38,72%,52%)] hover:text-[hsl(220,18%,9%)] transition-all duration-200">
-              View All Projects <ArrowRight size={13} />
+              {t.get("intro_cta_label", "View All Projects")} <ArrowRight size={13} />
             </Link>
           </div>
         </section>
@@ -101,10 +103,10 @@ export default function Home() {
           <div className="max-w-screen-2xl mx-auto">
             <div className="flex justify-between items-end mb-14">
               <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-5xl font-serif font-bold tracking-tight uppercase">
-                Selected Works
+                {t.get("selected_works_title", "Selected Works")}
               </motion.h2>
               <Link href="/projects" className="text-xs tracking-[0.2em] uppercase text-[hsl(220,12%,55%)] hover:text-[hsl(38,72%,52%)] transition-colors hidden md:flex items-center gap-2">
-                All Projects <ArrowRight size={11} />
+                {t.get("selected_works_all_label", "All Projects")} <ArrowRight size={11} />
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
@@ -138,14 +140,14 @@ export default function Home() {
               <div className="flex justify-between items-end mb-14">
                 <div>
                   <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-3">
-                    Equipment &amp; Fleet
+                    {t.get("machinery_eyebrow", "Equipment & Fleet")}
                   </motion.p>
-                  <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-5xl font-serif font-bold tracking-tight uppercase">
-                    Our Machinery
+                  <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-5xl font-serif font-bold uppercase">
+                    {t.get("machinery_title", "Our Machinery")}
                   </motion.h2>
                 </div>
                 <Link href="/machinery" className="text-xs tracking-[0.2em] uppercase text-[hsl(220,12%,55%)] hover:text-[hsl(38,72%,52%)] transition-colors hidden md:flex items-center gap-2">
-                  All Equipment <ArrowRight size={11} />
+                  {t.get("machinery_all_label", "All Equipment")} <ArrowRight size={11} />
                 </Link>
               </div>
 
@@ -190,7 +192,7 @@ export default function Home() {
 
               <div className="mt-10 flex justify-center md:hidden">
                 <Link href="/machinery" className="inline-flex items-center gap-3 border border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] px-6 py-3 text-xs tracking-[0.2em] uppercase hover:bg-[hsl(38,72%,52%)] hover:text-[hsl(220,18%,9%)] transition-all duration-200">
-                  View All Equipment <ArrowRight size={13} />
+                  {t.get("machinery_all_label", "All Equipment")} <ArrowRight size={13} />
                 </Link>
               </div>
             </div>
@@ -200,11 +202,11 @@ export default function Home() {
         <section className="py-20 px-6 bg-[hsl(220,18%,11%)] border-y border-[hsl(220,15%,18%)]">
           <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
             <div>
-              <h2 className="text-2xl md:text-4xl font-serif font-bold uppercase tracking-tight mb-2">Have a project in mind?</h2>
-              <p className="text-sm text-[hsl(220,12%,55%)]">Let us bring your vision to life.</p>
+              <h2 className="text-2xl md:text-4xl font-serif font-bold uppercase tracking-tight mb-2">{t.get("cta_title", "Have a project in mind?")}</h2>
+              <p className="text-sm text-[hsl(220,12%,55%)]">{t.get("cta_body", "Let us bring your vision to life.")}</p>
             </div>
             <Link href="/contact" className="shrink-0 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-10 py-4 text-xs tracking-[0.25em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors inline-flex items-center gap-3">
-              Start a Conversation <ArrowRight size={13} />
+              {t.get("cta_button_label", "Start a Conversation")} <ArrowRight size={13} />
             </Link>
           </div>
         </section>

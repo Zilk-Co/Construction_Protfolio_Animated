@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { useGetAdminMe, useAdminLogout } from "@workspace/api-client-react";
-import { LayoutDashboard, FolderOpen, Settings2, LogOut, Home, SlidersHorizontal } from "lucide-react";
+import { LayoutDashboard, FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type } from "lucide-react";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -32,6 +32,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/admin/page-content", label: "Page Text", icon: Type },
     { href: "/admin/projects/new", label: "New Project", icon: FolderOpen },
     { href: "/admin/machinery", label: "Machinery", icon: Settings2 },
     { href: "/admin/settings", label: "Site Settings", icon: SlidersHorizontal },
@@ -75,15 +76,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
         {/* Bottom actions */}
         <div className="px-3 py-4 border-t border-[hsl(220,15%,16%)] space-y-0.5">
-          <a
+          <Link
             href="/"
-            target="_blank"
-            rel="noreferrer"
             className="flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase text-gray-500 hover:text-white hover:bg-[hsl(220,15%,14%)] transition-all"
           >
             <Home size={13} />
             View Site
-          </a>
+          </Link>
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase text-gray-500 hover:text-red-400 hover:bg-[hsl(220,15%,14%)] transition-all"

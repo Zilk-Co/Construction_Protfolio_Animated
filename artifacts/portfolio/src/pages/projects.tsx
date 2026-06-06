@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
 import { SlidersHorizontal, Calendar } from "lucide-react";
 import { FALLBACK_PROJECTS } from "@/lib/fallbackData";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const PROJECTS_HERO_BG =
   "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=85";
@@ -35,6 +36,7 @@ export default function Projects() {
 
   const { data: categories = [] } = useListCategories();
   const { data: projects = [], isLoading } = useListProjects({ published: true });
+  const t = usePageContent("projects");
 
   const projectsToShow = Array.isArray(projects) && projects.length > 0 ? projects : FALLBACK_PROJECTS;
 
@@ -64,7 +66,7 @@ export default function Projects() {
               className="text-[11px] tracking-[0.45em] uppercase font-semibold mb-5"
               style={{ color: "hsl(38,85%,68%)", textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}
             >
-              Portfolio
+              {t.get("hero_eyebrow", "Portfolio")}
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -73,7 +75,7 @@ export default function Projects() {
               className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight uppercase mb-6 text-white"
               style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
             >
-              All Projects
+              {t.get("hero_title", "All Projects")}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -82,7 +84,7 @@ export default function Projects() {
               className="text-lg text-gray-200 max-w-2xl leading-relaxed"
               style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
             >
-              Over two decades of landmark architectural and construction projects across Pakistan, the Middle East, and beyond.
+              {t.get("hero_subtitle", "Over two decades of landmark architectural and construction projects across Pakistan, the Middle East, and beyond.")}
             </motion.p>
           </div>
         </section>
@@ -103,7 +105,7 @@ export default function Projects() {
                 className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${selectedCategory === null ? "text-[hsl(220,18%,9%)] font-bold" : "border border-[hsl(220,15%,26%)] text-gray-400 hover:text-white hover:border-[hsl(38,72%,52%)]"}`}
                 style={selectedCategory === null ? { backgroundColor: "hsl(38,72%,52%)" } : {}}
               >
-                All Types
+                {t.get("filter_all_label", "All Types")}
               </button>
               {Array.isArray(categories) && categories.map(cat => (
                 <button
@@ -135,7 +137,7 @@ export default function Projects() {
                 </button>
               ))}
               <span className="ml-auto text-xs text-gray-500">
-                {filteredProjects.length} project{filteredProjects.length !== 1 ? "s" : ""}
+                {filteredProjects.length} {filteredProjects.length === 1 ? t.get("count_label_singular", "project") : t.get("count_label_plural", "projects")}
               </span>
             </motion.div>
           </div>
@@ -197,7 +199,7 @@ export default function Projects() {
 
               {filteredProjects.length === 0 && (
                 <div className="col-span-full py-24 text-center">
-                  <p className="text-gray-500 text-sm tracking-widest uppercase">No projects match this filter</p>
+                  <p className="text-gray-500 text-sm tracking-widest uppercase">{t.get("empty_state", "No projects match this filter")}</p>
                 </div>
               )}
             </div>

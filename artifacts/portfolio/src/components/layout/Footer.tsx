@@ -1,7 +1,9 @@
 import { Link } from "wouter";
 import { MapPin, Phone, Mail, ArrowUpRight } from "lucide-react";
+import { usePageContent } from "@/hooks/usePageContent";
 
 export function Footer() {
+  const t = usePageContent("footer");
   return (
     <footer className="bg-[hsl(220,18%,7%)] border-t border-[hsl(220,15%,18%)] mt-24">
       <div className="max-w-screen-2xl mx-auto px-6 pt-16 pb-10">
@@ -17,14 +19,14 @@ export function Footer() {
               </p>
             </div>
             <p className="text-sm text-[hsl(220,12%,55%)] leading-relaxed max-w-[200px]">
-              Architecture and construction excellence since 2005.
+              {t.get("tagline", "Architecture and construction excellence since 2005.")}
             </p>
           </div>
 
           {/* Navigation */}
           <div>
             <h4 className="text-[10px] tracking-[0.3em] uppercase text-[hsl(220,12%,45%)] mb-5 font-medium">
-              Navigation
+              {t.get("nav_heading", "Navigation")}
             </h4>
             <ul className="space-y-3">
               {[
@@ -49,7 +51,7 @@ export function Footer() {
           {/* Location */}
           <div>
             <h4 className="text-[10px] tracking-[0.3em] uppercase text-[hsl(220,12%,45%)] mb-5 font-medium">
-              Location
+              {t.get("location_heading", "Location")}
             </h4>
             <div className="flex items-start gap-2 text-sm text-[hsl(220,12%,60%)]">
               <MapPin size={14} className="mt-0.5 shrink-0 text-[hsl(38,72%,52%)]" />
@@ -66,7 +68,7 @@ export function Footer() {
           {/* Contact */}
           <div>
             <h4 className="text-[10px] tracking-[0.3em] uppercase text-[hsl(220,12%,45%)] mb-5 font-medium">
-              Contact Us
+              {t.get("contact_heading", "Contact Us")}
             </h4>
             <ul className="space-y-3">
               <li>
@@ -92,7 +94,7 @@ export function Footer() {
                   href="/contact"
                   className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase border border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] px-4 py-2 hover:bg-[hsl(38,72%,52%)] hover:text-[hsl(220,18%,9%)] transition-all duration-200"
                 >
-                  Get in Touch
+                  {t.get("contact_cta_label", "Get in Touch")}
                 </Link>
               </li>
             </ul>
@@ -105,8 +107,8 @@ export function Footer() {
             © {new Date().getFullYear()} Zain Manzoor Co. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <span className="text-xs text-[hsl(220,12%,40%)]">Architecture &amp; Construction</span>
-            <span className="text-xs text-[hsl(220,12%,40%)]">Karachi, Pakistan</span>
+            <span className="text-xs text-[hsl(220,12%,40%)]">{t.get("footer_tag_left", "Architecture & Construction")}</span>
+            <span className="text-xs text-[hsl(220,12%,40%)]">{t.get("footer_tag_right", "Karachi, Pakistan")}</span>
           </div>
         </div>
       </div>
