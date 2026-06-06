@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { useGetAdminMe, useAdminLogout } from "@workspace/api-client-react";
-import { LayoutDashboard, FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type } from "lucide-react";
+import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Wrench } from "lucide-react";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -30,12 +30,27 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   if (!me?.authenticated) return null;
 
-  const navItems = [
-    { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/page-content", label: "Page Text", icon: Type },
-    { href: "/admin/projects/new", label: "New Project", icon: FolderOpen },
-    { href: "/admin/machinery", label: "Machinery", icon: Settings2 },
-    { href: "/admin/settings", label: "Site Settings", icon: SlidersHorizontal },
+  const navSections = [
+    {
+      label: "Portfolio",
+      items: [
+        { href: "/admin", label: "All Projects", icon: FolderOpen },
+        { href: "/admin/projects/new", label: "Add Project", icon: Plus },
+      ],
+    },
+    {
+      label: "Fleet",
+      items: [
+        { href: "/admin/machinery", label: "All Equipment", icon: Wrench },
+      ],
+    },
+    {
+      label: "Content",
+      items: [
+        { href: "/admin/page-content", label: "Page Text", icon: Type },
+        { href: "/admin/settings", label: "Site Settings", icon: SlidersHorizontal },
+      ],
+    },
   ];
 
   const isActive = (href: string) =>
@@ -56,21 +71,28 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 py-5 px-3 space-y-0.5">
-          {navItems.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase transition-all duration-150 ${
-                isActive(href)
-                  ? "border-l-2 font-semibold"
-                  : "text-gray-500 hover:text-white hover:bg-[hsl(220,15%,14%)] border-l-2 border-transparent"
-              }`}
-              style={isActive(href) ? { color: "hsl(38,72%,62%)", backgroundColor: "hsl(38,72%,52%,0.1)", borderLeftColor: "hsl(38,72%,52%)" } : {}}
-            >
-              <Icon size={13} />
-              {label}
-            </Link>
+        <nav className="flex-1 py-5 px-3 space-y-5 overflow-y-auto">
+          {navSections.map(section => (
+            <div key={section.label} className="space-y-0.5">
+              <p className="px-3 pb-1.5 text-[9px] tracking-[0.3em] uppercase text-[hsl(220,12%,35%)] font-semibold">
+                {section.label}
+              </p>
+              {section.items.map(({ href, label, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase transition-all duration-150 ${
+                    isActive(href)
+                      ? "border-l-2 font-semibold"
+                      : "text-gray-500 hover:text-white hover:bg-[hsl(220,15%,14%)] border-l-2 border-transparent"
+                  }`}
+                  style={isActive(href) ? { color: "hsl(38,72%,62%)", backgroundColor: "hsl(38,72%,52%,0.1)", borderLeftColor: "hsl(38,72%,52%)" } : {}}
+                >
+                  <Icon size={13} />
+                  {label}
+                </Link>
+              ))}
+            </div>
           ))}
         </nav>
 

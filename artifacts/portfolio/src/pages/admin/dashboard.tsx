@@ -9,8 +9,10 @@ import {
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Image, Trash2, Globe, EyeOff, Star } from "lucide-react";
-import { useState } from "react";
+import { Plus, Pencil, Image as ImageIcon, Trash2, Globe, EyeOff, Star, Search, Filter } from "lucide-react";
+import { useMemo, useState } from "react";
+
+type StatusFilter = "all" | "published" | "draft" | "featured";
 
 export default function AdminDashboard() {
   const { data: projects = [], isLoading } = useListProjects();
@@ -18,6 +20,8 @@ export default function AdminDashboard() {
   const deleteProject = useDeleteProject();
   const queryClient = useQueryClient();
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
   const updateProject = useUpdateProject();
 
@@ -47,15 +51,42 @@ export default function AdminDashboard() {
     );
   };
 
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return projects.filter(p => {
+      if (statusFilter === "published" && !p.published) return false;
+      if (statusFilter === "draft" && p.published) return false;
+      if (statusFilter === "featured" && !p.featured) return false;
+      if (!q) return true;
+      return (
+        p.title.toLowerCase().includes(q) ||
+        (p.slug ?? "").toLowerCase().includes(q) ||
+        (p.location ?? "").toLowerCase().includes(q) ||
+        (p.sector ?? "").toLowerCase().includes(q)
+      );
+    });
+  }, [projects, search, statusFilter]);
+
   const published = projects.filter(p => p.published).length;
+  const featured = projects.filter(p => p.featured).length;
+
+  const filterChips: { value: StatusFilter; label: string; count: number }[] = [
+    { value: "all", label: "All", count: projects.length },
+    { value: "published", label: "Live", count: published },
+    { value: "draft", label: "Draft", count: projects.length - published },
+    { value: "featured", label: "Featured", count: featured },
+  ];
 
   return (
     <AdminLayout>
       {/* Page header */}
-      <div className="flex justify-between items-end mb-10 pb-6 border-b border-[hsl(220,15%,18%)]">
+      <div className="flex justify-between items-end mb-8 pb-6 border-b border-[hsl(220,15%,18%)]">
         <div>
-          <p className="text-[10px] tracking-[0.35em] uppercase text-[hsl(38,72%,52%)] mb-1">Content</p>
-          <h1 className="text-3xl font-serif font-bold uppercase tracking-tight">Projects</h1>
+          <p className="text-[10px] tracking-[0.35em] uppercase text-[hsl(38,72%,52%)] mb-1">Portfolio</p>
+          <h1 className="text-3xl font-serif font-bold uppercase tracking-tight">All Projects</h1>
+          <p className="text-xs text-[hsl(220,12%,50%)] mt-2">
+            Create, edit, and publish the projects shown on the public site.
+          </p>
         </div>
         <Link
           href="/admin/projects/new"
@@ -67,17 +98,51 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-3 gap-4 mb-10">
+      <div className="grid grid-cols-4 gap-4 mb-8">
         {[
           { label: "Total Projects", value: projects.length },
           { label: "Published", value: published },
           { label: "Drafts", value: projects.length - published },
+          { label: "Featured on Home", value: featured },
         ].map(stat => (
           <div key={stat.label} className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] px-5 py-4">
             <p className="text-2xl font-serif font-bold">{stat.value}</p>
             <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mt-0.5">{stat.label}</p>
           </div>
         ))}
+      </div>
+
+      {/* Search + filter bar */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-5">
+        <div className="relative flex-1">
+          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[hsl(220,12%,40%)]" />
+          <input
+            type="text"
+            placeholder="Search by title, slug, location, or sector…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="w-full bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] pl-9 pr-3 py-2.5 text-xs text-white placeholder:text-[hsl(220,12%,35%)] focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors"
+          />
+        </div>
+        <div className="flex items-center gap-1.5 bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-1">
+          <Filter size={12} className="text-[hsl(220,12%,40%)] mx-2" />
+          {filterChips.map(chip => (
+            <button
+              key={chip.value}
+              onClick={() => setStatusFilter(chip.value)}
+              className={`px-3 py-1.5 text-[10px] tracking-[0.15em] uppercase transition-colors ${
+                statusFilter === chip.value
+                  ? "bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] font-semibold"
+                  : "text-[hsl(220,12%,55%)] hover:text-white"
+              }`}
+            >
+              {chip.label}
+              <span className={`ml-1.5 ${statusFilter === chip.value ? "text-[hsl(220,18%,9%)]" : "text-[hsl(220,12%,35%)]"}`}>
+                {chip.count}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Project Table */}
@@ -100,7 +165,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {projects.map((project, i) => (
+              {filtered.map((project, i) => (
                 <motion.tr
                   key={project.id}
                   initial={{ opacity: 0 }}
@@ -138,7 +203,7 @@ export default function AdminDashboard() {
                       className={`inline-flex items-center gap-1.5 text-[9px] px-2.5 py-1 tracking-[0.15em] uppercase border transition-all ${
                         project.published
                           ? "border-green-800 text-green-500 hover:bg-green-900/20"
-                          : "border-[hsl(220,15%,25%)] text-[hsl(220,12%,45%)] hover:border-[hsl(38,72%,52%)/50%] hover:text-[hsl(38,72%,52%)]"
+                          : "border-[hsl(220,15%,25%)] text-[hsl(220,12%,45%)] hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)]"
                       }`}
                       data-testid={`button-toggle-${project.id}`}
                     >
@@ -154,7 +219,7 @@ export default function AdminDashboard() {
                         title="Manage Images"
                         data-testid={`link-images-${project.id}`}
                       >
-                        <Image size={13} />
+                        <ImageIcon size={13} />
                       </Link>
                       <Link
                         href={`/admin/projects/${project.id}/edit`}
@@ -193,9 +258,16 @@ export default function AdminDashboard() {
                   </td>
                 </motion.tr>
               ))}
+              {filtered.length === 0 && projects.length > 0 && (
+                <tr>
+                  <td colSpan={7} className="px-4 py-12 text-center text-[hsl(220,12%,40%)] text-xs tracking-widest uppercase">
+                    No projects match your search
+                  </td>
+                </tr>
+              )}
               {projects.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-12 text-center text-[hsl(220,12%,40%)] text-xs tracking-widest uppercase">
+                  <td colSpan={7} className="px-4 py-12 text-center text-[hsl(220,12%,40%)] text-xs tracking-widest uppercase">
                     No projects yet — create your first
                   </td>
                 </tr>
