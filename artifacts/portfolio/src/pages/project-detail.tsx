@@ -14,7 +14,8 @@ export default function ProjectDetail() {
   const { data: apiProject, isLoading } = useGetProject(slug, {
     query: { enabled: !!slug, queryKey: getGetProjectQueryKey(slug) }
   });
-  const project = apiProject ?? buildFallbackProject(slug);
+  const project =
+    apiProject?.title ? apiProject : buildFallbackProject(slug);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });

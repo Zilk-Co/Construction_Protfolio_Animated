@@ -3,8 +3,8 @@ import { AdminLoginBody, ChangeAdminPasswordBody } from "@workspace/api-zod";
 
 const router: IRouter = Router();
 
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME ?? "admin";
-let ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "admin 123";
+const ADMIN_USERNAME = (process.env.ADMIN_USERNAME ?? "admin").trim();
+let ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD ?? "admin123").trim();
 
 // Rate limiting: track failed login attempts per IP
 const loginAttempts = new Map<string, { attempts: number; lockedUntil: number | null }>();
