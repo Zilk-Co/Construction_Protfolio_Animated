@@ -51,7 +51,9 @@ app.use(
       secure: (process.env as any).NODE_ENV === "production",
       sameSite: (process.env as any).NODE_ENV === "production" ? "none" : "lax",
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      // No maxAge here: the login route sets maxAge=undefined to make this a
+      // session cookie (dies on browser close). The 1-hour idle timeout is
+      // enforced server-side in routes/admin.ts via adminLoginAt.
     },
   }),
 );
