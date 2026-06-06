@@ -7,6 +7,8 @@ import NotFound from "@/pages/not-found";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { Navbar } from "@/components/layout/Navbar";
 import { ParticleBackground } from "@/components/layout/ParticleBackground";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import { AdminFloatingButton } from "@/components/layout/AdminFloatingButton";
 import Home from "@/pages/home";
 import Projects from "@/pages/projects";
 import ProjectDetail from "@/pages/project-detail";
@@ -30,9 +32,11 @@ function Router() {
 
   return (
     <>
+      <ScrollToTop />
       <ParticleBackground />
       {!isAdmin && <Navbar />}
       <CustomCursor />
+      <AdminFloatingButton />
       <Switch>
         {/* Public routes */}
         <Route path="/" component={Home} />

@@ -37,6 +37,13 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
     chunkSizeWarningLimit: 4000,
+    sourcemap: false,
+  },
+  esbuild: {
+    // Suppress noisy "Can't resolve original location of error" warnings from
+    // Radix UI component files that use "use client" directives. These are
+    // harmless esbuild sourcemap quirks and have no runtime effect.
+    legalComments: "none",
   },
   server: {
     port,
