@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ArrowRight, Settings2 } from "lucide-react";
 import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
@@ -14,6 +14,7 @@ export default function Home() {
   const { data: featuredProjects = [], isLoading } = useListFeaturedProjects();
   const { data: machinery = [] } = useListMachinery({ published: true });
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const t = usePageContent("home");
 
   const displayProjects =
@@ -27,13 +28,104 @@ export default function Home() {
           { id: 5, title: "Quay District", slug: "quay-district-towers", location: "Auckland", heroImage: "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600" },
         ] as any[];
 
+  // Mobile: auto-advance carousel every 3s
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % displayProjects.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [displayProjects.length]);
+
+  const goToSlide = useCallback((index: number) => {
+    setCurrentSlide(index);
+  }, []);
+
   const featuredMachinery = Array.isArray(machinery) && machinery.length > 0 ? machinery.slice(0, 4) : FALLBACK_MACHINERY.slice(0, 4);
 
   return (
     <PageTransition>
       <div className="min-h-screen text-foreground">
-        {/* Full-screen Accordion */}
-        <section className="h-screen w-full flex overflow-hidden">
+        {/* ═══════ MOBILE: Auto-cycling carousel ═══════ */}
+        <section className="h-screen w-full relative md:hidden">
+          {isLoading ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="w-8 h-8 border-2 border-[hsl(220,15%,25%)] border-t-[hsl(38,72%,52%)] rounded-full animate-spin" />
+            </div>
+          ) : (
+            <>
+              {displayProjects.map((project: any, i: number) => {
+                const isActive = i === currentSlide;
+                return (
+                  <div
+                    key={project.id}
+                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}
+                  >
+                    <Link href={`/projects/${project.slug}`} className="block w-full h-full relative">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{ backgroundImage: `url(${project.heroImage})` }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                      <div className="absolute inset-0 flex flex-col justify-end p-6 pb-20">
+                        <p
+                          className="text-[11px] tracking-[0.3em] uppercase text-[hsl(38,72%,65%)] mb-2 font-semibold"
+                          style={{ textShadow: "0 1px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.7)" }}
+                        >
+                          {project.location || "Global"}
+                        </p>
+                        <h2
+                          className="text-3xl font-serif font-bold tracking-tight uppercase leading-tight mb-3"
+                          style={{ textShadow: "0 2px 16px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)" }}
+                        >
+                          {project.title}
+                        </h2>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] tracking-[0.25em] uppercase text-[hsl(38,72%,52%)]">View Project</span>
+                          <ArrowRight size={11} className="text-[hsl(38,72%,52%)]" />
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
+
+              {/* Dot indicators */}
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5">
+                {displayProjects.map((_: any, i: number) => (
+                  <button
+                    key={i}
+                    onClick={() => goToSlide(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`transition-all duration-300 rounded-full ${
+                      i === currentSlide
+                        ? "w-6 h-2 bg-[hsl(38,72%,52%)]"
+                        : "w-2 h-2 bg-white/40 hover:bg-white/70"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Progress bar */}
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10 z-20">
+                <div
+                  key={currentSlide}
+                  className="h-full bg-[hsl(38,72%,52%)]"
+                  style={{ animation: "progressSlide 3s linear forwards" }}
+                />
+              </div>
+
+              <style>{`
+                @keyframes progressSlide {
+                  from { width: 0%; }
+                  to { width: 100%; }
+                }
+              `}</style>
+            </>
+          )}
+        </section>
+
+        {/* ═══════ DESKTOP: Accordion strip (unchanged) ═══════ */}
+        <section className="hidden md:flex h-screen w-full overflow-hidden">
           {isLoading ? (
             <div className="w-full flex items-center justify-center">
               <div className="w-8 h-8 border-2 border-[hsl(220,15%,25%)] border-t-[hsl(38,72%,52%)] rounded-full animate-spin" />
