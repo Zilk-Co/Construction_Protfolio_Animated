@@ -2,6 +2,7 @@ import { AdminLayout } from "@/components/layout/AdminLayout";
 import { useGetSettings, useUpdateSettings, useChangeAdminPassword } from "@workspace/api-client-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Save, RotateCcw, Lock, Eye, EyeOff } from "lucide-react";
 
 const FIELDS = [
@@ -111,7 +112,8 @@ export default function AdminSettings() {
           ))}
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <>
+        <form id="settings-form" onSubmit={handleSubmit} className="pb-24">
           <div className="grid grid-cols-1 gap-6 mb-10">
             {/* Contact Info Section */}
             <div>
@@ -154,10 +156,12 @@ export default function AdminSettings() {
               </div>
             </div>
           </div>
-
-          <div className="flex items-center gap-4 pt-6 border-t border-[hsl(220,15%,18%)]">
+        </form>
+        {createPortal(
+          <div className="flex items-center gap-4 border-t border-[hsl(220,15%,18%)] fixed bottom-0 left-[224px] right-0 bg-[hsl(220,18%,9%)]/95 backdrop-blur-md px-8 py-4 z-50">
             <button
               type="submit"
+              form="settings-form"
               disabled={updateMutation.isPending}
               className="inline-flex items-center gap-2 px-6 py-3 text-xs tracking-[0.2em] uppercase font-bold transition-colors disabled:opacity-50"
               style={{ backgroundColor: "hsl(38,72%,52%)", color: "hsl(220,18%,9%)" }}
@@ -186,8 +190,10 @@ export default function AdminSettings() {
                 ✓ Settings saved
               </motion.span>
             )}
-          </div>
-        </form>
+          </div>,
+          document.body
+        )}
+        </>
       )}
       {/* Password Change */}
       <div className="mt-12 pt-10 border-t border-[hsl(220,15%,18%)]">

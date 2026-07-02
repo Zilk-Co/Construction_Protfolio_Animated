@@ -2,6 +2,7 @@ import { AdminLayout } from "@/components/layout/AdminLayout";
 import { useGetProject, useUpdateProject, useListCategories, useListProjects, getGetProjectQueryKey } from "@workspace/api-client-react";
 import { Link, useLocation, useParams } from "wouter";
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function AdminProjectEdit() {
@@ -125,7 +126,7 @@ export default function AdminProjectEdit() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form id="project-edit-form" onSubmit={handleSubmit} className="space-y-8 pb-24">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-6">
               <h2 className="text-sm font-serif tracking-widest uppercase border-b border-neutral-800 pb-2 text-neutral-400">Basic Info</h2>
@@ -220,18 +221,22 @@ export default function AdminProjectEdit() {
               />
             </div>
           </div>
+        </form>
 
-          <div className="pt-8 border-t border-neutral-800 flex items-center gap-6 sticky bottom-0 bg-neutral-950/80 backdrop-blur pb-8">
+        {createPortal(
+          <div className="fixed bottom-0 left-[224px] right-0 border-t border-neutral-800 flex items-center gap-6 bg-neutral-950/95 backdrop-blur-md px-8 py-4 z-50">
             <button
               type="submit"
+              form="project-edit-form"
               disabled={updateProject.isPending}
               className="px-8 py-3 bg-white text-black font-serif tracking-widest uppercase hover:bg-neutral-200 transition-colors disabled:opacity-50"
             >
               {updateProject.isPending ? "Saving..." : "Save Changes"}
             </button>
             {isSaved && <span className="text-green-500 text-xs tracking-widest uppercase">Changes saved</span>}
-          </div>
-        </form>
+          </div>,
+          document.body
+        )}
       </div>
     </AdminLayout>
   );

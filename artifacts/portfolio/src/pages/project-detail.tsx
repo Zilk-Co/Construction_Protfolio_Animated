@@ -49,7 +49,7 @@ export default function ProjectDetail() {
     { label: "Year", value: project.year },
   ].filter(m => m.value);
 
-  const fallbackImage = "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600";
+  const fallbackImage = "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75";
   const sortedImages = (project.images || []).slice().sort((a, b) => a.sortOrder - b.sortOrder);
 
   const openLightbox = (i: number) => setLightboxIndex(i);

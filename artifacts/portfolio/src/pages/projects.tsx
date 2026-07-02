@@ -9,7 +9,7 @@ import { FALLBACK_PROJECTS } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const PROJECTS_HERO_BG =
-  "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=85";
+  "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75";
 
 const DATE_RANGES = [
   { label: "All Years", value: "all" },
@@ -169,8 +169,11 @@ export default function Projects() {
                         <motion.div
                           className="absolute inset-0 bg-cover bg-center"
                           style={{ backgroundImage: `url(${project.heroImage})` }}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true, margin: "100px" }}
                           whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+                          transition={{ opacity: { duration: 0.4 }, scale: { duration: 0.8, ease: [0.33, 1, 0.68, 1] } }}
                         />
                       ) : (
                         <div className="absolute inset-0 flex items-end p-5 bg-gradient-to-br from-[hsl(220,18%,14%)] to-[hsl(220,18%,9%)]">

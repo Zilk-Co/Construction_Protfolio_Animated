@@ -2,20 +2,21 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export function CustomCursor() {
-  // Hide cursor on touch devices
-  const isTouchDevice = typeof window !== 'undefined' && 
-    (window.matchMedia('(pointer: coarse)').matches || 
-     'ontouchstart' in window || 
-     navigator.maxTouchPoints > 0);
-
-  if (isTouchDevice) {
-    return null;
-  }
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
+    const touch =
+      window.matchMedia("(pointer: coarse)").matches ||
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0;
+    if (touch) {
+      setIsTouchDevice(true);
+      return;
+    }
+
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
@@ -47,6 +48,8 @@ export function CustomCursor() {
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, [isVisible]);
+
+  if (isTouchDevice) return null;
 
   return (
     <>
