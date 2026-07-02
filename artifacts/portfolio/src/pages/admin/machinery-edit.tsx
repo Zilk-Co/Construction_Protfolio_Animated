@@ -7,6 +7,7 @@ import {
 } from "@workspace/api-client-react";
 import { Link, useLocation, useParams } from "wouter";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Save, Upload, X } from "lucide-react";
 
@@ -160,7 +161,7 @@ export default function AdminMachineryEdit() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form id="machinery-edit-form" onSubmit={handleSubmit} className="space-y-6 pb-24">
           {/* Name + Slug */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
@@ -352,11 +353,13 @@ export default function AdminMachineryEdit() {
               </label>
             </div>
           </div>
+        </form>
 
-          {/* Submit */}
-          <div className="pt-4 flex items-center gap-5 border-t border-[hsl(220,15%,18%)]">
+        {createPortal(
+          <div className="flex items-center gap-5 border-t border-[hsl(220,15%,18%)] fixed bottom-0 left-[224px] right-0 bg-[hsl(220,18%,9%)]/95 backdrop-blur-md px-8 py-4 z-50">
             <button
               type="submit"
+              form="machinery-edit-form"
               disabled={isPending}
               className="inline-flex items-center gap-2 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-8 py-3 text-xs tracking-[0.25em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors disabled:opacity-40"
             >
@@ -364,8 +367,9 @@ export default function AdminMachineryEdit() {
               {isPending ? "Saving..." : isNew ? "Add Equipment" : "Save Changes"}
             </button>
             {saved && <span className="text-green-500 text-xs tracking-widest uppercase">Saved</span>}
-          </div>
-        </form>
+          </div>,
+          document.body
+        )}
       </div>
     </AdminLayout>
   );

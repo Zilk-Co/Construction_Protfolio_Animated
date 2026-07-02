@@ -1,13 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd ../.. && pnpm install --frozen-lockfile && pnpm --filter @workspace/api-server run build && pnpm --filter @workspace/portfolio run build",
+  "buildCommand": "cd ../.. && pnpm install --frozen-lockfile && pnpm --filter @workspace/portfolio run build",
   "outputDirectory": "dist/public",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "framework": "vite",
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://newanimatedzain-production.up.railway.app/api/:path*"
+      "destination": "https://arch-portfolio-api.onrender.com/api/:path*"
     },
     {
       "source": "/(.*)",

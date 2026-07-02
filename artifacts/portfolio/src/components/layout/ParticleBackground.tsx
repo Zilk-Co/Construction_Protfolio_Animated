@@ -31,7 +31,7 @@ export function ParticleBackground() {
     resize();
     window.addEventListener("resize", resize);
 
-    const COUNT = 100;
+    const COUNT = 50;
     particles.current = Array.from({ length: COUNT }, () => {
       const bvx = (Math.random() - 0.5) * 0.45;
       const bvy = (Math.random() - 0.5) * 0.45;
@@ -116,22 +116,23 @@ export function ParticleBackground() {
       }
 
       for (let i = 0; i < particles.current.length; i++) {
+        const a = particles.current[i];
         for (let j = i + 1; j < particles.current.length; j++) {
-          const a = particles.current[i];
           const b = particles.current[j];
           const dx = a.x - b.x;
           const dy = a.y - b.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECT_DIST) {
-            const fade = 1 - dist / CONNECT_DIST;
-            const alpha = fade * fade * 0.12;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(200, 146, 42, ${alpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-          }
+          if (Math.abs(dx) > CONNECT_DIST || Math.abs(dy) > CONNECT_DIST) continue;
+          const distSq = dx * dx + dy * dy;
+          if (distSq > CONNECT_DIST * CONNECT_DIST) continue;
+          const dist = Math.sqrt(distSq);
+          const fade = 1 - dist / CONNECT_DIST;
+          const alpha = fade * fade * 0.12;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgba(200, 146, 42, ${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
         }
       }
 

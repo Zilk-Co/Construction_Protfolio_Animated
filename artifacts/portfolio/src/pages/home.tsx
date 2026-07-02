@@ -3,29 +3,31 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowRight, Settings2 } from "lucide-react";
 import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
 
-const MACHINERY_FALLBACK = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800";
+const MACHINERY_FALLBACK = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600";
 
 export default function Home() {
   const { data: featuredProjects = [], isLoading } = useListFeaturedProjects();
   const { data: machinery = [] } = useListMachinery({ published: true });
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const loadedImagesRef = useRef<Record<number, boolean>>({});
+  const [, forceRender] = useState(0);
   const t = usePageContent("home");
 
   const displayProjects =
     Array.isArray(featuredProjects) && featuredProjects.length > 0
       ? featuredProjects.slice(0, 5)
       : [
-          { id: 1, title: "Obsidian Cultural Centre", slug: "obsidian-cultural-centre", location: "Dubai, UAE", heroImage: "https://images.unsplash.com/photo-1470723710355-95304d8aece4?w=1600" },
-          { id: 2, title: "Meridian Tower", slug: "meridian-tower", location: "Shenzhen, China", heroImage: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600" },
-          { id: 3, title: "Heliodor Residences", slug: "heliodor-residences", location: "Monaco", heroImage: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600" },
-          { id: 4, title: "Civic Axis", slug: "civic-axis-masterplan", location: "Riyadh", heroImage: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600" },
-          { id: 5, title: "Quay District", slug: "quay-district-towers", location: "Auckland", heroImage: "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1600" },
+          { id: 1, title: "Obsidian Cultural Centre", slug: "obsidian-cultural-centre", location: "Dubai, UAE", heroImage: "https://images.unsplash.com/photo-1470723710355-95304d8aece4?w=900&q=75" },
+          { id: 2, title: "Meridian Tower", slug: "meridian-tower", location: "Shenzhen, China", heroImage: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75" },
+          { id: 3, title: "Heliodor Residences", slug: "heliodor-residences", location: "Monaco", heroImage: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=75" },
+          { id: 4, title: "Civic Axis", slug: "civic-axis-masterplan", location: "Riyadh", heroImage: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=75" },
+          { id: 5, title: "Quay District", slug: "quay-district-towers", location: "Auckland", heroImage: "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=900&q=75" },
         ] as any[];
 
   // Mobile: auto-advance carousel every 3s
@@ -39,6 +41,19 @@ export default function Home() {
   const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
   }, []);
+
+  // Preload all hero images in background, fade in as each loads
+  useEffect(() => {
+    displayProjects.forEach((project: any, i: number) => {
+      if (loadedImagesRef.current[i]) return;
+      const img = new Image();
+      img.onload = () => {
+        loadedImagesRef.current[i] = true;
+        forceRender(n => n + 1);
+      };
+      img.src = project.heroImage;
+    });
+  }, [displayProjects]);
 
   const featuredMachinery = Array.isArray(machinery) && machinery.length > 0 ? machinery.slice(0, 4) : FALLBACK_MACHINERY.slice(0, 4);
 
@@ -55,16 +70,19 @@ export default function Home() {
             <>
               {displayProjects.map((project: any, i: number) => {
                 const isActive = i === currentSlide;
+                const isNearby = Math.abs(i - currentSlide) <= 1 || (currentSlide === 0 && i === displayProjects.length - 1) || (currentSlide === displayProjects.length - 1 && i === 0);
                 return (
                   <div
                     key={project.id}
                     className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}
                   >
                     <Link href={`/projects/${project.slug}`} className="block w-full h-full relative">
-                      <div
-                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                        style={{ backgroundImage: `url(${project.heroImage})` }}
-                      />
+                      {isNearby && (
+                        <div
+                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-500"
+                          style={{ backgroundImage: `url(${project.heroImage})` }}
+                        />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                       <div className="absolute inset-0 flex flex-col justify-end p-6 pb-20">
                         <p
@@ -124,7 +142,7 @@ export default function Home() {
           )}
         </section>
 
-        {/* ═══════ DESKTOP: Accordion strip (unchanged) ═══════ */}
+        {/* ═══════ DESKTOP: Accordion strip (lazy-loaded images) ═══════ */}
         <section className="hidden md:flex h-screen w-full overflow-hidden">
           {isLoading ? (
             <div className="w-full flex items-center justify-center">
@@ -134,6 +152,7 @@ export default function Home() {
             displayProjects.map((project: any, i: number) => {
               const isHovered = hoveredIndex === i;
               const flexValue = hoveredIndex === null ? 1 : isHovered ? 4 : 0.4;
+              const imageLoaded = !!loadedImagesRef.current[i];
 
               return (
                 <motion.div
@@ -145,12 +164,15 @@ export default function Home() {
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
                   <Link href={`/projects/${project.slug}`} className="block w-full h-full relative">
-                    <motion.div
-                      className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                      style={{ backgroundImage: `url(${project.heroImage})` }}
-                      animate={{ scale: isHovered ? 1.06 : 1 }}
-                      transition={{ duration: 1.4, ease: "easeOut" }}
-                    />
+                    {imageLoaded && (
+                      <motion.div
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{ backgroundImage: `url(${project.heroImage})` }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1, scale: isHovered ? 1.06 : 1 }}
+                        transition={{ opacity: { duration: 0.5 }, scale: { duration: 1.4, ease: "easeOut" } }}
+                      />
+                    )}
                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent transition-opacity duration-700" />
                      <div className={`absolute inset-0 bg-black/30 transition-opacity duration-700 ${isHovered ? "opacity-0" : "opacity-100"}`} />
                     <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
@@ -206,7 +228,15 @@ export default function Home() {
                 <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }} whileHover={{ y: -8, transition: { duration: 0.2 } }} className="transition-transform duration-200">
                   <Link href={`/projects/${project.slug}`} className="block group">
                     <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,18%)] group-hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300 shadow-lg group-hover:shadow-[hsl(38,72%,52%)/20%]">
-                      <motion.div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${project.heroImage})` }} whileHover={{ scale: 1.05 }} transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }} />
+                      <motion.div
+                        className="absolute inset-0 bg-cover bg-center"
+                        style={{ backgroundImage: `url(${project.heroImage})` }}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true, margin: "100px" }}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ opacity: { duration: 0.4 }, scale: { duration: 0.7, ease: [0.33, 1, 0.68, 1] } }}
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,9%)/60%] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
                     <div className="flex justify-between items-start">
@@ -257,6 +287,8 @@ export default function Home() {
                         <img
                           src={item.imageUrl || MACHINERY_FALLBACK}
                           alt={item.name}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
                           onError={e => { (e.target as HTMLImageElement).src = MACHINERY_FALLBACK; }}
                         />

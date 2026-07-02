@@ -7,7 +7,7 @@ import { useGetSettings } from "@workspace/api-client-react";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const CONTACT_HERO_BG =
-  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=85";
+  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&q=75";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });

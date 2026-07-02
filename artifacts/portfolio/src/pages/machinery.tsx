@@ -9,9 +9,9 @@ import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const MACHINERY_HERO_BG =
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=85";
+  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=75";
 
-const fallbackImage = "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800";
+const fallbackImage = "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600";
 
 export default function Machinery() {
   const { data: machinery = [], isLoading } = useListMachinery({ published: true });
@@ -138,6 +138,8 @@ export default function Machinery() {
                       <motion.img
                         src={item.imageUrl || fallbackImage}
                         alt={item.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                         whileHover={{ scale: 1.04 }}
                         transition={{ duration: 0.6 }}

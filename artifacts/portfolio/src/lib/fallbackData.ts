@@ -1,6 +1,6 @@
 import type { Project, ProjectSummary, MachineryItem } from "@workspace/api-client-react";
 
-const IMG = (id: string, w = 1600) => `https://images.unsplash.com/${id}?w=${w}`;
+const IMG = (id: string, w = 900) => `https://images.unsplash.com/${id}?w=${w}&q=75`;
 
 export const FALLBACK_PROJECTS: ProjectSummary[] = [
   { id: 1, title: "Obsidian Cultural Centre", slug: "obsidian-cultural-centre", location: "Dubai, UAE", client: "Dubai Municipality", sector: "Cultural", status: "Completed", published: true, featured: true, categoryId: 4, year: "2023", categoryName: "Cultural", heroImage: IMG("photo-1470723710355-95304d8aece4") },
@@ -14,7 +14,7 @@ export const FALLBACK_PROJECTS: ProjectSummary[] = [
   { id: 9, title: "Atrium Business Hub", slug: "atrium-business-hub", location: "Karachi", client: "Atrium Holdings", sector: "Commercial", status: "Completed", published: true, featured: false, categoryId: 1, year: "2019", categoryName: "Commercial", heroImage: IMG("photo-1497366216548-37526070297c") },
 ];
 
-const MACH_IMG = (id: string) => IMG(id, 800);
+const MACH_IMG = (id: string) => IMG(id, 600);
 
 export const FALLBACK_MACHINERY: MachineryItem[] = [
   { id: 1, name: "Caterpillar 390F Excavator", slug: "caterpillar-390f-excavator", category: "Excavation", description: "90-ton class hydraulic excavator for deep foundation and bulk earthworks.", imageUrl: MACH_IMG("photo-1581094288338-2314dddb7ece"), year: "2021", condition: "Excellent", published: true, featured: true },

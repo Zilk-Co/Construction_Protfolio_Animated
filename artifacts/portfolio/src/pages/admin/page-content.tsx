@@ -2,6 +2,7 @@ import { AdminLayout } from "@/components/layout/AdminLayout";
 import { useGetPageContent, useUpdatePageContent } from "@workspace/api-client-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { Save, RotateCcw, Type, AlignLeft, FileText, ChevronDown, CheckCircle2, AlertCircle } from "lucide-react";
 
 function PageIcon({ type }: { type: "text" | "textarea" | "richtext" }) {
@@ -133,27 +134,6 @@ export default function AdminPageContent() {
               {dirtyKeys.size} unsaved
             </span>
           )}
-          <button
-            type="button"
-            onClick={handleReset}
-            disabled={dirtyKeys.size === 0 || updateMutation.isPending}
-            className="inline-flex items-center gap-2 px-5 py-3 text-xs tracking-[0.2em] uppercase text-gray-500 hover:text-white border border-[hsl(220,15%,22%)] hover:border-[hsl(220,15%,35%)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            <RotateCcw size={12} />
-            Reset
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={updateMutation.isPending}
-            className="inline-flex items-center gap-2 px-6 py-3 text-xs tracking-[0.2em] uppercase font-bold transition-colors disabled:opacity-50"
-            style={{ backgroundColor: "hsl(38,72%,52%)", color: "hsl(220,18%,9%)" }}
-            onMouseEnter={(e) => { if (!updateMutation.isPending) e.currentTarget.style.backgroundColor = "hsl(38,72%,62%)"; }}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "hsl(38,72%,52%)")}
-          >
-            <Save size={13} />
-            {updateMutation.isPending ? "Saving..." : "Save All Changes"}
-          </button>
         </div>
       </div>
 
@@ -192,7 +172,7 @@ export default function AdminPageContent() {
           ))}
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3 pb-20">
           {groupedByPage.map((pageGroup) => {
             const isOpen = !!expandedPages[pageGroup.page];
             const pageDirty = Array.from(dirtyKeys).some((k) => k.startsWith(`${pageGroup.page}::`));
@@ -323,6 +303,32 @@ export default function AdminPageContent() {
             );
           })}
         </div>
+      )}
+      {createPortal(
+        <div className="flex items-center gap-4 pt-6 border-t border-[hsl(220,15%,18%)] fixed bottom-0 left-[224px] right-0 bg-[hsl(220,18%,9%)]/95 backdrop-blur-md px-8 py-4 z-50">
+          <button
+            type="button"
+            onClick={handleReset}
+            disabled={dirtyKeys.size === 0 || updateMutation.isPending}
+            className="inline-flex items-center gap-2 px-5 py-3 text-xs tracking-[0.2em] uppercase text-gray-500 hover:text-white border border-[hsl(220,15%,22%)] hover:border-[hsl(220,15%,35%)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <RotateCcw size={12} />
+            Reset
+          </button>
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={updateMutation.isPending}
+            className="inline-flex items-center gap-2 px-6 py-3 text-xs tracking-[0.2em] uppercase font-bold transition-colors disabled:opacity-50"
+            style={{ backgroundColor: "hsl(38,72%,52%)", color: "hsl(220,18%,9%)" }}
+            onMouseEnter={(e) => { if (!updateMutation.isPending) e.currentTarget.style.backgroundColor = "hsl(38,72%,62%)"; }}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "hsl(38,72%,52%)")}
+          >
+            <Save size={13} />
+            {updateMutation.isPending ? "Saving..." : "Save All Changes"}
+          </button>
+        </div>,
+        document.body
       )}
     </AdminLayout>
   );
