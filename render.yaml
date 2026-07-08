@@ -3,8 +3,8 @@ services:
     name: construction-portfolio-api
     runtime: node
     plan: free
-    buildCommand: pnpm install --frozen-lockfile && mkdir -p artifacts/api-server/node_modules && node -e "const fs=require('fs');const pkgs=['esbuild','esbuild-plugin-pino','pino-pretty','thread-stream'];pkgs.forEach(p=>{try{fs.symlinkSync('../../node_modules/'+p,'artifacts/api-server/node_modules/'+p)}catch(e){}})" && pnpm --filter @workspace/api-server run build
-    startCommand: cd artifacts/api-server && node --enable-source-maps ./dist/index.mjs
+    buildCommand: pnpm install --frozen-lockfile
+    startCommand: cd artifacts/api-server && npx tsx src/index.ts
     healthCheckPath: /api/healthz
     envVars:
       - key: NODE_ENV
