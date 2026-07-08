@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: arch-portfolio-api
+    name: construction-portfolio-api
     runtime: node
     plan: free
     buildCommand: pnpm install && pnpm --filter @workspace/api-server run build
