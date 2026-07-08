@@ -3,7 +3,7 @@ services:
     name: construction-portfolio-api
     runtime: node
     plan: free
-    buildCommand: pnpm install && pnpm --filter @workspace/api-server run build
+    buildCommand: pnpm install --frozen-lockfile && cd artifacts/api-server && npm install esbuild@0.27.3 esbuild-plugin-pino pino-pretty thread-stream && node ./build.mjs
     startCommand: cd artifacts/api-server && node --enable-source-maps ./dist/index.mjs
     healthCheckPath: /api/healthz
     envVars:
