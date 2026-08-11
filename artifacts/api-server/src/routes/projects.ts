@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { eq, and, desc, sql } from "drizzle-orm";
 import { db, projectsTable, categoriesTable, projectImagesTable } from "@workspace/db";
+import { requireAdmin, isAdminSessionValid } from "../middlewares/auth";
 import {
   ListProjectsQueryParams,
   CreateProjectBody,
@@ -93,9 +94,9 @@ router.get("/projects/featured", async (_req, res): Promise<void> => {
         status: projectsTable.status,
         published: projectsTable.published,
         featured: projectsTable.featured,
-        categoryId: projectsTable.categoryId,
-        year: projectsTable.year,
-        categoryName: categoriesTable.name,
+      categoryId: projectsTable.categoryId,
+      year: projectsTable.year,
+      categoryName: categoriesTable.name,
         heroImage: fallbackSq.imageUrl,
       })
       .from(projectsTable)
@@ -124,8 +125,13 @@ router.get("/projects", async (req, res): Promise<void> => {
     .as("hero_images");
 
   const conditions = [];
-  if (qp.data.published !== undefined) {
-    conditions.push(eq(projectsTable.published, qp.data.published));
+  let published = qp.data.published;
+  // Unpublished/draft rows are only visible to authenticated admins.
+  if (published === undefined && !isAdminSessionValid(req)) {
+    published = true;
+  }
+  if (published !== undefined) {
+    conditions.push(eq(projectsTable.published, published));
   }
   if (qp.data.category_id !== undefined) {
     conditions.push(eq(projectsTable.categoryId, qp.data.category_id));
@@ -156,7 +162,7 @@ router.get("/projects", async (req, res): Promise<void> => {
   res.json(rows.map(buildProjectSummary));
 });
 
-router.post("/projects", async (req, res): Promise<void> => {
+router.post("/projects", requireAdmin, async (req, res): Promise<void> => {
   const parsed = CreateProjectBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -189,7 +195,7 @@ router.get("/projects/:slug", async (req, res): Promise<void> => {
   res.json(full);
 });
 
-router.put("/projects/:id/update", async (req, res): Promise<void> => {
+router.put("/projects/:id/update", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = UpdateProjectParams.safeParse({ id: parseInt(rawId, 10) });
   if (!params.success) {
@@ -214,7 +220,7 @@ router.put("/projects/:id/update", async (req, res): Promise<void> => {
   res.json(full);
 });
 
-router.patch("/projects/:id/publish", async (req, res): Promise<void> => {
+router.patch("/projects/:id/publish", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = ToggleProjectPublishParams.safeParse({ id: parseInt(rawId, 10) });
   if (!params.success) {
@@ -239,7 +245,7 @@ router.patch("/projects/:id/publish", async (req, res): Promise<void> => {
   res.json(full);
 });
 
-router.delete("/projects/:id/delete", async (req, res): Promise<void> => {
+router.delete("/projects/:id/delete", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = DeleteProjectParams.safeParse({ id: parseInt(rawId, 10) });
   if (!params.success) {
@@ -266,6 +272,7 @@ async function getFullProject(id: number) {
       featured: projectsTable.featured,
       longDescription: projectsTable.longDescription,
       categoryId: projectsTable.categoryId,
+      serviceId: projectsTable.serviceId,
       year: projectsTable.year,
       categoryName: categoriesTable.name,
     })

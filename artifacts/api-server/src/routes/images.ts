@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { eq, and } from "drizzle-orm";
 import { db, projectImagesTable, projectsTable } from "@workspace/db";
+import { requireAdmin } from "../middlewares/auth";
 import {
   ListProjectImagesParams,
   AddProjectImageParams,
@@ -27,7 +28,7 @@ router.get("/projects/:id/images", async (req, res): Promise<void> => {
   res.json(images);
 });
 
-router.post("/projects/:id/images", async (req, res): Promise<void> => {
+router.post("/projects/:id/images", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = AddProjectImageParams.safeParse({ id: parseInt(rawId, 10) });
   if (!params.success) {
@@ -69,7 +70,7 @@ router.post("/projects/:id/images", async (req, res): Promise<void> => {
   res.status(201).json(image);
 });
 
-router.put("/projects/:id/images/:imageId", async (req, res): Promise<void> => {
+router.put("/projects/:id/images/:imageId", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const rawImageId = Array.isArray(req.params.imageId) ? req.params.imageId[0] : req.params.imageId;
   const params = UpdateProjectImageParams.safeParse({
@@ -112,7 +113,7 @@ router.put("/projects/:id/images/:imageId", async (req, res): Promise<void> => {
   res.json(image);
 });
 
-router.delete("/projects/:id/images/:imageId", async (req, res): Promise<void> => {
+router.delete("/projects/:id/images/:imageId", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const rawImageId = Array.isArray(req.params.imageId) ? req.params.imageId[0] : req.params.imageId;
   const params = DeleteProjectImageParams.safeParse({

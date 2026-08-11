@@ -1,19 +1,22 @@
-import { useListFeaturedProjects, useListMachinery } from "@workspace/api-client-react";
+import { useListFeaturedProjects, useListMachinery, useListServices } from "@workspace/api-client-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowRight, Settings2 } from "lucide-react";
-import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
+import { FALLBACK_MACHINERY, FALLBACK_SERVICES } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const MACHINERY_FALLBACK = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600";
+const SERVICES_FALLBACK = "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600";
 
 export default function Home() {
   const { data: featuredProjects = [], isLoading } = useListFeaturedProjects();
   const { data: machinery = [] } = useListMachinery({ published: true });
+  const { data: services = [] } = useListServices({ published: true });
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const hoverTimerRef = useRef<number | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const loadedImagesRef = useRef<Record<number, boolean>>({});
   const [, forceRender] = useState(0);
@@ -42,6 +45,16 @@ export default function Home() {
     setCurrentSlide(index);
   }, []);
 
+  const enterPanel = useCallback((index: number) => {
+    if (hoverTimerRef.current) window.clearTimeout(hoverTimerRef.current);
+    setHoveredIndex(index);
+  }, []);
+
+  const leavePanel = useCallback(() => {
+    if (hoverTimerRef.current) window.clearTimeout(hoverTimerRef.current);
+    hoverTimerRef.current = window.setTimeout(() => setHoveredIndex(null), 180);
+  }, []);
+
   // Preload all hero images in background, fade in as each loads
   useEffect(() => {
     displayProjects.forEach((project: any, i: number) => {
@@ -56,6 +69,7 @@ export default function Home() {
   }, [displayProjects]);
 
   const featuredMachinery = Array.isArray(machinery) && machinery.length > 0 ? machinery.slice(0, 4) : FALLBACK_MACHINERY.slice(0, 4);
+  const featuredServices = Array.isArray(services) && services.length > 0 ? services.slice(0, 3) : FALLBACK_SERVICES.slice(0, 3);
 
   return (
     <PageTransition>
@@ -160,8 +174,8 @@ export default function Home() {
                   className="relative h-full group cursor-pointer overflow-hidden border-r border-white/10 last:border-r-0"
                   animate={{ flex: flexValue }}
                   transition={{ duration: 0.75, ease: [0.32, 0.72, 0, 1] }}
-                  onMouseEnter={() => setHoveredIndex(i)}
-                  onMouseLeave={() => setHoveredIndex(null)}
+                  onMouseEnter={() => enterPanel(i)}
+                  onMouseLeave={leavePanel}
                 >
                   <Link href={`/projects/${project.slug}`} className="block w-full h-full relative">
                     {imageLoaded && (
@@ -200,7 +214,7 @@ export default function Home() {
         <section className="border-b border-[hsl(220,15%,18%)] px-6 py-12">
           <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
-              <p className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-2">{t.get("intro_eyebrow", "Zain Manzoor Co.")}</p>
+              <p className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-2">{t.get("intro_eyebrow", "Azhar Engineering")}</p>
               <h2 className="text-2xl md:text-4xl font-serif font-bold uppercase tracking-tight">{t.get("intro_title", "Architecture & Construction")}</h2>
             </div>
             <p className="text-sm text-[hsl(220,12%,55%)] max-w-md leading-relaxed">
@@ -252,6 +266,67 @@ export default function Home() {
                   </Link>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section className="py-24 px-6 bg-[hsl(220,18%,10%)]/70 border-b border-[hsl(220,15%,18%)] backdrop-blur-sm">
+          <div className="max-w-screen-2xl mx-auto">
+            <div className="flex justify-between items-end mb-14">
+              <div>
+                <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-3">
+                  {t.get("services_eyebrow", "What We Do")}
+                </motion.p>
+                <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-5xl font-serif font-bold uppercase">
+                  {t.get("services_title", "Our Services")}
+                </motion.h2>
+              </div>
+              <Link href="/services" className="text-xs tracking-[0.2em] uppercase text-[hsl(220,12%,55%)] hover:text-[hsl(38,72%,52%)] transition-colors hidden md:flex items-center gap-2">
+                {t.get("services_all_label", "View All Services")} <ArrowRight size={11} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredServices.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08, duration: 0.6 }}
+                >
+                  <Link href={`/services/${item.slug}`} className="block bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,18%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group">
+                    <div className="aspect-[16/10] overflow-hidden relative bg-[hsl(220,15%,16%)]">
+                      <img
+                        src={item.imageUrl || SERVICES_FALLBACK}
+                        alt={item.name}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                        onError={e => { (e.target as HTMLImageElement).src = SERVICES_FALLBACK; }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,9%)]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                    </div>
+                    <div className="p-5 flex flex-col min-h-[10rem]">
+                      <h3 className="font-serif font-bold text-base uppercase tracking-tight mb-2 group-hover:text-[hsl(38,72%,52%)] transition-colors">{item.name}</h3>
+                      {item.description && (
+                        <p className="text-xs text-[hsl(220,12%,50%)] leading-relaxed line-clamp-2 mb-4">{item.description}</p>
+                      )}
+                      <span className="mt-auto inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase font-semibold text-[hsl(38,72%,58%)]">
+                        {t.get("services_card_label", "Explore Capability")}
+                        <ArrowRight size={11} className="transition-transform group-hover:translate-x-1" />
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-10 flex justify-center md:hidden">
+              <Link href="/services" className="inline-flex items-center gap-3 border border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] px-6 py-3 text-xs tracking-[0.2em] uppercase hover:bg-[hsl(38,72%,52%)] hover:text-[hsl(220,18%,9%)] transition-all duration-200">
+                {t.get("services_all_label", "View All Services")} <ArrowRight size={13} />
+              </Link>
             </div>
           </div>
         </section>

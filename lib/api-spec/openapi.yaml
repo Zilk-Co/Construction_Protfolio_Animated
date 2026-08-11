@@ -493,6 +493,129 @@ paths:
         "204":
           description: Deleted
 
+  /services:
+    get:
+      operationId: listServices
+      tags: [services]
+      summary: List all services
+      parameters:
+        - name: published
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ServicesItem"
+    post:
+      operationId: createServices
+      tags: [services]
+      summary: Create a service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServicesInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesItem"
+
+  /services/{slug}:
+    get:
+      operationId: getServices
+      tags: [services]
+      summary: Get a service by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Service detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesItem"
+        "404":
+          description: Not found
+
+  /services/{id}/update:
+    put:
+      operationId: updateServices
+      tags: [services]
+      summary: Update a service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServicesInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesItem"
+
+  /services/{id}/publish:
+    patch:
+      operationId: toggleServicesPublish
+      tags: [services]
+      summary: Toggle service published status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PublishToggle"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesItem"
+
+  /services/{id}/delete:
+    delete:
+      operationId: deleteServices
+      tags: [services]
+      summary: Delete a service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
   /admin/password:
     put:
       operationId: changeAdminPassword
@@ -665,6 +788,8 @@ components:
           type: ["integer", "null"]
         categoryName:
           type: ["string", "null"]
+        serviceId:
+          type: ["integer", "null"]
         heroImage:
           type: ["string", "null"]
         year:
@@ -702,6 +827,8 @@ components:
           type: ["integer", "null"]
         categoryName:
           type: ["string", "null"]
+        serviceId:
+          type: ["integer", "null"]
         heroImage:
           type: ["string", "null"]
         year:
@@ -736,6 +863,8 @@ components:
         longDescription:
           type: string
         categoryId:
+          type: ["integer", "null"]
+        serviceId:
           type: ["integer", "null"]
         year:
           type: string
@@ -809,6 +938,58 @@ components:
         featured:
           type: boolean
 
+    ServicesItem:
+      type: object
+      required: [id, name, slug, published]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: ["string", "null"]
+        longDescription:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        galleryImages:
+          type: ["string", "null"]
+        published:
+          type: boolean
+        featured:
+          type: boolean
+        projectCount:
+          type: integer
+        projects:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectSummary"
+
+    ServicesInput:
+      type: object
+      required: [name, slug]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        slug:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        longDescription:
+          type: string
+        imageUrl:
+          type: string
+        galleryImages:
+          type: string
+        published:
+          type: boolean
+        featured:
+          type: boolean
+
     AdminPasswordChange:
       type: object
       required: [currentPassword, newPassword]
@@ -852,4 +1033,12 @@ components:
         hours:
           type: string
         heroSubtitle:
+          type: string
+        ceoName:
+          type: string
+        ceoTitle:
+          type: string
+        ceoQuote:
+          type: string
+        ceoImage:
           type: string

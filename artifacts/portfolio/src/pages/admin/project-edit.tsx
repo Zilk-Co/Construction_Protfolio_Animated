@@ -1,5 +1,5 @@
 import { AdminLayout } from "@/components/layout/AdminLayout";
-import { useGetProject, useUpdateProject, useListCategories, useListProjects, getGetProjectQueryKey } from "@workspace/api-client-react";
+import { useGetProject, useUpdateProject, useListCategories, useListServices, useListProjects, getGetProjectQueryKey } from "@workspace/api-client-react";
 import { Link, useLocation, useParams } from "wouter";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -19,6 +19,7 @@ export default function AdminProjectEdit() {
   const project = projects.find(p => p.id === projectId);
   
   const { data: categories = [] } = useListCategories();
+  const { data: services = [] } = useListServices();
   const updateProject = useUpdateProject();
 
   const [formData, setFormData] = useState({
@@ -32,8 +33,10 @@ export default function AdminProjectEdit() {
     status: "",
     longDescription: "",
     categoryId: "" as number | string,
+    serviceId: "" as number | string,
     year: "",
     featured: false,
+    published: true,
   });
 
   const [isSaved, setIsSaved] = useState(false);
@@ -63,8 +66,10 @@ export default function AdminProjectEdit() {
         status: fullProject.status || "",
         longDescription: fullProject.longDescription || "",
         categoryId: fullProject.categoryId || "",
+        serviceId: fullProject.serviceId || "",
         year: fullProject.year || "",
         featured: fullProject.featured ?? false,
+        published: fullProject.published ?? true,
       });
     }
   }, [fullProject]);
@@ -74,7 +79,7 @@ export default function AdminProjectEdit() {
     const val = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
     setFormData(prev => ({
       ...prev,
-      [name]: name === "categoryId" ? (value === "" ? null : parseInt(value, 10)) : val
+      [name]: name === "categoryId" || name === "serviceId" ? (value === "" ? null : parseInt(value, 10)) : val
     }));
     setIsSaved(false);
   };
@@ -85,7 +90,8 @@ export default function AdminProjectEdit() {
       id: projectId,
       data: {
         ...formData,
-        categoryId: formData.categoryId ? Number(formData.categoryId) : undefined
+        categoryId: formData.categoryId ? Number(formData.categoryId) : undefined,
+        serviceId: formData.serviceId ? Number(formData.serviceId) : undefined
       } as any
     }, {
       onSuccess: () => {
@@ -150,6 +156,14 @@ export default function AdminProjectEdit() {
               </div>
 
               <div>
+                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Service</label>
+                <select name="serviceId" value={formData.serviceId || ""} onChange={handleChange} className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:border-white transition-colors appearance-none rounded-none">
+                  <option value="">No Service</option>
+                  {services.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                </select>
+              </div>
+
+              <div>
                 <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Status</label>
                 <input name="status" value={formData.status} onChange={handleChange} className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:border-white transition-colors" />
               </div>
@@ -192,19 +206,34 @@ export default function AdminProjectEdit() {
             </div>
           </div>
 
-          {/* Featured toggle */}
-          <div className="pt-4 flex items-center gap-3">
-            <input
-              type="checkbox"
-              id="featured"
-              name="featured"
-              checked={formData.featured}
-              onChange={handleChange}
-              className="w-4 h-4 accent-[hsl(38,72%,52%)]"
-            />
-            <label htmlFor="featured" className="text-xs tracking-[0.15em] uppercase text-[hsl(220,12%,55%)]">
-              Show on home page (Selected Works)
-            </label>
+          {/* Published + Featured toggles */}
+          <div className="pt-4 flex items-center gap-8">
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="published"
+                name="published"
+                checked={formData.published}
+                onChange={handleChange}
+                className="w-4 h-4 accent-[hsl(38,72%,52%)]"
+              />
+              <label htmlFor="published" className="text-xs tracking-[0.15em] uppercase text-[hsl(220,12%,55%)]">
+                Visible on public site
+              </label>
+            </div>
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="featured"
+                name="featured"
+                checked={formData.featured}
+                onChange={handleChange}
+                className="w-4 h-4 accent-[hsl(38,72%,52%)]"
+              />
+              <label htmlFor="featured" className="text-xs tracking-[0.15em] uppercase text-[hsl(220,12%,55%)]">
+                Show on home page (Selected Works)
+              </label>
+            </div>
           </div>
 
           <div className="space-y-6 pt-6">

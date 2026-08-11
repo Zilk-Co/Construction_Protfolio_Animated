@@ -16,7 +16,10 @@ export function Navbar() {
 
   const links = [
     { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/safety", label: "Safety" },
     { href: "/projects", label: "Projects" },
+    { href: "/services", label: "Services" },
     { href: "/machinery", label: "Machinery" },
     { href: "/contact", label: "Contact" },
   ];
@@ -41,10 +44,10 @@ export function Navbar() {
             onClick={() => setIsMenuOpen(false)}
           >
             <span className="text-xl font-serif font-bold tracking-tight uppercase text-foreground leading-none" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.7)" }}>
-              Zain Manzoor
+              Azhar Engineering
             </span>
             <span className="text-[11px] tracking-[0.35em] uppercase text-[hsl(38,72%,68%)] font-sans font-semibold leading-tight mt-0.5" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.8)" }}>
-              Co.
+              Pvt. Ltd.
             </span>
           </Link>
 

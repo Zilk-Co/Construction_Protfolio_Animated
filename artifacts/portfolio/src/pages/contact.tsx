@@ -15,8 +15,8 @@ export default function Contact() {
   const { data: settings } = useGetSettings();
   const t = usePageContent("contact");
 
-  const phone = settings?.phone ?? "+92 21 3456 7890";
-  const email = settings?.email ?? "info@zainmanzoor.co";
+  const phone = settings?.phone ?? "+92 123 123 3875";
+  const email = settings?.email ?? "azhar@gmail.com";
   const address = settings?.address ?? "House 53, Street 12, Naval Colony, Sector 2, Baldia, Hub River Road, Karachi, Pakistan";
   const hours = settings?.hours ?? "Mon–Sat, 9:00 AM – 6:00 PM PKT";
   const subtitle = settings?.heroSubtitle ?? "We deliver landmark architectural and construction projects across the Middle East and South Asia. Tell us about your project and we will be in touch within 24 hours.";

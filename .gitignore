@@ -52,4 +52,8 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+.env.*
+!.env.example
 artifacts/portfolio/.env
+start-api.bat
+start-frontend.bat

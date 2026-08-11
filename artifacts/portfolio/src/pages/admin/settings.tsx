@@ -6,15 +6,22 @@ import { createPortal } from "react-dom";
 import { Save, RotateCcw, Lock, Eye, EyeOff } from "lucide-react";
 
 const FIELDS = [
-  { key: "phone", label: "Phone Number", placeholder: "+92 21 3456 7890", type: "text" },
-  { key: "email", label: "Email Address", placeholder: "info@zainmanzoor.co", type: "email" },
+  { key: "phone", label: "Phone Number", placeholder: "+92 123 123 3875", type: "text" },
+  { key: "email", label: "Email Address", placeholder: "azhar@gmail.com", type: "email" },
   { key: "address", label: "Office Address", placeholder: "House 53, Street 12, Naval Colony, Sector 2, Baldia, Hub River Road, Karachi, Pakistan", type: "textarea" },
   { key: "city", label: "City", placeholder: "Karachi", type: "text" },
   { key: "hours", label: "Business Hours", placeholder: "Mon–Sat, 9:00 AM – 6:00 PM PKT", type: "text" },
   { key: "heroSubtitle", label: "Contact Page Subtitle", placeholder: "We deliver landmark architectural projects...", type: "textarea" },
 ] as const;
 
-type SettingsKey = typeof FIELDS[number]["key"];
+const CEO_FIELDS = [
+  { key: "ceoName", label: "CEO Name", placeholder: "Azhar", type: "text" },
+  { key: "ceoTitle", label: "CEO Title", placeholder: "Chief Executive Officer", type: "text" },
+  { key: "ceoQuote", label: "CEO Quote", placeholder: "Construction is more than assembling materials...", type: "textarea" },
+  { key: "ceoImage", label: "CEO Image URL", placeholder: "https://... or base64 data URL", type: "text" },
+] as const;
+
+type SettingsKey = typeof FIELDS[number]["key"] | typeof CEO_FIELDS[number]["key"];
 
 export default function AdminSettings() {
   const { data: settings, isLoading } = useGetSettings();
@@ -37,6 +44,10 @@ export default function AdminSettings() {
         city: settings.city ?? "",
         hours: settings.hours ?? "",
         heroSubtitle: settings.heroSubtitle ?? "",
+        ceoName: settings.ceoName ?? "",
+        ceoTitle: settings.ceoTitle ?? "",
+        ceoQuote: settings.ceoQuote ?? "",
+        ceoImage: settings.ceoImage ?? "",
       });
     }
   }, [settings]);
@@ -92,6 +103,10 @@ export default function AdminSettings() {
         city: settings.city ?? "",
         hours: settings.hours ?? "",
         heroSubtitle: settings.heroSubtitle ?? "",
+        ceoName: settings.ceoName ?? "",
+        ceoTitle: settings.ceoTitle ?? "",
+        ceoQuote: settings.ceoQuote ?? "",
+        ceoImage: settings.ceoImage ?? "",
       });
     }
   };
@@ -153,6 +168,61 @@ export default function AdminSettings() {
                     )}
                   </motion.div>
                 ))}
+              </div>
+            </div>
+
+            {/* CEO / Leadership Section */}
+            <div className="pt-8 border-t border-[hsl(220,15%,18%)]">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-gray-500 mb-4">Leadership — About Page</p>
+              <div className="space-y-4">
+                {CEO_FIELDS.map(field => (
+                  <motion.div
+                    key={field.key}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">
+                      {field.label}
+                    </label>
+                    {field.type === "textarea" ? (
+                      <textarea
+                        value={form[field.key] ?? ""}
+                        onChange={e => handleChange(field.key, e.target.value)}
+                        placeholder={field.placeholder}
+                        rows={3}
+                        className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors resize-none placeholder:text-gray-600 text-white"
+                        style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
+                        onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
+                        onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                      />
+                    ) : (
+                      <input
+                        type={field.type}
+                        value={form[field.key] ?? ""}
+                        onChange={e => handleChange(field.key, e.target.value)}
+                        placeholder={field.placeholder}
+                        className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors placeholder:text-gray-600 text-white"
+                        style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
+                        onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
+                        onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                      />
+                    )}
+                  </motion.div>
+                ))}
+                {/* CEO Image Preview */}
+                {form.ceoImage && (
+                  <div className="mt-4">
+                    <p className="text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">Image Preview</p>
+                    <div className="w-32 h-32 border border-[hsl(220,15%,24%)] overflow-hidden">
+                      <img
+                        src={form.ceoImage}
+                        alt="CEO Preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

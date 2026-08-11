@@ -89,10 +89,10 @@ export default function AdminLogin() {
 
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <p style={{ fontSize: "20px", fontFamily: "serif", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", color: TEXT, margin: 0 }}>
-            Zain Manzoor
+            Azhar Engineering
           </p>
           <p style={{ fontSize: "11px", letterSpacing: "0.45em", textTransform: "uppercase", fontWeight: 600, color: GOLD, margin: "4px 0 0" }}>
-            Co.
+            Pvt. Ltd.
           </p>
           <div style={{ width: "32px", height: "1px", backgroundColor: GOLD_BTN, margin: "20px auto 0" }} />
           <p style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: TEXT_MID, margin: "16px 0 0" }}>
@@ -184,7 +184,7 @@ export default function AdminLogin() {
         </form>
 
         <p style={{ textAlign: "center", fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase", color: TEXT_DIM, marginTop: "32px" }}>
-          Zain Manzoor Co. — Admin Portal
+          Azhar Engineering (Pvt.) Ltd — Admin Portal
         </p>
       </motion.div>
     </div>

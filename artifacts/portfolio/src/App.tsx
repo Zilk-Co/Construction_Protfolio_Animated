@@ -7,10 +7,15 @@ import { Navbar } from "@/components/layout/Navbar";
 import { ParticleBackground } from "@/components/layout/ParticleBackground";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { AdminFloatingButton } from "@/components/layout/AdminFloatingButton";
+import { AiAssistant } from "@/components/layout/AiAssistant";
 import Home from "@/pages/home";
 import Projects from "@/pages/projects";
 import ProjectDetail from "@/pages/project-detail";
+import About from "@/pages/about";
+import Safety from "@/pages/safety";
 import Contact from "@/pages/contact";
+import ServicesPage from "@/pages/services";
+import ServiceDetail from "@/pages/services-detail";
 import MachineryPage from "@/pages/machinery";
 import MachineryDetail from "@/pages/machinery-detail";
 import AdminLogin from "@/pages/admin/login";
@@ -20,8 +25,11 @@ import AdminProjectEdit from "@/pages/admin/project-edit";
 import AdminProjectImages from "@/pages/admin/project-images";
 import AdminMachinery from "@/pages/admin/machinery";
 import AdminMachineryEdit from "@/pages/admin/machinery-edit";
+import AdminServices from "@/pages/admin/services";
+import AdminServicesEdit from "@/pages/admin/services-edit";
 import AdminSettings from "@/pages/admin/settings";
 import AdminPageContent from "@/pages/admin/page-content";
+import AdminDocuments from "@/pages/admin/documents";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +44,7 @@ function Router() {
       {!isAdmin && <Navbar />}
       <CustomCursor />
       <AdminFloatingButton />
+      <AiAssistant />
       <Switch>
         {/* Public routes */}
         <Route path="/" component={Home} />
@@ -50,6 +59,18 @@ function Router() {
         </Route>
         <Route path="/machinery/:slug">
           <div className="pt-24"><MachineryDetail /></div>
+        </Route>
+        <Route path="/services">
+          <div className="pt-24"><ServicesPage /></div>
+        </Route>
+        <Route path="/services/:slug">
+          <div className="pt-24"><ServiceDetail /></div>
+        </Route>
+        <Route path="/about">
+          <div className="pt-24"><About /></div>
+        </Route>
+        <Route path="/safety">
+          <div className="pt-24"><Safety /></div>
         </Route>
         <Route path="/contact">
           <div className="pt-24"><Contact /></div>
@@ -67,8 +88,12 @@ function Router() {
         <Route path="/admin/machinery" component={AdminMachinery} />
         <Route path="/admin/machinery/new" component={AdminMachineryEdit} />
         <Route path="/admin/machinery/:id/edit" component={AdminMachineryEdit} />
+        <Route path="/admin/services" component={AdminServices} />
+        <Route path="/admin/services/new" component={AdminServicesEdit} />
+        <Route path="/admin/services/:id/edit" component={AdminServicesEdit} />
         <Route path="/admin/settings" component={AdminSettings} />
         <Route path="/admin/page-content" component={AdminPageContent} />
+        <Route path="/admin/documents" component={AdminDocuments} />
 
         <Route component={NotFound} />
       </Switch>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { useGetAdminMe, useAdminLogout } from "@workspace/api-client-react";
-import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Wrench } from "lucide-react";
+import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Wrench, Layers, FileText } from "lucide-react";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -45,10 +45,22 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       ],
     },
     {
+      label: "Services",
+      items: [
+        { href: "/admin/services", label: "All Services", icon: Layers },
+      ],
+    },
+    {
       label: "Content",
       items: [
         { href: "/admin/page-content", label: "Page Text", icon: Type },
         { href: "/admin/settings", label: "Site Settings", icon: SlidersHorizontal },
+      ],
+    },
+    {
+      label: "About",
+      items: [
+        { href: "/admin/documents", label: "Documents", icon: FileText },
       ],
     },
   ];
@@ -63,10 +75,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         {/* Brand */}
         <div className="px-5 py-6 border-b border-[hsl(220,15%,16%)]">
           <p className="text-sm font-serif font-bold uppercase tracking-tight text-white leading-none">
-            Zain Manzoor
+            Azhar Engineering
           </p>
           <p className="text-[10px] tracking-[0.35em] uppercase mt-1 font-semibold" style={{ color: "hsl(38,85%,62%)" }}>
-            Co. — Admin
+            Admin
           </p>
         </div>
 

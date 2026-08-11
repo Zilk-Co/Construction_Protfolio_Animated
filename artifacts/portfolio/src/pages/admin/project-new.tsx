@@ -1,18 +1,20 @@
 import { AdminLayout } from "@/components/layout/AdminLayout";
-import { useCreateProject } from "@workspace/api-client-react";
+import { useCreateProject, useListServices } from "@workspace/api-client-react";
 import { Link, useLocation } from "wouter";
 import { useState } from "react";
 
 export default function AdminProjectNew() {
   const [, setLocation] = useLocation();
   const createProject = useCreateProject();
-  
+  const { data: services = [] } = useListServices();
+
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
     location: "",
     status: "Concept",
     sector: "",
+    serviceId: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -20,6 +22,7 @@ export default function AdminProjectNew() {
     createProject.mutate({
       data: {
         ...formData,
+        serviceId: formData.serviceId ? parseInt(formData.serviceId, 10) : null,
         published: false
       }
     }, {
@@ -29,7 +32,7 @@ export default function AdminProjectNew() {
     });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -111,6 +114,21 @@ export default function AdminProjectNew() {
                 className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
                 placeholder="Cultural, Commercial, Civic"
               />
+            </div>
+
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Service Used *</label>
+              <select
+                name="serviceId"
+                value={formData.serviceId}
+                onChange={handleChange}
+                className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+              >
+                <option value="">Select a service</option>
+                {services.map(s => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
             </div>
           </div>
 

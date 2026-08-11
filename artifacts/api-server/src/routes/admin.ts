@@ -1,38 +1,49 @@
 import { Router, type IRouter } from "express";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { AdminLoginBody, ChangeAdminPasswordBody } from "@workspace/api-zod";
 import { logger } from "../lib/logger";
+import {
+  adminSession,
+  isAdminSessionValid,
+  sessionCookieOptions,
+  clientIp,
+} from "../middlewares/auth";
 
 const router: IRouter = Router();
 
 const ADMIN_USERNAME = (process.env.ADMIN_USERNAME ?? "admin").trim();
-let ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD ?? "admin123").trim();
+let ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD ?? "admin123098").trim();
 
 const ONE_HOUR_MS = 60 * 60 * 1000;
+const MIN_PASSWORD_LENGTH = 8;
 
-// Rate limiting: track failed login attempts per IP
+// Brute-force lockout per IP with a TTL cap so the map can't grow forever.
 const loginAttempts = new Map<string, { attempts: number; lockedUntil: number | null }>();
 
+function pruneLoginAttempts(now: number): void {
+  if (loginAttempts.size < 10_000) return;
+  for (const [ip, rec] of loginAttempts) {
+    if (!rec.lockedUntil && rec.attempts < 10) loginAttempts.delete(ip);
+    else if (rec.lockedUntil && rec.lockedUntil < now) loginAttempts.delete(ip);
+  }
+}
+
 function getLockDuration(attempts: number): number {
-  if (attempts >= 20) return 5 * 60 * 1000;  // 5 min after 20+ attempts
-  if (attempts >= 10) return 60 * 1000;        // 1 min after 10 attempts
+  if (attempts >= 20) return 5 * 60 * 1000; // 5 min after 20+ attempts
+  if (attempts >= 10) return 60 * 1000;     // 1 min after 10 attempts
   return 0;
 }
 
-type AdminSession = Record<string, unknown> & {
-  adminAuthenticated?: boolean;
-  adminLoginAt?: number;
-};
-
-function isSessionValid(session: AdminSession): boolean {
-  if (!session.adminAuthenticated) return false;
-  if (!session.adminLoginAt) return false;
-  if (Date.now() - session.adminLoginAt > ONE_HOUR_MS) return false;
-  return true;
+function safeEqual(a: string, b: string): boolean {
+  const ha = createHash("sha256").update(a).digest();
+  const hb = createHash("sha256").update(b).digest();
+  return timingSafeEqual(ha, hb);
 }
 
 router.post("/admin/login", async (req, res): Promise<void> => {
-  const ip = (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() ?? req.socket?.remoteAddress ?? "unknown";
+  const ip = clientIp(req);
   const now = Date.now();
+  pruneLoginAttempts(now);
   const record = loginAttempts.get(ip) ?? { attempts: 0, lockedUntil: null };
 
   if (record.lockedUntil && now < record.lockedUntil) {
@@ -47,8 +58,10 @@ router.post("/admin/login", async (req, res): Promise<void> => {
     return;
   }
 
-  if (parsed.data.username !== ADMIN_USERNAME || parsed.data.password !== ADMIN_PASSWORD) {
-    logger.warn({ ip, attempts: record.attempts + 1, expectedUser: ADMIN_USERNAME, gotUser: parsed.data.username, passwordLen: parsed.data.password.length }, "admin login failed");
+  const userMatches = safeEqual(parsed.data.username, ADMIN_USERNAME);
+  const passMatches = safeEqual(parsed.data.password, ADMIN_PASSWORD);
+  if (!userMatches || !passMatches) {
+    logger.warn({ ip, attempts: record.attempts + 1 }, "admin login failed");
 
     const newAttempts = record.attempts + 1;
     const lockDuration = getLockDuration(newAttempts);
@@ -61,25 +74,34 @@ router.post("/admin/login", async (req, res): Promise<void> => {
   }
 
   loginAttempts.delete(ip);
-  const session = req.session as unknown as AdminSession;
-  session.adminAuthenticated = true;
-  session.adminLoginAt = Date.now();
-  // Session cookie: dies on browser close. 1-hour server-side expiry enforced by isSessionValid().
-  if (req.session.cookie) {
-    req.session.cookie.maxAge = undefined;
-  }
-  req.session.save((err) => {
-    if (err) {
-      logger.error({ err }, "admin session save failed");
-      res.status(500).json({ error: "Session save failed" });
+
+  // Session fixation defense: mint a fresh session id on login.
+  req.session.regenerate((regErr) => {
+    if (regErr) {
+      logger.error({ err: regErr }, "admin session regenerate failed");
+      res.status(500).json({ error: "Session start failed" });
       return;
     }
-    res.json({ authenticated: true, expiresInMs: ONE_HOUR_MS });
+    const session = adminSession(req);
+    session.adminAuthenticated = true;
+    session.adminLoginAt = Date.now();
+    // Session cookie: dies on browser close. 1-hour server-side expiry enforced by isAdminSessionValid().
+    if (req.session.cookie) {
+      req.session.cookie.maxAge = undefined;
+    }
+    req.session.save((err) => {
+      if (err) {
+        logger.error({ err }, "admin session save failed");
+        res.status(500).json({ error: "Session save failed" });
+        return;
+      }
+      res.json({ authenticated: true, expiresInMs: ONE_HOUR_MS });
+    });
   });
 });
 
 router.post("/admin/logout", async (req, res): Promise<void> => {
-  const session = req.session as unknown as AdminSession;
+  const session = adminSession(req);
   session.adminAuthenticated = false;
   session.adminLoginAt = undefined;
   req.session.destroy((err) => {
@@ -88,14 +110,14 @@ router.post("/admin/logout", async (req, res): Promise<void> => {
       res.status(500).json({ error: "Logout failed" });
       return;
     }
-    res.clearCookie("connect.sid");
+    res.clearCookie("connect.sid", sessionCookieOptions);
     res.json({ authenticated: false });
   });
 });
 
 router.get("/admin/me", async (req, res): Promise<void> => {
-  const session = req.session as unknown as AdminSession;
-  if (!isSessionValid(session)) {
+  const session = adminSession(req);
+  if (!isAdminSessionValid(req)) {
     if (session.adminAuthenticated) {
       session.adminAuthenticated = false;
       session.adminLoginAt = undefined;
@@ -108,8 +130,7 @@ router.get("/admin/me", async (req, res): Promise<void> => {
 });
 
 router.put("/admin/password", async (req, res): Promise<void> => {
-  const session = req.session as unknown as AdminSession;
-  if (!isSessionValid(session)) {
+  if (!isAdminSessionValid(req)) {
     res.status(401).json({ error: "Not authenticated" });
     return;
   }
@@ -118,11 +139,16 @@ router.put("/admin/password", async (req, res): Promise<void> => {
     res.status(400).json({ error: parsed.error.message });
     return;
   }
-  if (parsed.data.currentPassword !== ADMIN_PASSWORD) {
+  const { currentPassword, newPassword } = parsed.data;
+  if (newPassword.length < MIN_PASSWORD_LENGTH) {
+    res.status(400).json({ error: `New password must be at least ${MIN_PASSWORD_LENGTH} characters.` });
+    return;
+  }
+  if (!safeEqual(currentPassword, ADMIN_PASSWORD)) {
     res.status(401).json({ error: "Current password is incorrect" });
     return;
   }
-  ADMIN_PASSWORD = parsed.data.newPassword;
+  ADMIN_PASSWORD = newPassword;
   res.json({ success: true });
 });
 

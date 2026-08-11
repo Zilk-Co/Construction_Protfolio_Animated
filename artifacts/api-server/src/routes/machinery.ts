@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { eq } from "drizzle-orm";
 import { db, machineryTable } from "@workspace/db";
+import { requireAdmin, isAdminSessionValid } from "../middlewares/auth";
 import {
   ListMachineryQueryParams,
   CreateMachineryBody,
@@ -20,10 +21,14 @@ router.get("/machinery", async (req, res): Promise<void> => {
     res.status(400).json({ error: qp.error.message });
     return;
   }
+  let published = qp.data.published;
+  if (published === undefined && !isAdminSessionValid(req)) {
+    published = true;
+  }
   const rows = await db
     .select()
     .from(machineryTable)
-    .where(qp.data.published !== undefined ? eq(machineryTable.published, qp.data.published) : undefined)
+    .where(published !== undefined ? eq(machineryTable.published, published) : undefined)
     .orderBy(machineryTable.name);
 
   res.json(rows.map(r => ({
@@ -42,7 +47,7 @@ router.get("/machinery", async (req, res): Promise<void> => {
   })));
 });
 
-router.post("/machinery", async (req, res): Promise<void> => {
+router.post("/machinery", requireAdmin, async (req, res): Promise<void> => {
   const parsed = CreateMachineryBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -67,7 +72,7 @@ router.get("/machinery/:slug", async (req, res): Promise<void> => {
   res.json(item);
 });
 
-router.put("/machinery/:id/update", async (req, res): Promise<void> => {
+router.put("/machinery/:id/update", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = UpdateMachineryParams.safeParse({ id: parseInt(rawId, 10) });
   if (!params.success) {
@@ -87,7 +92,7 @@ router.put("/machinery/:id/update", async (req, res): Promise<void> => {
   res.json(item);
 });
 
-router.patch("/machinery/:id/publish", async (req, res): Promise<void> => {
+router.patch("/machinery/:id/publish", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = ToggleMachineryPublishParams.safeParse({ id: parseInt(rawId, 10) });
   if (!params.success) {
@@ -107,7 +112,7 @@ router.patch("/machinery/:id/publish", async (req, res): Promise<void> => {
   res.json(item);
 });
 
-router.delete("/machinery/:id/delete", async (req, res): Promise<void> => {
+router.delete("/machinery/:id/delete", requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = DeleteMachineryParams.safeParse({ id: parseInt(rawId, 10) });
   if (!params.success) {

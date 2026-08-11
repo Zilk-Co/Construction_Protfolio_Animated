@@ -1,52 +1,61 @@
 # Deployment Guide
 
-GitHub: https://github.com/mustafazoro1/new_animated_zain
+GitHub: https://github.com/Zilk-Co/Construction_Protfolio_Animated
 
 ## Architecture
 - **Frontend** (Vite + React) → **Vercel** — root: `artifacts/portfolio`
-- **Backend**  (Express + Drizzle) → **Railway** — root: `artifacts/api-server`
+- **Backend**  (Express + Drizzle) → **Render** — root: `artifacts/api-server`
 - **Database** → **Neon PostgreSQL** (already provisioned)
 
 ---
 
 ## 1. Database (Neon) — shared
 
-Set these env vars in **both** Vercel and Railway projects:
+Set these env vars in **both** Vercel and Render projects (fill in your real
+Neon connection string — never commit it; copy the format from `.env.example`):
 
-| Variable        | Value                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`  | `postgresql://neondb_owner:***REMOVED***@***REMOVED***/neondb?sslmode=require&channel_binding=require` |
+| Variable        | Value                 |
+| --------------- | --------------------- |
+| `DATABASE_URL`  | `postgresql://user:password@host/db?sslmode=require` |
 
-Push the schema once (locally):
+Push the schema once (locally, from the repo root):
 ```bash
-$env:DATABASE_URL="<paste-above>"
+$env:DATABASE_URL="<your-neon-connection-string>"
 pnpm --filter @workspace/db run push
 ```
 
+Local `.env` (gitignored) is auto-loaded by the API server via
+`artifacts/api-server/src/env.ts`, so local start scripts don't need to
+hardcode credentials.
+
 ---
 
-## 2. Backend → Railway
+## 2. Backend → Render
 
-1. Go to https://railway.com/new → **Deploy from GitHub repo** → pick `mustafazoro1/new_animated_zain`.
-2. **Settings → Service:**
-   - **Root Directory:** leave empty (monorepo root)
-   - **Build Command:** `pnpm install --frozen-lockfile && pnpm --filter @workspace/api-server run build`
-   - **Start Command:** `cd artifacts/api-server && node --enable-source-maps ./dist/index.mjs`
-3. **Variables:**
-   - `PORT` = `5000`  *(Railway injects `$PORT` automatically; the app reads it)*
-   - `DATABASE_URL` = *(see table above)*
-   - `SESSION_SECRET` = *(any long random string)*
-   - `ADMIN_USERNAME` = `admin`
-   - `ADMIN_PASSWORD` = *(a strong password — no spaces; e.g. `admin123`)*
+Blueprint: `render.yaml` (one-click render.com deploy; also documented below).
+
+1. Go to https://render.com → **New → Web Service → connect GitHub repo** → pick `Zilk-Co/Construction_Protfolio_Animated`.
+2. **Settings:**
+   - **Build Command:** `pnpm install --frozen-lockfile`
+   - **Start Command:** `cd artifacts/api-server && npx tsx src/index.ts`
+   - **Healthcheck:** `/api/healthz`
+3. **Environment Variables:**
    - `NODE_ENV` = `production` *(required for secure admin session cookies)*
-4. **Healthcheck:** `/api/healthz` (already configured in `railway.json`).
-5. After deploy, copy the public URL, e.g. `https://api-server-production-xxxx.up.railway.app`.
+   - `DATABASE_URL` = *(see section 1)*
+   - `SESSION_SECRET` = *(long random string — the server refuses to boot in production without it)*
+   - `ADMIN_USERNAME` = `admin`
+   - `ADMIN_PASSWORD` = *(a strong password, min 8 chars, no spaces — the server refuses to boot with a weak one; Render's `generateValue` can auto-create one, or set it explicitly, e.g. `admin123098`)*
+4. After deploy, copy the public URL, e.g. `https://construction-portfolio-api.onrender.com`.
+
+> Note: `render.yaml` uses `generateValue: true` for `ADMIN_PASSWORD`, so on the
+> first deploy Render picks a random one. To use a fixed password, edit it in the
+> Render dashboard **Environment** tab — the dashboard value wins over the blueprint.
 
 ---
 
 ## 3. Frontend → Vercel
 
-1. Go to https://vercel.com/new → **Import** `mustafazoro1/new_animated_zain`.
+1. Go to https://vercel.com/new → **Import** `Zilk-Co/Construction_Protfolio_Animated`.
 2. **Project Settings:**
    - **Root Directory:** `artifacts/portfolio`
    - **Framework Preset:** Vite
@@ -54,40 +63,48 @@ pnpm --filter @workspace/db run push
    - **Output Directory:** `dist`
    - **Install Command:** `pnpm install --frozen-lockfile`
 3. **Environment Variables:**
-   - `VITE_API_BASE_URL` = *(your Railway API URL from step 2, **no trailing slash**, e.g. `https://api-server-production-xxxx.up.railway.app`)*
-   - The build script uses this value to proxy `/api/*` on Vercel to Railway (same-origin), so admin cookies work without cross-site issues.
+   - `VITE_API_BASE_URL` = *(your Render API URL from step 2, **no trailing slash**, e.g. `https://construction-portfolio-api.onrender.com`)*
+   - The build script uses this value to proxy `/api/*` on Vercel to Render (same-origin), so admin cookies work without cross-site issues.
 4. Deploy. After changing `VITE_API_BASE_URL`, **redeploy** — Vite bakes env vars at build time.
 
 ---
 
 ## 4. CORS / Cookies
 
-The API uses `cors({ origin: true, credentials: true })`, so any Vercel domain is allowed automatically.
+The API uses a strict CORS allowlist (`ALLOWED_ORIGINS` plus Vercel / Railway /
+Render preview domains and localhost). The frontend is deployed behind Vercel
+rewrites that proxy `/api/*` to Render (`vercel.json` + `prepare-vercel.mjs`),
+so all requests are effectively same-origin.
 
-For the admin session cookie to work cross-site, the browser must accept `SameSite=None; Secure` cookies. If you see the admin login succeed but `/api/admin/me` returning 401, add a cookie config that sets `sameSite: "none"` when `NODE_ENV === "production"` (already true via `secure: true` in production). Update `artifacts/api-server/src/app.ts` if needed:
-
-```ts
-cookie: {
-  secure: true,
-  sameSite: "none",   // <-- add this for production
-  httpOnly: true,
-  maxAge: 1000 * 60 * 60 * 24 * 7,
-},
-```
+The admin session cookie is `HttpOnly; SameSite=Lax; Secure` in production
+(`sessionCookieOptions` in `artifacts/api-server/src/middlewares/auth.ts`).
+Because `/api` is proxied same-origin, the cookie flows correctly without
+needing `SameSite=None`.
 
 ---
 
 ## 5. Local dev (this machine)
 
-```bash
-$env:DATABASE_URL="postgresql://neondb_owner:***REMOVED***@***REMOVED***/neondb?sslmode=require&channel_binding=require"
-$env:PORT="5000"; $env:SESSION_SECRET="dev"; $env:ADMIN_USERNAME="admin"; $env:ADMIN_PASSWORD="admin123"; $env:NODE_ENV="development"
-pnpm --filter @workspace/api-server run dev   # terminal 1
+Create a `.env` at the repo root (copy `.env.example`, fill real values). The
+API server loads it automatically, so no env vars need to be exported by hand:
 
-$env:PORT="5173"; $env:BASE_PATH="/"
-pnpm --filter @workspace/portfolio run dev   # terminal 2
+```bash
+# terminal 1 — backend (reads root .env)
+pnpm --filter @workspace/api-server run dev
+
+# terminal 2 — frontend (Vite proxies /api -> http://localhost:5000)
+pnpm --filter @workspace/portfolio run dev
 ```
 
-- Frontend: http://localhost:5173  (Vite proxies `/api` → `http://localhost:5000`)
-- Admin:    http://localhost:5173/admin-panel  — login `admin / admin123`
+- Frontend: http://localhost:5173
+- Admin:    http://localhost:5173/admin-panel
 - Health:   http://localhost:5000/api/healthz
+
+### Rebranding existing DB content (one-off)
+
+If a database still contains the old brand string, run the idempotent migration:
+
+```bash
+$env:DATABASE_URL="<your-neon-connection-string>"
+pnpm --filter @workspace/scripts run db:rebrand
+```
