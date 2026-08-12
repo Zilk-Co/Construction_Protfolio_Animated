@@ -17,7 +17,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <div className="mb-4">
               <img
-                src="/logo.jpg"
+                src="/logo.png"
                 alt="Azhar Engineering logo"
                 className="h-12 w-auto object-contain mb-3"
               />
