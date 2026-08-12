@@ -8,7 +8,7 @@ import { FileText, Download } from "lucide-react";
 
 const DEFAULT_HERO_BG = "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=80";
 const DEFAULT_JOURNEY_BG = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80";
-const DEFAULT_CEO_IMAGE = "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80";
+const DEFAULT_CEO_IMAGE = "/ceo.jpg";
 
 const VALUES = [1, 2, 3, 4];
 
@@ -20,7 +20,7 @@ export default function About() {
   const heroBg = t.get("hero_bg", DEFAULT_HERO_BG);
   const journeyBg = t.get("journey_bg", DEFAULT_JOURNEY_BG);
   const ceoImage = (settings?.ceoImage ?? "").trim() || DEFAULT_CEO_IMAGE;
-  const ceoName = settings?.ceoName ?? "Muneer Ahmed";
+  const ceoName = settings?.ceoName ?? "Azhar";
   const ceoTitle = settings?.ceoTitle ?? "Chief Executive Officer";
   const ceoQuote = settings?.ceoQuote ?? "Construction is more than assembling materials; it is the physical manifestation of vision, ambition, and progress. At Azhar Engineering (Pvt.) Ltd, we take immense pride in our role as nation-builders, delivering projects that serve as catalysts for economic and social development.";
 

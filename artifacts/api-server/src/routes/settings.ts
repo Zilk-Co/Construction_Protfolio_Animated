@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   ceoName: "Azhar",
   ceoTitle: "Chief Executive Officer",
   ceoQuote: "Construction is more than assembling materials; it is the physical manifestation of vision, ambition, and progress. At Azhar Engineering (Pvt.) Ltd, we take immense pride in our role as nation-builders, delivering projects that serve as catalysts for economic and social development.",
-  ceoImage: "",
+  ceoImage: "/ceo.jpg",
   mapEmbedUrl: MAP_EMBED_DEFAULT,
 };
 

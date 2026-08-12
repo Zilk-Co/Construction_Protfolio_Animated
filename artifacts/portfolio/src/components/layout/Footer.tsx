@@ -16,6 +16,11 @@ export function Footer() {
           {/* Brand column */}
           <div className="md:col-span-1">
             <div className="mb-4">
+              <img
+                src="/logo.jpg"
+                alt="Azhar Engineering logo"
+                className="h-12 w-auto object-contain mb-3"
+              />
               <p className="text-xl font-serif font-bold tracking-tight uppercase text-foreground leading-none">
                 Azhar Engineering
               </p>

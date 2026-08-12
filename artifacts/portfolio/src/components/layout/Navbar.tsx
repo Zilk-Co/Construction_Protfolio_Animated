@@ -40,14 +40,21 @@ export function Navbar() {
           {/* Brand */}
           <Link
             href="/"
-            className="flex flex-col relative z-50"
+            className="flex items-center gap-3 relative z-50"
             onClick={() => setIsMenuOpen(false)}
           >
-            <span className="text-xl font-serif font-bold tracking-tight uppercase text-foreground leading-none" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.7)" }}>
-              Azhar Engineering
-            </span>
-            <span className="text-[11px] tracking-[0.35em] uppercase text-[hsl(38,72%,68%)] font-sans font-semibold leading-tight mt-0.5" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.8)" }}>
-              Pvt. Ltd.
+            <img
+              src="/logo.jpg"
+              alt="Azhar Engineering logo"
+              className="h-10 w-auto object-contain"
+            />
+            <span className="flex flex-col leading-none">
+              <span className="text-xl font-serif font-bold tracking-tight uppercase text-foreground leading-none" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.7)" }}>
+                Azhar Engineering
+              </span>
+              <span className="text-[11px] tracking-[0.35em] uppercase text-[hsl(38,72%,68%)] font-sans font-semibold leading-tight mt-0.5" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.8)" }}>
+                Pvt. Ltd.
+              </span>
             </span>
           </Link>
 

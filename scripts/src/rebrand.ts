@@ -45,7 +45,7 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   ceoTitle: "Chief Executive Officer",
   ceoQuote:
     "Construction is more than assembling materials; it is the physical manifestation of vision, ambition, and progress. At Azhar Engineering (Pvt.) Ltd, we take immense pride in our role as nation-builders, delivering projects that serve as catalysts for economic and social development.",
-  ceoImage: "",
+  ceoImage: "/ceo.jpg",
   mapEmbedUrl:
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14481.167963498!2d66.9940!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f7a8c4c2f8f%3A0x0!2sNaval+Colony%2C+Baldia%2C+Karachi!5e0!3m2!1sen!2s!4v1600000000000!5m2!1sen!2s",
 };
