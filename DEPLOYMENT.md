@@ -64,7 +64,7 @@ Blueprint: `render.yaml` (one-click render.com deploy; also documented below).
    - **Install Command:** `pnpm install --frozen-lockfile`
 3. **Environment Variables:**
    - `VITE_API_BASE_URL` = *(your Render API URL from step 2, **no trailing slash**, e.g. `https://construction-portfolio-api.onrender.com`)*
-   - The build script uses this value to proxy `/api/*` on Vercel to Render (same-origin), so admin cookies work without cross-site issues.
+   - The build script uses this value to proxy `/api/*` on Vercel to Render (same-origin), so admin cookies work without cross-site issues. If it's unset, the build falls back to the default `https://construction-portfolio-api.onrender.com`.
 4. Deploy. After changing `VITE_API_BASE_URL`, **redeploy** — Vite bakes env vars at build time.
 
 ---
