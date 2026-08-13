@@ -176,6 +176,95 @@ export default function About() {
           </div>
         </section>
 
+        {/* ═══════ MISSION & VISION ═══════ */}
+        <section className="py-24 px-6">
+          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-10">
+              <p className="text-[10px] tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(38,85%,62%)" }}>{t.get("mission_eyebrow", "Our Mission")}</p>
+              <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
+              <h3 className="text-2xl md:text-3xl font-serif font-bold uppercase tracking-tight mb-6 text-white">
+                {t.get("mission_title", "Delivering Excellence")}
+              </h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                {t.get("mission_body", "To deliver innovative, sustainable, and high-quality construction and engineering solutions that exceed client expectations while contributing to the development of Pakistan's infrastructure.")}
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-10">
+              <p className="text-[10px] tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(38,85%,62%)" }}>{t.get("vision_eyebrow", "Our Vision")}</p>
+              <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
+              <h3 className="text-2xl md:text-3xl font-serif font-bold uppercase tracking-tight mb-6 text-white">
+                {t.get("vision_title", "Shaping Tomorrow")}
+              </h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                {t.get("vision_body", "To be recognized as the leading construction and engineering firm in the region, known for our commitment to quality, safety, and sustainable practices that shape communities for generations.")}
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ═══════ STATISTICS ═══════ */}
+        <section className="py-24 px-6 bg-[hsl(220,18%,8%)]">
+          <div className="max-w-screen-2xl mx-auto">
+            <div className="text-center mb-16">
+              <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-[10px] tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(38,85%,62%)" }}>
+                {t.get("stats_eyebrow", "By The Numbers")}
+              </motion.p>
+              <div className="w-10 h-px mx-auto mb-8" style={{ backgroundColor: "hsl(38,72%,52%)" }} />
+              <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-5xl font-serif font-bold tracking-tight uppercase mb-4 text-white">
+                {t.get("stats_title", "Company Statistics")}
+              </motion.h2>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[
+                { key: "years", value: "20+", label: "Years Experience" },
+                { key: "projects", value: "100+", label: "Projects Completed" },
+                { key: "team", value: "50+", label: "Expert Team Members" },
+                { key: "safety", value: "100%", label: "Safety Record" },
+              ].map((stat, i) => (
+                <motion.div key={stat.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-8 text-center">
+                  <p className="text-4xl md:text-5xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>{t.get(`stats_${stat.key}_value`, stat.value)}</p>
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-3">{t.get(`stats_${stat.key}_label`, stat.label)}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════ STRENGTHS ═══════ */}
+        <section className="py-24 px-6">
+          <div className="max-w-screen-2xl mx-auto">
+            <div className="text-center mb-16">
+              <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-[10px] tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(38,85%,62%)" }}>
+                {t.get("strengths_eyebrow", "Why Choose Us")}
+              </motion.p>
+              <div className="w-10 h-px mx-auto mb-8" style={{ backgroundColor: "hsl(38,72%,52%)" }} />
+              <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-5xl font-serif font-bold tracking-tight uppercase mb-4 text-white">
+                {t.get("strengths_title", "Our Strengths")}
+              </motion.h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { key: "expertise", num: "01", title: "Technical Expertise", desc: "Decades of experience in complex construction and engineering projects across multiple sectors." },
+                { key: "quality", num: "02", title: "Quality Assurance", desc: "Rigorous quality control processes ensuring every project meets the highest international standards." },
+                { key: "safety_str", num: "03", title: "Safety First", desc: "Zero-compromise approach to workplace safety with comprehensive HSE management systems." },
+                { key: "sustainability", num: "04", title: "Sustainability", desc: "Commitment to environmentally responsible construction practices and sustainable development." },
+                { key: "timely", num: "05", title: "Timely Delivery", desc: "Proven track record of completing projects on schedule without compromising quality." },
+                { key: "client", num: "06", title: "Client Focus", desc: "Deep understanding of client needs with personalized service and transparent communication." },
+              ].map((item, i) => (
+                <motion.div key={item.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-8 hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
+                  <span className="text-3xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>{item.num}</span>
+                  <h3 className="text-lg font-serif font-bold uppercase tracking-tight mt-4 mb-3 text-white">
+                    {t.get(`strengths_${item.key}_title`, item.title)}
+                  </h3>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    {t.get(`strengths_${item.key}_desc`, item.desc)}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ═══════ CORE VALUES ═══════ */}
         <section className="py-24 px-6 bg-[hsl(220,18%,8%)]">
           <div className="max-w-screen-2xl mx-auto">

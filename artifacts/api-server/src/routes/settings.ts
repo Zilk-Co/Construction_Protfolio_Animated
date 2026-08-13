@@ -20,6 +20,13 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   ceoQuote: "Construction is more than assembling materials; it is the physical manifestation of vision, ambition, and progress. At Azhar Engineering (Pvt.) Ltd, we take immense pride in our role as nation-builders, delivering projects that serve as catalysts for economic and social development.",
   ceoImage: "/ceo.jpg",
   mapEmbedUrl: MAP_EMBED_DEFAULT,
+  companyName: "Azhar Engineering",
+  copyright: "",
+  facebook: "",
+  linkedin: "",
+  instagram: "",
+  twitter: "",
+  youtube: "",
 };
 
 const MAX_VALUE_LENGTH = 20_000;

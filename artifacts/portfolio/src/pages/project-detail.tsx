@@ -43,7 +43,7 @@ export default function ProjectDetail() {
 
   const metadata = [
     { label: "Location", value: project.location },
-    { label: "Client", value: project.client },
+    { label: "Client", value: project.client, link: project.client ? `/clients` : undefined },
     { label: "Sector", value: project.sector },
     { label: "Size", value: project.size },
     { label: "Scope", value: project.scope },
@@ -120,9 +120,15 @@ export default function ProjectDetail() {
                       </span>
                     </div>
                     <div className="w-3/5 px-4 py-4 flex items-center">
-                      <span className="text-sm font-serif font-medium text-foreground">
-                        {item.value}
-                      </span>
+                      {'link' in item && item.link ? (
+                        <Link href={item.link} className="text-sm font-serif font-medium text-[hsl(38,72%,52%)] hover:text-[hsl(38,72%,62%)] transition-colors underline underline-offset-2 decoration-[hsl(38,72%,52%/30%)]">
+                          {item.value}
+                        </Link>
+                      ) : (
+                        <span className="text-sm font-serif font-medium text-foreground">
+                          {item.value}
+                        </span>
+                      )}
                     </div>
                   </div>
                 ))}

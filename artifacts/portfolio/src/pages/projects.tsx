@@ -13,8 +13,8 @@ const PROJECTS_HERO_BG =
 const STATUS_TABS = [
   { label: "All", value: null },
   { label: "Completed", value: "Completed" },
-  { label: "Working", value: "Working" },
-  { label: "Incoming", value: "Incoming" },
+  { label: "In Progress", value: "In Progress" },
+  { label: "Upcoming", value: "Upcoming" },
 ];
 
 const DATE_RANGES = [
@@ -50,7 +50,7 @@ export default function Projects() {
   const filteredProjects = projectsToShow.filter(p => {
     const catOk = selectedCategory === null || p.categoryId === selectedCategory;
     const dateOk = matchesDateRange(p.year, selectedRange);
-    const statusOk = selectedStatus === null || (p.status || "Working") === selectedStatus;
+    const statusOk = selectedStatus === null || (p.status || "In Progress") === selectedStatus;
     return catOk && dateOk && statusOk;
   });
 

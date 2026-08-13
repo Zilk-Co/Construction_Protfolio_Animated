@@ -19,6 +19,7 @@ import ServiceDetail from "@/pages/services-detail";
 import MachineryPage from "@/pages/machinery";
 import MachineryDetail from "@/pages/machinery-detail";
 import ClientsPage from "@/pages/clients";
+import ClientDetail from "@/pages/client-detail";
 import DocumentsPage from "@/pages/documents";
 import PoliciesPage from "@/pages/policies";
 import AdminLogin from "@/pages/admin/login";
@@ -81,9 +82,8 @@ function Router() {
         <Route path="/contact">
           <div className="pt-24"><Contact /></div>
         </Route>
-        <Route path="/clients">
-          <div className="pt-24"><ClientsPage /></div>
-        </Route>
+        <Route path="/clients" component={ClientsPage} />
+        <Route path="/clients/:slug" component={ClientDetail} />
         <Route path="/documents">
           <div className="pt-24"><DocumentsPage /></div>
         </Route>
