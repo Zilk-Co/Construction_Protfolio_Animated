@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { db, projectsTable, projectImagesTable, servicesTable, machineryTable, settingsTable } from "@workspace/db";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 const router: IRouter = Router();
 
@@ -21,12 +21,6 @@ router.get("/gallery", async (_req, res): Promise<void> => {
 
   // Public assets
   for (const url of PUBLIC_ASSETS) urls.add(url);
-
-  // Projects (hero image)
-  try {
-    const projects = await db.select({ imageUrl: projectsTable.imageUrl }).from(projectsTable);
-    for (const p of projects) if (p.imageUrl) urls.add(p.imageUrl);
-  } catch { /* non-fatal */ }
 
   // Project images
   try {
@@ -64,7 +58,7 @@ router.get("/gallery", async (_req, res): Promise<void> => {
 
   // Settings (CEO image)
   try {
-    const rows = await db.select().from(settingsTable).where((r) => r.key === "ceoImage");
+    const rows = await db.select().from(settingsTable).where(eq(settingsTable.key, "ceoImage"));
     for (const r of rows) if (r.value) urls.add(r.value);
   } catch { /* non-fatal */ }
 

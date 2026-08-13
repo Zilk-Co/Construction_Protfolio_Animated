@@ -11,6 +11,9 @@ import pageContentRouter from "./page_content";
 import aiRouter from "./ai";
 import documentsRouter from "./documents";
 import galleryRouter from "./gallery";
+import clientsRouter from "./clients";
+import policiesRouter from "./policies";
+import messagesRouter from "./messages";
 
 const router: IRouter = Router();
 
@@ -26,5 +29,8 @@ router.use(pageContentRouter);
 router.use(aiRouter);
 router.use(documentsRouter);
 router.use(galleryRouter);
+router.use(clientsRouter);
+router.use(policiesRouter);
+router.use(messagesRouter);
 
 export default router;

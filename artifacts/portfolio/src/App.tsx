@@ -33,6 +33,9 @@ import AdminServicesEdit from "@/pages/admin/services-edit";
 import AdminSettings from "@/pages/admin/settings";
 import AdminPageContent from "@/pages/admin/page-content";
 import AdminDocuments from "@/pages/admin/documents";
+import AdminClients from "@/pages/admin/clients";
+import AdminPolicies from "@/pages/admin/policies";
+import AdminMessages from "@/pages/admin/messages";
 
 const queryClient = new QueryClient();
 
@@ -106,6 +109,9 @@ function Router() {
         <Route path="/admin/settings" component={AdminSettings} />
         <Route path="/admin/page-content" component={AdminPageContent} />
         <Route path="/admin/documents" component={AdminDocuments} />
+        <Route path="/admin/clients" component={AdminClients} />
+        <Route path="/admin/policies" component={AdminPolicies} />
+        <Route path="/admin/messages" component={AdminMessages} />
 
         <Route component={NotFound} />
       </Switch>

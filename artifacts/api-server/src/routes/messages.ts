@@ -1,0 +1,41 @@
+import { Router, Request, Response } from "express";
+import { db, messagesTable } from "@workspace/db";
+import { insertMessageSchema } from "@workspace/db/schema";
+import { eq, desc, count } from "drizzle-orm";
+import { requireAdmin } from "../middlewares/auth";
+
+const router = Router();
+
+router.post("/api/messages", async (req: Request, res: Response) => {
+  const parsed = insertMessageSchema.safeParse(req.body);
+  if (!parsed.success) { res.status(400).json({ error: "Invalid data", details: parsed.error.issues }); return; }
+  const [message] = await db.insert(messagesTable).values(parsed.data).returning();
+  res.status(201).json({ id: message.id, success: true });
+});
+
+router.get("/api/admin/messages", requireAdmin, async (_req: Request, res: Response) => {
+  const messages = await db.select().from(messagesTable).orderBy(desc(messagesTable.createdAt));
+  res.json(messages);
+});
+
+router.get("/api/admin/messages/stats", requireAdmin, async (_req: Request, res: Response) => {
+  const [total] = await db.select({ value: count() }).from(messagesTable);
+  const [unread] = await db.select({ value: count() }).from(messagesTable).where(eq(messagesTable.read, false));
+  res.json({ total: total.value, unread: unread.value });
+});
+
+router.put("/api/admin/messages/:id/read", requireAdmin, async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const [message] = await db.update(messagesTable).set({ read: true }).where(eq(messagesTable.id, id)).returning();
+  if (!message) { res.status(404).json({ error: "Message not found" }); return; }
+  res.json(message);
+});
+
+router.delete("/api/admin/messages/:id", requireAdmin, async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const [deleted] = await db.delete(messagesTable).where(eq(messagesTable.id, id)).returning();
+  if (!deleted) { res.status(404).json({ error: "Message not found" }); return; }
+  res.status(204).send();
+});
+
+export default router;

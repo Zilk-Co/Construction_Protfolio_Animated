@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { useGetAdminMe, useAdminLogout } from "@workspace/api-client-react";
-import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Wrench, Layers, FileText } from "lucide-react";
+import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Wrench, Layers, FileText, LayoutDashboard, Users, Shield, MessageSquare } from "lucide-react";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -32,6 +32,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   const navSections = [
     {
+      label: "Overview",
+      items: [
+        { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      ],
+    },
+    {
       label: "Portfolio",
       items: [
         { href: "/admin", label: "All Projects", icon: FolderOpen },
@@ -51,15 +57,28 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       ],
     },
     {
+      label: "Clients",
+      items: [
+        { href: "/admin/clients", label: "All Clients", icon: Users },
+      ],
+    },
+    {
+      label: "Communication",
+      items: [
+        { href: "/admin/messages", label: "Inbox", icon: MessageSquare },
+      ],
+    },
+    {
+      label: "Policies",
+      items: [
+        { href: "/admin/policies", label: "HSE Policies", icon: Shield },
+      ],
+    },
+    {
       label: "Content",
       items: [
         { href: "/admin/page-content", label: "Page Text", icon: Type },
         { href: "/admin/settings", label: "Site Settings", icon: SlidersHorizontal },
-      ],
-    },
-    {
-      label: "About",
-      items: [
         { href: "/admin/documents", label: "Documents", icon: FileText },
       ],
     },

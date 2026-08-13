@@ -6,3 +6,6 @@ export * from "./services";
 export * from "./settings";
 export * from "./page_content";
 export * from "./documents";
+export * from "./clients";
+export * from "./policies";
+export * from "./messages";
