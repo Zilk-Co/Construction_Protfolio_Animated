@@ -106,7 +106,7 @@ export default function AdminClients() {
         <p className="text-[10px] tracking-[0.25em] uppercase text-[hsl(38,72%,52%)] mb-4 font-semibold">
           {editClient ? "Edit Client" : "New Client"}
         </p>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input placeholder="Client Name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
           <input placeholder="Slug" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
           <input placeholder="Description" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
@@ -129,7 +129,7 @@ export default function AdminClients() {
       {isLoading ? (
         <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-14 bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] animate-pulse" />)}</div>
       ) : (
-        <div className="border border-[hsl(220,15%,18%)] overflow-hidden">
+        <div className="border border-[hsl(220,15%,18%)] overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[hsl(220,18%,11%)] border-b border-[hsl(220,15%,18%)]">

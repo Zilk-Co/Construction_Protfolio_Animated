@@ -21,6 +21,19 @@ const CEO_FIELDS = [
   { key: "ceoQuote", label: "CEO Quote", placeholder: "Construction is more than assembling materials...", type: "textarea" },
 ] as const;
 
+const SOCIAL_FIELDS = [
+  { key: "facebook", label: "Facebook URL", placeholder: "https://facebook.com/yourpage", type: "url" },
+  { key: "linkedin", label: "LinkedIn URL", placeholder: "https://linkedin.com/company/yourpage", type: "url" },
+  { key: "instagram", label: "Instagram URL", placeholder: "https://instagram.com/yourpage", type: "url" },
+  { key: "twitter", label: "Twitter/X URL", placeholder: "https://twitter.com/yourhandle", type: "url" },
+  { key: "youtube", label: "YouTube URL", placeholder: "https://youtube.com/@yourchannel", type: "url" },
+] as const;
+
+const BRAND_FIELDS = [
+  { key: "companyName", label: "Company Name", placeholder: "Azhar Engineering", type: "text" },
+  { key: "copyright", label: "Copyright Text", placeholder: "© 2026 Azhar Engineering (Pvt.) Ltd. All rights reserved.", type: "text" },
+] as const;
+
 type SettingsKey = typeof FIELDS[number]["key"] | typeof CEO_FIELDS[number]["key"];
 
 export default function AdminSettings() {
@@ -48,6 +61,13 @@ export default function AdminSettings() {
         ceoTitle: settings.ceoTitle ?? "",
         ceoQuote: settings.ceoQuote ?? "",
         ceoImage: settings.ceoImage ?? "",
+        facebook: settings.facebook ?? "",
+        linkedin: settings.linkedin ?? "",
+        instagram: settings.instagram ?? "",
+        twitter: settings.twitter ?? "",
+        youtube: settings.youtube ?? "",
+        companyName: settings.companyName ?? "",
+        copyright: settings.copyright ?? "",
       });
     }
   }, [settings]);
@@ -107,6 +127,13 @@ export default function AdminSettings() {
         ceoTitle: settings.ceoTitle ?? "",
         ceoQuote: settings.ceoQuote ?? "",
         ceoImage: settings.ceoImage ?? "",
+        facebook: settings.facebook ?? "",
+        linkedin: settings.linkedin ?? "",
+        instagram: settings.instagram ?? "",
+        twitter: settings.twitter ?? "",
+        youtube: settings.youtube ?? "",
+        companyName: settings.companyName ?? "",
+        copyright: settings.copyright ?? "",
       });
     }
   };
@@ -219,6 +246,57 @@ export default function AdminSettings() {
                     onFileUpload={async () => ""}
                     uploading={false}
                   />
+                </div>
+              </div>
+            </div>
+
+            {/* Brand & Social Section */}
+            <div className="pt-8 border-t border-[hsl(220,15%,18%)]">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-gray-500 mb-4">Brand & Social Media</p>
+              <div className="space-y-4">
+                {BRAND_FIELDS.map(field => (
+                  <motion.div
+                    key={field.key}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">
+                      {field.label}
+                    </label>
+                    <input
+                      type={field.type}
+                      value={form[field.key] ?? ""}
+                      onChange={e => handleChange(field.key, e.target.value)}
+                      placeholder={field.placeholder}
+                      className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors placeholder:text-gray-600 text-white"
+                      style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
+                      onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
+                      onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                    />
+                  </motion.div>
+                ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {SOCIAL_FIELDS.map(field => (
+                    <motion.div
+                      key={field.key}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">
+                        {field.label}
+                      </label>
+                      <input
+                        type={field.type}
+                        value={form[field.key] ?? ""}
+                        onChange={e => handleChange(field.key, e.target.value)}
+                        placeholder={field.placeholder}
+                        className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors placeholder:text-gray-600 text-white"
+                        style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
+                        onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
+                        onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                      />
+                    </motion.div>
+                  ))}
                 </div>
               </div>
             </div>

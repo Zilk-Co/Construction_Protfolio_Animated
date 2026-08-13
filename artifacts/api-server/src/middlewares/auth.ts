@@ -5,6 +5,7 @@ export const ADMIN_SESSION_MS = 60 * 60 * 1000;
 export type AdminSession = Record<string, unknown> & {
   adminAuthenticated?: boolean;
   adminLoginAt?: number;
+  passwordVersion?: number;
 };
 
 export const sessionCookieOptions = {

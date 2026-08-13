@@ -226,6 +226,13 @@ export interface SiteSettings {
   ceoQuote?: string;
   ceoImage?: string;
   mapEmbedUrl?: string;
+  companyName?: string;
+  copyright?: string;
+  facebook?: string;
+  linkedin?: string;
+  instagram?: string;
+  twitter?: string;
+  youtube?: string;
 }
 
 export type ListProjectsParams = {

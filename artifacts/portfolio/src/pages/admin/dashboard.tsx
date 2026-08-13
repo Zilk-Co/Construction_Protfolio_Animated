@@ -98,7 +98,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { label: "Total Projects", value: projects.length },
           { label: "Published", value: published },
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
           ))}
         </div>
       ) : (
-        <div className="border border-[hsl(220,15%,18%)] overflow-hidden">
+        <div className="border border-[hsl(220,15%,18%)] overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[hsl(220,18%,11%)] border-b border-[hsl(220,15%,18%)]">

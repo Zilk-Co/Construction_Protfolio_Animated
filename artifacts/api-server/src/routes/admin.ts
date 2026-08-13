@@ -17,7 +17,11 @@ let ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD ?? "admin123098").trim();
 const ONE_HOUR_MS = 60 * 60 * 1000;
 const MIN_PASSWORD_LENGTH = 8;
 
-// Brute-force lockout per IP with a TTL cap so the map can't grow forever.
+// Password version: incremented on every password change. Sessions from before
+// the change are automatically invalidated.
+let passwordVersion = 0;
+
+// Brute-force lockout per IP
 const loginAttempts = new Map<string, { attempts: number; lockedUntil: number | null }>();
 
 function pruneLoginAttempts(now: number): void {
@@ -29,8 +33,8 @@ function pruneLoginAttempts(now: number): void {
 }
 
 function getLockDuration(attempts: number): number {
-  if (attempts >= 20) return 5 * 60 * 1000; // 5 min after 20+ attempts
-  if (attempts >= 10) return 60 * 1000;     // 1 min after 10 attempts
+  if (attempts >= 20) return 5 * 60 * 1000;
+  if (attempts >= 10) return 60 * 1000;
   return 0;
 }
 
@@ -75,7 +79,6 @@ router.post("/admin/login", async (req, res): Promise<void> => {
 
   loginAttempts.delete(ip);
 
-  // Session fixation defense: mint a fresh session id on login.
   req.session.regenerate((regErr) => {
     if (regErr) {
       logger.error({ err: regErr }, "admin session regenerate failed");
@@ -85,7 +88,7 @@ router.post("/admin/login", async (req, res): Promise<void> => {
     const session = adminSession(req);
     session.adminAuthenticated = true;
     session.adminLoginAt = Date.now();
-    // Session cookie: dies on browser close. 1-hour server-side expiry enforced by isAdminSessionValid().
+    session.passwordVersion = passwordVersion;
     if (req.session.cookie) {
       req.session.cookie.maxAge = undefined;
     }
@@ -125,6 +128,13 @@ router.get("/admin/me", async (req, res): Promise<void> => {
     res.status(401).json({ authenticated: false });
     return;
   }
+  // Check if password was changed after this session was created
+  if (typeof session.passwordVersion === "number" && session.passwordVersion !== passwordVersion) {
+    session.adminAuthenticated = false;
+    session.adminLoginAt = undefined;
+    res.status(401).json({ authenticated: false, reason: "Password changed" });
+    return;
+  }
   const remaining = ONE_HOUR_MS - (Date.now() - (session.adminLoginAt ?? Date.now()));
   res.json({ authenticated: true, expiresInMs: remaining });
 });
@@ -149,6 +159,7 @@ router.put("/admin/password", async (req, res): Promise<void> => {
     return;
   }
   ADMIN_PASSWORD = newPassword;
+  passwordVersion++;
   res.json({ success: true });
 });
 

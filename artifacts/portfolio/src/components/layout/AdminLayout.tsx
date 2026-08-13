@@ -148,7 +148,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
       {/* Main content */}
       <div className="flex-1 min-h-screen" style={{ marginLeft: "224px" }}>
-        <div className="px-8 py-10 max-w-5xl">
+        <div className="px-4 md:px-8 py-8 md:py-10 max-w-5xl overflow-x-auto">
           {children}
         </div>
       </div>

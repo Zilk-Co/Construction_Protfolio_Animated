@@ -82,14 +82,14 @@ export default function AdminPolicies() {
       {/* Form */}
       <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5 mb-6">
         <p className="text-[10px] tracking-[0.25em] uppercase text-[hsl(38,72%,52%)] mb-4 font-semibold">{editPolicy ? "Edit Policy" : "New Policy"}</p>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input placeholder="Title" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
           <input placeholder="Slug" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
           <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]">
             {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
           <input placeholder="File URL (optional)" value={formData.fileUrl} onChange={e => setFormData({ ...formData, fileUrl: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
-          <textarea placeholder="Content / Description" value={formData.content} onChange={e => setFormData({ ...formData, content: e.target.value })} rows={4} className="col-span-2 bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)] resize-none" />
+          <textarea placeholder="Content / Description" value={formData.content} onChange={e => setFormData({ ...formData, content: e.target.value })} rows={4} className="col-span-1 md:col-span-2 bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)] resize-none" />
         </div>
         <div className="flex gap-2 mt-4">
           <button onClick={handleSave} disabled={!formData.title || !formData.slug} className="bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-4 py-2 text-[10px] tracking-[0.2em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors disabled:opacity-40">
@@ -103,7 +103,7 @@ export default function AdminPolicies() {
       {isLoading ? (
         <div className="space-y-3">{[1,2,3].map(i => <div key={i} className="h-14 bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] animate-pulse" />)}</div>
       ) : (
-        <div className="border border-[hsl(220,15%,18%)] overflow-hidden">
+        <div className="border border-[hsl(220,15%,18%)] overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[hsl(220,18%,11%)] border-b border-[hsl(220,15%,18%)]">
