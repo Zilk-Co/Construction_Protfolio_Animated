@@ -5,7 +5,6 @@ import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowRight, Settings2 } from "lucide-react";
-import { FALLBACK_MACHINERY, FALLBACK_SERVICES } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const MACHINERY_FALLBACK = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600";
@@ -22,16 +21,7 @@ export default function Home() {
   const [, forceRender] = useState(0);
   const t = usePageContent("home");
 
-  const displayProjects =
-    Array.isArray(featuredProjects) && featuredProjects.length > 0
-      ? featuredProjects.slice(0, 5)
-      : [
-          { id: 1, title: "Obsidian Cultural Centre", slug: "obsidian-cultural-centre", location: "Dubai, UAE", heroImage: "https://images.unsplash.com/photo-1470723710355-95304d8aece4?w=900&q=75" },
-          { id: 2, title: "Meridian Tower", slug: "meridian-tower", location: "Shenzhen, China", heroImage: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75" },
-          { id: 3, title: "Heliodor Residences", slug: "heliodor-residences", location: "Monaco", heroImage: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=75" },
-          { id: 4, title: "Civic Axis", slug: "civic-axis-masterplan", location: "Riyadh", heroImage: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=75" },
-          { id: 5, title: "Quay District", slug: "quay-district-towers", location: "Auckland", heroImage: "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=900&q=75" },
-        ] as any[];
+  const displayProjects = Array.isArray(featuredProjects) ? featuredProjects.slice(0, 5) : [];
 
   // Mobile: auto-advance carousel every 3s
   useEffect(() => {
@@ -68,8 +58,8 @@ export default function Home() {
     });
   }, [displayProjects]);
 
-  const featuredMachinery = Array.isArray(machinery) && machinery.length > 0 ? machinery.slice(0, 4) : FALLBACK_MACHINERY.slice(0, 4);
-  const featuredServices = Array.isArray(services) && services.length > 0 ? services.slice(0, 3) : FALLBACK_SERVICES.slice(0, 3);
+  const featuredMachinery = Array.isArray(machinery) ? machinery.slice(0, 4) : [];
+  const featuredServices = Array.isArray(services) ? services.slice(0, 3) : [];
 
   return (
     <PageTransition>
@@ -81,6 +71,13 @@ export default function Home() {
           {isLoading ? (
             <div className="w-full h-full flex items-center justify-center">
               <div className="w-8 h-8 border-2 border-[hsl(220,15%,25%)] border-t-[hsl(38,72%,52%)] rounded-full animate-spin" />
+            </div>
+          ) : displayProjects.length === 0 ? (
+            <div className="w-full h-full flex items-center justify-center bg-[hsl(220,18%,8%)]">
+              <div className="text-center">
+                <p className="text-gray-500 text-sm tracking-widest uppercase mb-2">No Projects Yet</p>
+                <p className="text-gray-600 text-xs">Add projects in the admin dashboard</p>
+              </div>
             </div>
           ) : (
             <>
@@ -165,6 +162,13 @@ export default function Home() {
           {isLoading ? (
             <div className="w-full flex items-center justify-center">
               <div className="w-8 h-8 border-2 border-[hsl(220,15%,25%)] border-t-[hsl(38,72%,52%)] rounded-full animate-spin" />
+            </div>
+          ) : displayProjects.length === 0 ? (
+            <div className="w-full flex items-center justify-center bg-[hsl(220,18%,8%)]">
+              <div className="text-center">
+                <p className="text-gray-500 text-sm tracking-widest uppercase mb-2">No Projects Yet</p>
+                <p className="text-gray-600 text-xs">Add projects in the admin dashboard</p>
+              </div>
             </div>
           ) : (
             displayProjects.map((project: any, i: number) => {

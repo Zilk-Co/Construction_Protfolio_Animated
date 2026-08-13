@@ -2,13 +2,12 @@ import { useParams, Link } from "wouter";
 import { useGetServices } from "@workspace/api-client-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, FolderOpen, X, ChevronLeft, ChevronRight } from "lucide-react";
-import { buildFallbackService } from "@/lib/fallbackData";
 import { useState } from "react";
 
 export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: apiItem, isLoading } = useGetServices(slug || "");
-  const item = apiItem?.name ? apiItem : buildFallbackService(slug || "");
+  const item = apiItem;
 
   const gallery: string[] = (() => {
     if (!item?.galleryImages) return [];
@@ -31,10 +30,11 @@ export default function ServiceDetail() {
 
   if (!item) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-6">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <p className="text-neutral-500 text-sm tracking-widest uppercase">Service not found</p>
-        <Link href="/services" className="text-xs tracking-widest uppercase text-[hsl(38,72%,52%)] hover:text-white transition-colors">
-          ← Back to Services
+        <p className="text-neutral-600 text-xs">This service may have been removed or the link is incorrect.</p>
+        <Link href="/services" className="mt-2 inline-flex items-center gap-2 text-xs tracking-widest uppercase text-[hsl(38,72%,52%)] hover:text-white transition-colors">
+          <ArrowLeft size={12} /> Back to Services
         </Link>
       </div>
     );

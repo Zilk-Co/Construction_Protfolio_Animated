@@ -12,7 +12,7 @@ export default function AdminProjectNew() {
     title: "",
     slug: "",
     location: "",
-    status: "Concept",
+    status: "Working",
     sector: "",
     serviceId: "",
   });
@@ -95,13 +95,16 @@ export default function AdminProjectNew() {
               
               <div>
                 <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Status</label>
-                <input 
+                <select
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
                   className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
-                  placeholder="Completed, Ongoing, Concept"
-                />
+                >
+                  <option value="Working">Working</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Incoming">Incoming</option>
+                </select>
               </div>
             </div>
             

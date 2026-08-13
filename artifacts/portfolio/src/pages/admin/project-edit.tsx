@@ -165,7 +165,11 @@ export default function AdminProjectEdit() {
 
               <div>
                 <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Status</label>
-                <input name="status" value={formData.status} onChange={handleChange} className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:border-white transition-colors" />
+                <select name="status" value={formData.status} onChange={handleChange} className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:border-white transition-colors appearance-none rounded-none">
+                  <option value="Working">Working</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Incoming">Incoming</option>
+                </select>
               </div>
             </div>
 

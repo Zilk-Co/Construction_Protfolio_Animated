@@ -5,11 +5,17 @@ import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
 import { SlidersHorizontal, Calendar } from "lucide-react";
-import { FALLBACK_PROJECTS } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const PROJECTS_HERO_BG =
   "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75";
+
+const STATUS_TABS = [
+  { label: "All", value: null },
+  { label: "Completed", value: "Completed" },
+  { label: "Working", value: "Working" },
+  { label: "Incoming", value: "Incoming" },
+];
 
 const DATE_RANGES = [
   { label: "All Years", value: "all" },
@@ -32,19 +38,21 @@ function matchesDateRange(year: string | null | undefined, range: string) {
 
 export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [selectedRange, setSelectedRange] = useState("all");
 
   const { data: categories = [] } = useListCategories();
   const { data: projects = [], isLoading } = useListProjects({ published: true });
   const t = usePageContent("projects");
 
-  const projectsToShow = Array.isArray(projects) && projects.length > 0 ? projects : FALLBACK_PROJECTS;
+  const projectsToShow = Array.isArray(projects) ? projects : [];
 
-  const filteredProjects = Array.isArray(projectsToShow) ? projectsToShow.filter(p => {
+  const filteredProjects = projectsToShow.filter(p => {
     const catOk = selectedCategory === null || p.categoryId === selectedCategory;
     const dateOk = matchesDateRange(p.year, selectedRange);
-    return catOk && dateOk;
-  }) : [];
+    const statusOk = selectedStatus === null || (p.status || "Working") === selectedStatus;
+    return catOk && dateOk && statusOk;
+  });
 
   return (
     <PageTransition>
@@ -93,6 +101,30 @@ export default function Projects() {
         {/* Filters + Grid */}
         <div className="px-6 max-w-screen-2xl mx-auto">
           <div className="py-8">
+            {/* Status tabs */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex items-center gap-1 border-t border-[hsl(220,15%,20%)] pt-6 pb-3"
+            >
+              {STATUS_TABS.map(tab => (
+                <button
+                  key={tab.label}
+                  onClick={() => setSelectedStatus(tab.value)}
+                  className={`px-5 py-2 text-[11px] tracking-[0.2em] uppercase transition-all font-medium ${
+                    selectedStatus === tab.value
+                      ? "text-[hsl(220,18%,9%)] bg-[hsl(38,72%,52%)] font-bold"
+                      : "text-gray-400 hover:text-white border border-[hsl(220,15%,26%)] hover:border-[hsl(38,72%,52%)]"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+              <span className="ml-auto text-xs text-gray-500">
+                {filteredProjects.length} {filteredProjects.length === 1 ? t.get("count_label_singular", "project") : t.get("count_label_plural", "projects")}
+              </span>
+            </motion.div>
+
             {/* Category filter */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -137,9 +169,6 @@ export default function Projects() {
                   {r.label}
                 </button>
               ))}
-              <span className="ml-auto text-xs text-gray-500">
-                {filteredProjects.length} {filteredProjects.length === 1 ? t.get("count_label_singular", "project") : t.get("count_label_plural", "projects")}
-              </span>
             </motion.div>
           </div>
 
@@ -185,6 +214,15 @@ export default function Projects() {
                       {project.categoryName && (
                         <span className="absolute top-3 left-3 text-[9px] tracking-[0.2em] uppercase bg-black/75 px-2.5 py-1 backdrop-blur-sm" style={{ color: "hsl(38,72%,62%)" }}>
                           {project.categoryName}
+                        </span>
+                      )}
+                      {project.status && (
+                        <span className={`absolute top-3 right-3 text-[9px] tracking-[0.2em] uppercase px-2.5 py-1 backdrop-blur-sm border ${
+                          project.status === "Completed" ? "bg-emerald-900/75 border-emerald-500/30 text-emerald-400" :
+                          project.status === "Incoming" ? "bg-amber-900/75 border-amber-500/30 text-amber-400" :
+                          "bg-blue-900/75 border-blue-500/30 text-blue-400"
+                        }`}>
+                          {project.status}
                         </span>
                       )}
                     </div>

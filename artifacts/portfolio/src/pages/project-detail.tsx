@@ -1,11 +1,10 @@
 import { useGetProject, getGetProjectQueryKey } from "@workspace/api-client-react";
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useRef, useState } from "react";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { buildFallbackProject } from "@/lib/fallbackData";
+import { X, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
 
 export default function ProjectDetail() {
   const params = useParams();
@@ -14,8 +13,7 @@ export default function ProjectDetail() {
   const { data: apiProject, isLoading } = useGetProject(slug, {
     query: { enabled: !!slug, queryKey: getGetProjectQueryKey(slug) }
   });
-  const project =
-    apiProject?.title ? apiProject : buildFallbackProject(slug);
+  const project = apiProject;
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -33,8 +31,12 @@ export default function ProjectDetail() {
 
   if (!project) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-foreground">
+      <div className="min-h-screen flex flex-col items-center justify-center text-foreground gap-4">
         <h1 className="text-2xl font-serif">Project not found</h1>
+        <p className="text-sm text-gray-500">This project may have been removed or the link is incorrect.</p>
+        <Link href="/projects" className="mt-4 inline-flex items-center gap-2 text-xs tracking-widest uppercase text-[hsl(38,72%,52%)] hover:text-[hsl(38,72%,62%)]">
+          <ArrowLeft size={12} /> Back to Projects
+        </Link>
       </div>
     );
   }

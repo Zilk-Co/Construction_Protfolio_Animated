@@ -5,7 +5,6 @@ import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
 import { Settings2 } from "lucide-react";
-import { FALLBACK_MACHINERY } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const MACHINERY_HERO_BG =
@@ -18,7 +17,7 @@ export default function Machinery() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const t = usePageContent("machinery");
 
-  const machineryToShow = Array.isArray(machinery) && machinery.length > 0 ? machinery : FALLBACK_MACHINERY;
+  const machineryToShow = Array.isArray(machinery) ? machinery : [];
 
   const categories = Array.isArray(machineryToShow) ? Array.from(new Set(machineryToShow.map(m => m.category).filter(Boolean) as string[])) : [];
   const filtered = Array.isArray(machineryToShow) ? (selectedCategory ? machineryToShow.filter(m => m.category === selectedCategory) : machineryToShow) : [];

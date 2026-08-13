@@ -2,14 +2,12 @@ import { useParams, Link } from "wouter";
 import { useGetMachinery } from "@workspace/api-client-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Wrench, Calendar, Tag, Star, X, ChevronLeft, ChevronRight } from "lucide-react";
-import { buildFallbackMachinery } from "@/lib/fallbackData";
 import { useState } from "react";
 
 export default function MachineryDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: apiItem, isLoading } = useGetMachinery(slug || "");
-  const item =
-    apiItem?.name ? apiItem : buildFallbackMachinery(slug || "");
+  const item = apiItem;
 
   const gallery: string[] = (() => {
     if (!item?.galleryImages) return [];
@@ -32,10 +30,11 @@ export default function MachineryDetail() {
 
   if (!item) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-6">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <p className="text-neutral-500 text-sm tracking-widest uppercase">Equipment not found</p>
-        <Link href="/machinery" className="text-xs tracking-widest uppercase text-[hsl(38,72%,52%)] hover:text-white transition-colors">
-          ← Back to Machinery
+        <p className="text-neutral-600 text-xs">This item may have been removed or the link is incorrect.</p>
+        <Link href="/machinery" className="mt-2 inline-flex items-center gap-2 text-xs tracking-widest uppercase text-[hsl(38,72%,52%)] hover:text-white transition-colors">
+          <ArrowLeft size={12} /> Back to Machinery
         </Link>
       </div>
     );

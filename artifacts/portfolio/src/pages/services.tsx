@@ -4,7 +4,6 @@ import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { ArrowRight } from "lucide-react";
-import { FALLBACK_SERVICES } from "@/lib/fallbackData";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const HERO_BG_FALLBACK =
@@ -23,8 +22,7 @@ export default function Services() {
   const { data: services = [], isLoading } = useListServices({ published: true });
   const t = usePageContent("services");
 
-  const servicesToShow =
-    Array.isArray(services) && services.length > 0 ? services : FALLBACK_SERVICES;
+  const servicesToShow = Array.isArray(services) ? services : [];
 
   return (
     <PageTransition>
