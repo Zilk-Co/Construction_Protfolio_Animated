@@ -1,4 +1,5 @@
 import { AdminLayout } from "@/components/layout/AdminLayout";
+import { GalleryPicker } from "@/components/admin/GalleryPicker";
 import { useGetSettings, useUpdateSettings, useChangeAdminPassword } from "@workspace/api-client-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -18,7 +19,6 @@ const CEO_FIELDS = [
   { key: "ceoName", label: "CEO Name", placeholder: "Azhar", type: "text" },
   { key: "ceoTitle", label: "CEO Title", placeholder: "Chief Executive Officer", type: "text" },
   { key: "ceoQuote", label: "CEO Quote", placeholder: "Construction is more than assembling materials...", type: "textarea" },
-  { key: "ceoImage", label: "CEO Image URL", placeholder: "https://... or base64 data URL", type: "text" },
 ] as const;
 
 type SettingsKey = typeof FIELDS[number]["key"] | typeof CEO_FIELDS[number]["key"];
@@ -209,20 +209,17 @@ export default function AdminSettings() {
                     )}
                   </motion.div>
                 ))}
-                {/* CEO Image Preview */}
-                {form.ceoImage && (
-                  <div className="mt-4">
-                    <p className="text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">Image Preview</p>
-                    <div className="w-32 h-32 border border-[hsl(220,15%,24%)] overflow-hidden">
-                      <img
-                        src={form.ceoImage}
-                        alt="CEO Preview"
-                        className="w-full h-full object-cover"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                      />
-                    </div>
-                  </div>
-                )}
+                {/* CEO Image GalleryPicker */}
+                <div className="mt-6">
+                  <GalleryPicker
+                    value={form.ceoImage ?? ""}
+                    onChange={(url) => handleChange("ceoImage", url)}
+                    label="CEO Image"
+                    acceptUpload
+                    onFileUpload={async () => ""}
+                    uploading={false}
+                  />
+                </div>
               </div>
             </div>
           </div>

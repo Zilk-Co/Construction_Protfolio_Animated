@@ -1,4 +1,5 @@
 import { AdminLayout } from "@/components/layout/AdminLayout";
+import { GalleryPicker } from "@/components/admin/GalleryPicker";
 import { useListProjectImages, useAddProjectImage, useUpdateProjectImage, useDeleteProjectImage, getListProjectImagesQueryKey } from "@workspace/api-client-react";
 import { Link, useParams } from "wouter";
 import { useState } from "react";
@@ -92,23 +93,18 @@ export default function AdminProjectImages() {
 
         {/* Add Image Form */}
         <form onSubmit={handleAddImage} className="mb-12 p-6 border border-neutral-800 bg-neutral-900/30">
-          <label className="block text-xs uppercase tracking-widest text-neutral-400 mb-4">Add New Image URL</label>
-          <div className="flex gap-4">
-            <input 
-              value={newImageUrl}
-              onChange={(e) => setNewImageUrl(e.target.value)}
-              placeholder="https://..."
-              className="flex-1 bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:border-white transition-colors"
-            />
-            <button 
-              type="submit"
-              disabled={addImage.isPending || !newImageUrl}
-              className="px-8 py-3 bg-white text-black font-serif tracking-widest uppercase hover:bg-neutral-200 transition-colors disabled:opacity-50"
-            >
-              Add
-            </button>
-          </div>
-          <p className="mt-4 text-xs text-neutral-600">Tip: For demo purposes, you can use paths like `/images/arch-cultural.png`</p>
+          <GalleryPicker
+            value={newImageUrl}
+            onChange={setNewImageUrl}
+            label="Add New Image URL"
+          />
+          <button 
+            type="submit"
+            disabled={addImage.isPending || !newImageUrl}
+            className="mt-4 px-8 py-3 bg-white text-black font-serif tracking-widest uppercase hover:bg-neutral-200 transition-colors disabled:opacity-50"
+          >
+            Add
+          </button>
         </form>
 
         {/* Images Grid */}

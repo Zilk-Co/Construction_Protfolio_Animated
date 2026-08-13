@@ -10,6 +10,7 @@ import settingsRouter from "./settings";
 import pageContentRouter from "./page_content";
 import aiRouter from "./ai";
 import documentsRouter from "./documents";
+import galleryRouter from "./gallery";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use(settingsRouter);
 router.use(pageContentRouter);
 router.use(aiRouter);
 router.use(documentsRouter);
+router.use(galleryRouter);
 
 export default router;

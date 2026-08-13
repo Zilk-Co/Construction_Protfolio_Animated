@@ -1,4 +1,5 @@
 import { AdminLayout } from "@/components/layout/AdminLayout";
+import { GalleryPicker } from "@/components/admin/GalleryPicker";
 import {
   useListServices,
   useCreateServices,
@@ -9,7 +10,7 @@ import { Link, useLocation, useParams } from "wouter";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Save, Upload, X } from "lucide-react";
+import { ArrowLeft, Save, X } from "lucide-react";
 
 export default function AdminServicesEdit() {
   const { id } = useParams();
@@ -80,10 +81,7 @@ export default function AdminServicesEdit() {
     return { ...form, galleryImages: galleryArr.length ? JSON.stringify(galleryArr) : "" };
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const handleImageUpload = async (file: File): Promise<string> => {
     setUploading(true);
     try {
       const formData = new FormData();
@@ -98,9 +96,11 @@ export default function AdminServicesEdit() {
 
       const data = await response.json();
       setForm(prev => ({ ...prev, imageUrl: data.imageUrl }));
+      return data.imageUrl;
     } catch (error) {
       console.error('Upload error:', error);
       alert('Failed to upload image');
+      return "";
     } finally {
       setUploading(false);
     }
@@ -185,46 +185,14 @@ export default function AdminServicesEdit() {
 
           {/* Image Upload */}
           <div>
-            <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Main Image</label>
-            <div className="space-y-3">
-              <div className="flex gap-3">
-                <label className="flex-1 flex items-center justify-center gap-2 bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] border-dashed px-4 py-3 text-sm cursor-pointer hover:border-[hsl(38,72%,52%)] transition-colors">
-                  <Upload size={16} />
-                  <span>{uploading ? "Uploading..." : "Upload Image"}</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    disabled={uploading}
-                    className="hidden"
-                  />
-                </label>
-                {form.imageUrl && (
-                  <button
-                    type="button"
-                    onClick={() => setForm(prev => ({ ...prev, imageUrl: "" }))}
-                    className="px-3 py-3 border border-[hsl(220,15%,20%)] hover:border-red-500 text-[hsl(220,12%,45%)] hover:text-red-500 transition-colors"
-                  >
-                    <X size={16} />
-                  </button>
-                )}
-              </div>
-              {form.imageUrl && (
-                <div className="aspect-video w-full max-w-md overflow-hidden border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,11%)]">
-                  <img src={form.imageUrl} alt="Preview" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                </div>
-              )}
-              <div>
-                <label className="block text-[9px] tracking-[0.2em] uppercase text-[hsl(220,12%,35%)] mb-1">Or paste image URL</label>
-                <input
-                  name="imageUrl"
-                  value={form.imageUrl}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                  className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] text-foreground px-4 py-2 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,30%)]"
-                />
-              </div>
-            </div>
+            <GalleryPicker
+              value={form.imageUrl}
+              onChange={(url) => setForm(prev => ({ ...prev, imageUrl: url }))}
+              label="Main Image"
+              acceptUpload
+              onFileUpload={handleImageUpload}
+              uploading={uploading}
+            />
           </div>
 
           {/* Short Description */}
