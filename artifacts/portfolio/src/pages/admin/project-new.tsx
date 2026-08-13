@@ -50,7 +50,7 @@ export default function AdminProjectNew() {
             <h1 className="text-3xl font-serif tracking-tighter uppercase mb-2">New Project</h1>
             <p className="text-neutral-500 tracking-widest text-sm uppercase">Initialize profile</p>
           </div>
-          <Link href="/admin/dashboard" className="text-xs uppercase tracking-widest text-neutral-400 hover:text-white">
+          <Link href="/admin" className="text-xs uppercase tracking-widest text-neutral-400 hover:text-white">
             Cancel
           </Link>
         </div>

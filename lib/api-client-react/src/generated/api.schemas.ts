@@ -225,6 +225,7 @@ export interface SiteSettings {
   ceoTitle?: string;
   ceoQuote?: string;
   ceoImage?: string;
+  mapEmbedUrl?: string;
 }
 
 export type ListProjectsParams = {

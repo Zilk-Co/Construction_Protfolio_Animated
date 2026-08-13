@@ -16,9 +16,9 @@ export default function Contact() {
   const { data: settings } = useGetSettings();
   const t = usePageContent("contact");
 
-  const phone = settings?.phone ?? "+92 123 123 3875";
-  const email = settings?.email ?? "azhar@gmail.com";
-  const address = settings?.address ?? "House 53, Street 12, Naval Colony, Sector 2, Baldia, Hub River Road, Karachi, Pakistan";
+  const phone = settings?.phone ?? "+92 334 2976686";
+  const email = settings?.email ?? "azharkhaki2005@gmail.com";
+  const address = settings?.address ?? "3rd Floor, Sultan Arcade, Lower Gizri, Karachi";
   const hours = settings?.hours ?? "Mon–Sat, 9:00 AM – 6:00 PM PKT";
   const subtitle = settings?.heroSubtitle ?? "We deliver landmark architectural and construction projects across the Middle East and South Asia. Tell us about your project and we will be in touch within 24 hours.";
 
@@ -202,7 +202,7 @@ export default function Contact() {
               <div className="aspect-[16/9] border border-[hsl(220,15%,22%)] overflow-hidden">
                 <iframe
                   title="Karachi Office Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14481.167963498!2d66.9940!3d24.8607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f7a8c4c2f8f%3A0x0!2sNaval+Colony%2C+Baldia%2C+Karachi!5e0!3m2!1sen!2s!4v1600000000000!5m2!1sen!2s"
+                  src={(settings as any)?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14481.167963498!2d67.0457!3d24.8147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f7a8c4c2f8f%3A0x0!2sSultan+Arcade%2C+Lower+Gizri%2C+Karachi!5e0!3m2!1sen!2s!4v1600000000000!5m2!1sen!2s"}
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
@@ -211,7 +211,7 @@ export default function Contact() {
                   referrerPolicy="no-referrer-when-downgrade"
                 />
               </div>
-              <p className="text-[10px] text-gray-500 mt-2 text-center">{t.get("map_caption", "Hub River Road, Baldia, Naval Colony, Sector 2, Karachi")}</p>
+              <p className="text-[10px] text-gray-500 mt-2 text-center">{t.get("map_caption", "Sultan Arcade, Lower Gizri, Karachi")}</p>
             </div>
           </div>
         </section>

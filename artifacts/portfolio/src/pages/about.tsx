@@ -72,6 +72,49 @@ export default function About() {
           </div>
         </section>
 
+        {/* ═══════ BASIC LINE OF BUSINESS ═══════ */}
+        <section className="py-24 px-6 bg-[hsl(220,18%,8%)]">
+          <div className="max-w-screen-2xl mx-auto">
+            <div className="text-center mb-14">
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-[10px] tracking-[0.35em] uppercase mb-4"
+                style={{ color: "hsl(38,85%,62%)" }}
+              >
+                {t.get("business_eyebrow", "Who We Are")}
+              </motion.p>
+              <div className="w-10 h-px mx-auto mb-8" style={{ backgroundColor: "hsl(38,72%,52%)" }} />
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-5xl font-serif font-bold tracking-tight uppercase mb-8 text-white"
+              >
+                {t.get("business_title", "Basic Line of Business")}
+              </motion.h2>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="max-w-4xl mx-auto"
+            >
+              <p className="text-sm leading-relaxed text-gray-300 mb-6">
+                {t.get("business_p1", "The principal line of business of the company shall be to lay out, construct, build, erect, demolish, alter, layout, re-model or do any other work in connection with any infrastructure including apartments, homes, plazas, multi-storied flats, business offices, shops, markets, warehouses, industrial and commercial buildings, roads, dams, bridges, spillways, highways, reservoirs, airports, seaports, parks, canals, irrigation improvements, amusement parks, convention centers, hi-technology industrial parks, and structures of all descriptions.")}
+              </p>
+              <p className="text-sm leading-relaxed text-gray-300 mb-6">
+                {t.get("business_p2", "And to equip the same or any part thereof with all or any conveniences, drainage and sewerage facilities, water supply, electric and gas installations, structural or architectural work of any kind whatsoever.")}
+              </p>
+              <p className="text-sm leading-relaxed text-gray-300">
+                {t.get("business_p3", "And for such purpose to prepare estimates, designs, plans, specifications subject to any permission required by law and approval from the competent authorities.")}
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
         {/* ═══════ JOURNEY ═══════ */}
         <section className="py-24 px-6">
           <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

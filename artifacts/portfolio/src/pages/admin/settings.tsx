@@ -7,9 +7,9 @@ import { createPortal } from "react-dom";
 import { Save, RotateCcw, Lock, Eye, EyeOff } from "lucide-react";
 
 const FIELDS = [
-  { key: "phone", label: "Phone Number", placeholder: "+92 123 123 3875", type: "text" },
-  { key: "email", label: "Email Address", placeholder: "azhar@gmail.com", type: "email" },
-  { key: "address", label: "Office Address", placeholder: "House 53, Street 12, Naval Colony, Sector 2, Baldia, Hub River Road, Karachi, Pakistan", type: "textarea" },
+  { key: "phone", label: "Phone Number", placeholder: "+92 334 2976686", type: "text" },
+  { key: "email", label: "Email Address", placeholder: "azharkhaki2005@gmail.com", type: "email" },
+  { key: "address", label: "Office Address", placeholder: "3rd Floor, Sultan Arcade, Lower Gizri, Karachi", type: "textarea" },
   { key: "city", label: "City", placeholder: "Karachi", type: "text" },
   { key: "hours", label: "Business Hours", placeholder: "Mon–Sat, 9:00 AM – 6:00 PM PKT", type: "text" },
   { key: "heroSubtitle", label: "Contact Page Subtitle", placeholder: "We deliver landmark architectural projects...", type: "textarea" },

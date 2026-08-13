@@ -18,6 +18,9 @@ import ServicesPage from "@/pages/services";
 import ServiceDetail from "@/pages/services-detail";
 import MachineryPage from "@/pages/machinery";
 import MachineryDetail from "@/pages/machinery-detail";
+import ClientsPage from "@/pages/clients";
+import DocumentsPage from "@/pages/documents";
+import PoliciesPage from "@/pages/policies";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminProjectNew from "@/pages/admin/project-new";
@@ -74,6 +77,15 @@ function Router() {
         </Route>
         <Route path="/contact">
           <div className="pt-24"><Contact /></div>
+        </Route>
+        <Route path="/clients">
+          <div className="pt-24"><ClientsPage /></div>
+        </Route>
+        <Route path="/documents">
+          <div className="pt-24"><DocumentsPage /></div>
+        </Route>
+        <Route path="/policies">
+          <div className="pt-24"><PoliciesPage /></div>
         </Route>
 
         {/* Admin login — accessible via /admin-panel (primary) and /admin-login (legacy) */}

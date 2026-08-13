@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { ArrowRight, Settings2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { usePageContent } from "@/hooks/usePageContent";
 
 const MACHINERY_FALLBACK = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600";
@@ -59,7 +59,7 @@ export default function Home() {
   }, [displayProjects]);
 
   const featuredMachinery = Array.isArray(machinery) ? machinery.slice(0, 4) : [];
-  const featuredServices = Array.isArray(services) ? services.slice(0, 3) : [];
+  const featuredServices = Array.isArray(services) ? services : [];
 
   return (
     <PageTransition>
@@ -404,6 +404,56 @@ export default function Home() {
               </div>
             </div>
           </section>
+
+        {/* About Preview */}
+        <section className="py-24 px-6">
+          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <p className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-3">
+                {t.get("about_eyebrow", "About Us")}
+              </p>
+              <h2 className="text-3xl md:text-5xl font-serif font-bold uppercase tracking-tight mb-6">
+                {t.get("about_title", "Building Pakistan's")}
+                <span className="block" style={{ color: "hsl(38,72%,52%)" }}>{t.get("about_title_accent", "Infrastructure")}</span>
+              </h2>
+              <p className="text-sm text-[hsl(220,12%,55%)] leading-relaxed mb-8">
+                {t.get("about_body", "Azhar Engineering (Pvt.) Ltd is a leading construction and engineering firm dedicated to transforming the urban landscape with uncompromising quality and integrity.")}
+              </p>
+              <Link href="/about" className="inline-flex items-center gap-3 border border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] px-6 py-3 text-xs tracking-[0.2em] uppercase hover:bg-[hsl(38,72%,52%)] hover:text-[hsl(220,18%,9%)] transition-all duration-200">
+                {t.get("about_cta", "Learn More About Us")} <ArrowRight size={13} />
+              </Link>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="grid grid-cols-2 gap-4"
+            >
+              <div className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
+                <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>20+</p>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">Years Experience</p>
+              </div>
+              <div className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
+                <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>100+</p>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">Projects Delivered</p>
+              </div>
+              <div className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
+                <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>50+</p>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">Expert Team</p>
+              </div>
+              <div className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
+                <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>100%</p>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">Safety Record</p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
 
         {/* CTA strip */}
         <section className="py-20 px-6 bg-[hsl(220,18%,11%)] border-y border-[hsl(220,15%,18%)]">

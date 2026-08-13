@@ -17,10 +17,13 @@ export function Navbar() {
   const links = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/safety", label: "Safety" },
     { href: "/projects", label: "Projects" },
     { href: "/services", label: "Services" },
     { href: "/machinery", label: "Machinery" },
+    { href: "/clients", label: "Clients" },
+    { href: "/safety", label: "Safety" },
+    { href: "/documents", label: "Documents" },
+    { href: "/policies", label: "Policies" },
     { href: "/contact", label: "Contact" },
   ];
 

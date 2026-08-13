@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 const FAQ_ITEMS = [
   {
     q: "How do I get a quote for my construction project?",
-    a: "Visit our Contact page and fill out the enquiry form, or call us directly at +92 123 123 3875. We typically respond within 24 hours with an initial assessment and next steps.",
+    a: "Visit our Contact page and fill out the enquiry form, or call us directly at +92 334 2976686. We typically respond within 24 hours with an initial assessment and next steps.",
   },
   {
     q: "What types of construction projects do you handle?",

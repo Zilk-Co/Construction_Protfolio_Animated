@@ -126,7 +126,7 @@ export default function AdminProjectEdit() {
             <Link href={`/admin/projects/${projectId}/images`} className="text-xs uppercase tracking-widest text-neutral-400 hover:text-white">
               Manage Images
             </Link>
-            <Link href="/admin/dashboard" className="text-xs uppercase tracking-widest text-neutral-400 hover:text-white">
+            <Link href="/admin" className="text-xs uppercase tracking-widest text-neutral-400 hover:text-white">
               Back to Dashboard
             </Link>
           </div>
