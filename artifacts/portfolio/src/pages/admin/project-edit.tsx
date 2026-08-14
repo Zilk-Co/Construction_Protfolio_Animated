@@ -194,9 +194,9 @@ export default function AdminProjectEdit() {
               </div>
 
               <div>
-                <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Service</label>
-                <select name="serviceId" value={formData.serviceId || ""} onChange={handleChange} className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors appearance-none">
-                  <option value="">No Service</option>
+                <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Service *</label>
+                <select required name="serviceId" value={formData.serviceId || ""} onChange={handleChange} className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors appearance-none">
+                  <option value="">Select a service</option>
                   {services.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
               </div>

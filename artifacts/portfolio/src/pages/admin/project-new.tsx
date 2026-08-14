@@ -159,6 +159,7 @@ export default function AdminProjectNew() {
             <div>
               <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Service Used *</label>
               <select
+                required
                 name="serviceId"
                 value={formData.serviceId}
                 onChange={handleChange}
