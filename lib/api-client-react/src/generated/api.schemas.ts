@@ -54,6 +54,10 @@ export interface ProjectSummary {
   /** @nullable */
   client?: string | null;
   /** @nullable */
+  clientId?: number | null;
+  /** @nullable */
+  clientName?: string | null;
+  /** @nullable */
   sector?: string | null;
   status: string;
   published: boolean;
@@ -78,6 +82,10 @@ export interface Project {
   location?: string | null;
   /** @nullable */
   client?: string | null;
+  /** @nullable */
+  clientId?: number | null;
+  /** @nullable */
+  clientName?: string | null;
   /** @nullable */
   sector?: string | null;
   /** @nullable */
@@ -109,6 +117,8 @@ export interface ProjectInput {
   slug: string;
   location?: string;
   client?: string;
+  /** @nullable */
+  clientId?: number | null;
   sector?: string;
   size?: string;
   scope?: string;

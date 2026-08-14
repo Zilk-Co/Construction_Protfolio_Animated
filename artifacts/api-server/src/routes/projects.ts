@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { eq, and, desc, sql } from "drizzle-orm";
-import { db, projectsTable, categoriesTable, projectImagesTable } from "@workspace/db";
+import { db, projectsTable, categoriesTable, projectImagesTable, clientsTable } from "@workspace/db";
 import { requireAdmin, isAdminSessionValid } from "../middlewares/auth";
 import {
   ListProjectsQueryParams,
@@ -21,6 +21,8 @@ function buildProjectSummary(row: {
   slug: string;
   location: string | null;
   client: string | null;
+  clientId: number | null;
+  clientName: string | null;
   sector: string | null;
   status: string;
   published: boolean;
@@ -36,6 +38,8 @@ function buildProjectSummary(row: {
     slug: row.slug,
     location: row.location,
     client: row.client,
+    clientId: row.clientId,
+    clientName: row.clientName,
     sector: row.sector,
     status: row.status,
     published: row.published,
@@ -61,6 +65,8 @@ router.get("/projects/featured", async (_req, res): Promise<void> => {
       slug: projectsTable.slug,
       location: projectsTable.location,
       client: projectsTable.client,
+      clientId: projectsTable.clientId,
+      clientName: clientsTable.name,
       sector: projectsTable.sector,
       status: projectsTable.status,
       published: projectsTable.published,
@@ -72,6 +78,7 @@ router.get("/projects/featured", async (_req, res): Promise<void> => {
     })
     .from(projectsTable)
     .leftJoin(categoriesTable, eq(projectsTable.categoryId, categoriesTable.id))
+    .leftJoin(clientsTable, eq(projectsTable.clientId, clientsTable.id))
     .leftJoin(heroImageSq, eq(heroImageSq.projectId, projectsTable.id))
     .where(and(eq(projectsTable.published, true), eq(projectsTable.featured, true)))
     .orderBy(desc(projectsTable.createdAt))
@@ -90,6 +97,8 @@ router.get("/projects/featured", async (_req, res): Promise<void> => {
         slug: projectsTable.slug,
         location: projectsTable.location,
         client: projectsTable.client,
+        clientId: projectsTable.clientId,
+        clientName: clientsTable.name,
         sector: projectsTable.sector,
         status: projectsTable.status,
         published: projectsTable.published,
@@ -101,6 +110,7 @@ router.get("/projects/featured", async (_req, res): Promise<void> => {
       })
       .from(projectsTable)
       .leftJoin(categoriesTable, eq(projectsTable.categoryId, categoriesTable.id))
+      .leftJoin(clientsTable, eq(projectsTable.clientId, clientsTable.id))
       .leftJoin(fallbackSq, eq(fallbackSq.projectId, projectsTable.id))
       .where(eq(projectsTable.published, true))
       .orderBy(desc(projectsTable.createdAt))
@@ -144,6 +154,8 @@ router.get("/projects", async (req, res): Promise<void> => {
       slug: projectsTable.slug,
       location: projectsTable.location,
       client: projectsTable.client,
+      clientId: projectsTable.clientId,
+      clientName: clientsTable.name,
       sector: projectsTable.sector,
       status: projectsTable.status,
       published: projectsTable.published,
@@ -155,6 +167,7 @@ router.get("/projects", async (req, res): Promise<void> => {
     })
     .from(projectsTable)
     .leftJoin(categoriesTable, eq(projectsTable.categoryId, categoriesTable.id))
+    .leftJoin(clientsTable, eq(projectsTable.clientId, clientsTable.id))
     .leftJoin(heroImageSq, eq(heroImageSq.projectId, projectsTable.id))
     .where(conditions.length > 0 ? and(...conditions) : undefined)
     .orderBy(desc(projectsTable.createdAt));
@@ -264,6 +277,8 @@ async function getFullProject(id: number) {
       slug: projectsTable.slug,
       location: projectsTable.location,
       client: projectsTable.client,
+      clientId: projectsTable.clientId,
+      clientName: clientsTable.name,
       sector: projectsTable.sector,
       size: projectsTable.size,
       scope: projectsTable.scope,
@@ -278,6 +293,7 @@ async function getFullProject(id: number) {
     })
     .from(projectsTable)
     .leftJoin(categoriesTable, eq(projectsTable.categoryId, categoriesTable.id))
+    .leftJoin(clientsTable, eq(projectsTable.clientId, clientsTable.id))
     .where(eq(projectsTable.id, id));
 
   if (!project) return null;

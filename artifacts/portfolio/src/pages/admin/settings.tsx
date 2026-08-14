@@ -31,6 +31,7 @@ const SOCIAL_FIELDS = [
 
 const BRAND_FIELDS = [
   { key: "companyName", label: "Company Name", placeholder: "Azhar Engineering", type: "text" },
+  { key: "logoUrl", label: "Logo URL", placeholder: "https://... or choose from gallery", type: "text" },
   { key: "copyright", label: "Copyright Text", placeholder: "© 2026 Azhar Engineering (Pvt.) Ltd. All rights reserved.", type: "text" },
 ] as const;
 
@@ -67,6 +68,7 @@ export default function AdminSettings() {
         twitter: settings.twitter ?? "",
         youtube: settings.youtube ?? "",
         companyName: settings.companyName ?? "",
+        logoUrl: (settings as any).logoUrl ?? "",
         copyright: settings.copyright ?? "",
       });
     }
@@ -133,6 +135,7 @@ export default function AdminSettings() {
         twitter: settings.twitter ?? "",
         youtube: settings.youtube ?? "",
         companyName: settings.companyName ?? "",
+        logoUrl: (settings as any).logoUrl ?? "",
         copyright: settings.copyright ?? "",
       });
     }
@@ -275,6 +278,14 @@ export default function AdminSettings() {
                     />
                   </motion.div>
                 ))}
+                {/* Logo GalleryPicker */}
+                <div className="mt-2">
+                  <GalleryPicker
+                    value={form.logoUrl ?? ""}
+                    onChange={(url) => handleChange("logoUrl", url)}
+                    label="Logo Image"
+                  />
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {SOCIAL_FIELDS.map(field => (
                     <motion.div

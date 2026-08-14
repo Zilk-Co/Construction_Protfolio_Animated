@@ -3,10 +3,27 @@ import { useCreateProject, useListServices } from "@workspace/api-client-react";
 import { Link, useLocation } from "wouter";
 import { useState } from "react";
 
+const API = import.meta.env.VITE_API_URL || "";
+
+type Client = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
 export default function AdminProjectNew() {
   const [, setLocation] = useLocation();
   const createProject = useCreateProject();
   const { data: services = [] } = useListServices();
+  const [clients, setClients] = useState<Client[]>([]);
+  const [isLoadingClients, setIsLoadingClients] = useState(true);
+
+  useState(() => {
+    fetch(`${API}/api/clients`)
+      .then(res => res.json())
+      .then(data => { setClients(data); setIsLoadingClients(false); })
+      .catch(() => setIsLoadingClients(false));
+  });
 
   const [formData, setFormData] = useState({
     title: "",
@@ -15,6 +32,8 @@ export default function AdminProjectNew() {
     status: "Working",
     sector: "",
     serviceId: "",
+    clientId: "",
+    client: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,6 +42,7 @@ export default function AdminProjectNew() {
       data: {
         ...formData,
         serviceId: formData.serviceId ? parseInt(formData.serviceId, 10) : null,
+        clientId: formData.clientId ? parseInt(formData.clientId, 10) : null,
         published: false
       }
     }, {
@@ -34,12 +54,28 @@ export default function AdminProjectNew() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
+    setFormData(prev => {
+      const updates: Record<string, string> = { [name]: value };
+      
       // Auto-generate slug from title if title is changed
-      ...(name === 'title' ? { slug: value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') } : {})
-    }));
+      if (name === 'title') {
+        updates.slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      }
+      
+      // When client is selected, auto-fill clientName
+      if (name === 'clientId') {
+        if (value) {
+          const selectedClient = clients.find(c => c.id === parseInt(value, 10));
+          if (selectedClient) {
+            updates.client = selectedClient.name;
+          }
+        } else {
+          updates.client = "";
+        }
+      }
+      
+      return { ...prev, ...updates };
+    });
   };
 
   return (
@@ -130,6 +166,21 @@ export default function AdminProjectNew() {
                 <option value="">Select a service</option>
                 {services.map(s => (
                   <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Client</label>
+              <select
+                name="clientId"
+                value={formData.clientId}
+                onChange={handleChange}
+                className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+              >
+                <option value="">No Client</option>
+                {clients.map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
                 ))}
               </select>
             </div>

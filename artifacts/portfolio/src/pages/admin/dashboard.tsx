@@ -6,16 +6,54 @@ import {
   useUpdateProject,
   getListProjectsQueryKey,
 } from "@workspace/api-client-react";
+import { useListServices, getListServicesQueryKey } from "@workspace/api-client-react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Image as ImageIcon, Trash2, Globe, EyeOff, Star, Search, Filter } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Plus, Pencil, Image as ImageIcon, Trash2, Globe, EyeOff, Star, Search, Filter, Users, Layers, MessageSquare, Mail, MailOpen, ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
+
+const API = import.meta.env.VITE_API_URL || "";
 
 type StatusFilter = "all" | "published" | "draft" | "featured";
 
+type Message = {
+  id: number;
+  name: string;
+  email: string;
+  subject: string | null;
+  message: string;
+  read: boolean;
+  createdAt: string;
+};
+
+type Client = {
+  id: number;
+  name: string;
+  slug: string;
+  published: boolean;
+};
+
+function useListClients() {
+  return useQuery<Client[]>({ queryKey: ["admin-clients"], queryFn: async () => {
+    const res = await fetch(`${API}/api/clients`);
+    return res.json();
+  }});
+}
+
+function useListMessages() {
+  return useQuery<Message[]>({ queryKey: ["admin-messages"], queryFn: async () => {
+    const res = await fetch(`${API}/api/admin/messages`, { credentials: "include" });
+    if (!res.ok) throw new Error("Failed to load messages");
+    return res.json();
+  }});
+}
+
 export default function AdminDashboard() {
-  const { data: projects = [], isLoading } = useListProjects();
+  const { data: projects = [], isLoading: projectsLoading } = useListProjects();
+  const { data: services = [] } = useListServices();
+  const { data: clients = [] } = useListClients();
+  const { data: messages = [] } = useListMessages();
   const togglePublish = useToggleProjectPublish();
   const deleteProject = useDeleteProject();
   const queryClient = useQueryClient();
@@ -69,6 +107,8 @@ export default function AdminDashboard() {
 
   const published = projects.filter(p => p.published).length;
   const featured = projects.filter(p => p.featured).length;
+  const unreadMessages = messages.filter(m => !m.read).length;
+  const recentMessages = messages.slice(0, 5);
 
   const filterChips: { value: StatusFilter; label: string; count: number }[] = [
     { value: "all", label: "All", count: projects.length },
@@ -80,36 +120,125 @@ export default function AdminDashboard() {
   return (
     <AdminLayout>
       {/* Page header */}
-      <div className="flex justify-between items-end mb-8 pb-6 border-b border-[hsl(220,15%,18%)]">
-        <div>
-          <p className="text-[10px] tracking-[0.35em] uppercase text-[hsl(38,72%,52%)] mb-1">Portfolio</p>
-          <h1 className="text-3xl font-serif font-bold uppercase tracking-tight">All Projects</h1>
-          <p className="text-xs text-[hsl(220,12%,50%)] mt-2">
-            Create, edit, and publish the projects shown on the public site.
-          </p>
-        </div>
-        <Link
-          href="/admin/projects/new"
-          className="inline-flex items-center gap-2 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-5 py-2.5 text-xs tracking-[0.2em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors"
-        >
-          <Plus size={13} />
-          New Project
-        </Link>
+      <div className="mb-8 pb-6 border-b border-[hsl(220,15%,18%)]">
+        <p className="text-[10px] tracking-[0.35em] uppercase text-[hsl(38,72%,52%)] mb-1">Overview</p>
+        <h1 className="text-3xl font-serif font-bold uppercase tracking-tight">Dashboard</h1>
+        <p className="text-xs text-[hsl(220,12%,50%)] mt-2">
+          Quick overview of your portfolio and site activity.
+        </p>
       </div>
 
-      {/* Stats row */}
+      {/* Stats grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Total Projects", value: projects.length },
-          { label: "Published", value: published },
-          { label: "Drafts", value: projects.length - published },
-          { label: "Featured on Home", value: featured },
+          { label: "Total Projects", value: projects.length, icon: Layers, color: "text-white" },
+          { label: "Published", value: published, icon: Globe, color: "text-green-500" },
+          { label: "Clients", value: clients.length, icon: Users, color: "text-white" },
+          { label: "Services", value: services.length, icon: Layers, color: "text-white" },
         ].map(stat => (
           <div key={stat.label} className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] px-5 py-4">
-            <p className="text-2xl font-serif font-bold">{stat.value}</p>
+            <div className="flex items-center justify-between">
+              <p className={`text-2xl font-serif font-bold ${stat.color}`}>{stat.value}</p>
+              <stat.icon size={14} className="text-[hsl(220,12%,30%)]" />
+            </div>
             <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mt-0.5">{stat.label}</p>
           </div>
         ))}
+      </div>
+
+      {/* Messages + Quick Actions row */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {/* Messages summary */}
+        <div className="md:col-span-2 bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <MessageSquare size={13} className="text-[hsl(38,72%,52%)]" />
+              <p className="text-[10px] tracking-[0.25em] uppercase text-[hsl(38,72%,52%)] font-semibold">Recent Messages</p>
+            </div>
+            <div className="flex items-center gap-3">
+              {unreadMessages > 0 && (
+                <span className="text-[9px] px-2 py-0.5 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] font-bold tracking-wider uppercase">
+                  {unreadMessages} unread
+                </span>
+              )}
+              <Link href="/admin/messages" className="text-[10px] tracking-[0.15em] uppercase text-[hsl(220,12%,45%)] hover:text-[hsl(38,72%,52%)] transition-colors flex items-center gap-1">
+                View All <ArrowRight size={10} />
+              </Link>
+            </div>
+          </div>
+          {recentMessages.length === 0 ? (
+            <p className="text-xs text-[hsl(220,12%,40%)] py-4 text-center tracking-widest uppercase">No messages yet</p>
+          ) : (
+            <div className="space-y-1.5">
+              {recentMessages.map(msg => (
+                <Link key={msg.id} href="/admin/messages" className="flex items-center gap-3 px-3 py-2.5 hover:bg-[hsl(220,18%,9%)] transition-colors">
+                  {msg.read ? <MailOpen size={12} className="text-[hsl(220,12%,30%)] shrink-0" /> : <Mail size={12} className="text-[hsl(38,72%,52%)] shrink-0" />}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className={`text-xs font-serif font-bold truncate ${msg.read ? "text-[hsl(220,12%,55%)]" : "text-white"}`}>{msg.name}</p>
+                      {!msg.read && <span className="w-1.5 h-1.5 bg-[hsl(38,72%,52%)] rounded-full shrink-0" />}
+                    </div>
+                    <p className="text-[10px] text-[hsl(220,12%,40%)] truncate">{msg.subject || msg.message.slice(0, 60)}</p>
+                  </div>
+                  <p className="text-[9px] text-[hsl(220,12%,30%)] shrink-0">{new Date(msg.createdAt).toLocaleDateString()}</p>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Quick actions */}
+        <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5">
+          <p className="text-[10px] tracking-[0.25em] uppercase text-[hsl(38,72%,52%)] mb-4 font-semibold">Quick Actions</p>
+          <div className="space-y-2">
+            <Link
+              href="/admin/projects/new"
+              className="flex items-center gap-3 px-3 py-3 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] text-xs tracking-[0.15em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors"
+            >
+              <Plus size={13} />
+              New Project
+            </Link>
+            <Link
+              href="/admin/services/new"
+              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors"
+            >
+              <Plus size={13} />
+              New Service
+            </Link>
+            <Link
+              href="/admin/clients"
+              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors"
+            >
+              <Users size={13} />
+              Manage Clients
+            </Link>
+            <Link
+              href="/admin/messages"
+              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors"
+            >
+              <MessageSquare size={13} />
+              Inbox
+              {unreadMessages > 0 && (
+                <span className="ml-auto text-[9px] px-1.5 py-0.5 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] font-bold">{unreadMessages}</span>
+              )}
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Projects section - secondary */}
+      <div className="mb-4 pb-4 border-b border-[hsl(220,15%,18%)] flex justify-between items-end">
+        <div>
+          <p className="text-[10px] tracking-[0.35em] uppercase text-[hsl(38,72%,52%)] mb-1">Portfolio</p>
+          <h2 className="text-xl font-serif font-bold uppercase tracking-tight">Projects</h2>
+        </div>
+        <Link
+          href="/admin/projects/new"
+          className="inline-flex items-center gap-2 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-4 py-2 text-[10px] tracking-[0.2em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors"
+        >
+          <Plus size={12} />
+          New Project
+        </Link>
       </div>
 
       {/* Search + filter bar */}
@@ -146,7 +275,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Project Table */}
-      {isLoading ? (
+      {projectsLoading ? (
         <div className="space-y-3">
           {[1,2,3].map(i => (
             <div key={i} className="h-16 bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] animate-pulse" />

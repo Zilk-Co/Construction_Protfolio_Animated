@@ -1,14 +1,31 @@
 import { Router, Request, Response } from "express";
-import { db, clientsTable } from "@workspace/db";
+import { db, clientsTable, projectsTable } from "@workspace/db";
 import { insertClientSchema } from "@workspace/db/schema";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, count } from "drizzle-orm";
 import { requireAdmin } from "../middlewares/auth";
 
 const router = Router();
 
 router.get("/clients", async (_req: Request, res: Response) => {
-  const clients = await db.select().from(clientsTable).orderBy(asc(clientsTable.sortOrder));
-  res.json(clients);
+  const clientsWithProjects = await db
+    .select({
+      id: clientsTable.id,
+      name: clientsTable.name,
+      slug: clientsTable.slug,
+      description: clientsTable.description,
+      logoUrl: clientsTable.logoUrl,
+      website: clientsTable.website,
+      sortOrder: clientsTable.sortOrder,
+      published: clientsTable.published,
+      createdAt: clientsTable.createdAt,
+      updatedAt: clientsTable.updatedAt,
+      projectCount: count(projectsTable.id),
+    })
+    .from(clientsTable)
+    .leftJoin(projectsTable, eq(clientsTable.id, projectsTable.clientId))
+    .groupBy(clientsTable.id)
+    .orderBy(asc(clientsTable.sortOrder));
+  res.json(clientsWithProjects);
 });
 
 router.get("/clients/:slug", async (req: Request, res: Response) => {
@@ -16,6 +33,19 @@ router.get("/clients/:slug", async (req: Request, res: Response) => {
   const [client] = await db.select().from(clientsTable).where(eq(clientsTable.slug, slug));
   if (!client) { res.status(404).json({ error: "Client not found" }); return; }
   res.json(client);
+});
+
+router.get("/admin/clients/:id/projects", requireAdmin, async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const projects = await db
+    .select({
+      id: projectsTable.id,
+      title: projectsTable.title,
+      slug: projectsTable.slug,
+    })
+    .from(projectsTable)
+    .where(eq(projectsTable.clientId, id));
+  res.json(projects);
 });
 
 router.post("/admin/clients", requireAdmin, async (req: Request, res: Response) => {

@@ -8,6 +8,7 @@ import { usePageContent } from "@/hooks/usePageContent";
 import { EditEntityCard } from "@/components/EditEntityCard";
 import { EditableText } from "@/components/EditableText";
 import { useEditMode } from "@/components/EditModeProvider";
+import { HeroImageEditor } from "@/components/HeroImageEditor";
 
 const HERO_BG_FALLBACK =
   "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&q=80";
@@ -43,6 +44,10 @@ export default function Services() {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${t.get("hero_bg", HERO_BG_FALLBACK)})` }}
+          />
+          <HeroImageEditor
+            value={t.get("hero_bg", HERO_BG_FALLBACK)}
+            onSave={(url) => savePageContent("hero_bg", url)}
           />
           <div className="absolute inset-0 bg-black/72" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.8) 100%)" }} />

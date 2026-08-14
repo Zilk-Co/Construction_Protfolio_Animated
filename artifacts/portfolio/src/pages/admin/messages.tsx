@@ -19,6 +19,7 @@ type Message = {
 function useListMessages() {
   return useQuery<Message[]>({ queryKey: ["admin-messages"], queryFn: async () => {
     const res = await fetch(`${API}/api/admin/messages`, { credentials: "include" });
+    if (!res.ok) throw new Error("Failed to load messages");
     return res.json();
   }});
 }
@@ -26,6 +27,7 @@ function useListMessages() {
 function useMessageStats() {
   return useQuery<{ total: number; unread: number }>({ queryKey: ["admin-messages-stats"], queryFn: async () => {
     const res = await fetch(`${API}/api/admin/messages/stats`, { credentials: "include" });
+    if (!res.ok) throw new Error("Failed to load stats");
     return res.json();
   }});
 }
@@ -51,12 +53,26 @@ function useDeleteMessage() {
 }
 
 export default function AdminMessages() {
-  const { data: messages = [], isLoading } = useListMessages();
+  const { data: messages = [], isLoading, error } = useListMessages();
   const { data: stats } = useMessageStats();
   const markRead = useMarkRead();
   const deleteMessage = useDeleteMessage();
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="mb-8 pb-6 border-b border-[hsl(220,15%,18%)]">
+          <p className="text-[10px] tracking-[0.35em] uppercase text-[hsl(38,72%,52%)] mb-1">Communication</p>
+          <h1 className="text-3xl font-serif font-bold uppercase tracking-tight">Inbox</h1>
+        </div>
+        <div className="text-center py-16">
+          <p className="text-xs text-red-400 tracking-widest uppercase">Failed to load messages. Please try again.</p>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   const handleMarkRead = (id: number) => {
     markRead.mutate(id);

@@ -7,6 +7,7 @@ import { useDocuments } from "@/hooks/useDocuments";
 import { FileText, Download } from "lucide-react";
 import { EditableText } from "@/components/EditableText";
 import { useEditMode } from "@/components/EditModeProvider";
+import { HeroImageEditor } from "@/components/HeroImageEditor";
 
 const DEFAULT_HERO_BG = "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=80";
 const DEFAULT_JOURNEY_BG = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80";
@@ -43,6 +44,10 @@ export default function About() {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${heroBg})` }}
+          />
+          <HeroImageEditor
+            value={heroBg}
+            onSave={(url) => savePageContent("hero_bg", url)}
           />
           <div className="absolute inset-0 bg-black/70" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.75) 100%)" }} />

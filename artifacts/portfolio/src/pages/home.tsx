@@ -260,22 +260,37 @@ export default function Home() {
               </Link>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }} className="grid grid-cols-2 gap-4">
-              <div className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
-                <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>20+</p>
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">Years Experience</p>
-              </div>
-              <div className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
-                <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>100+</p>
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">Projects Delivered</p>
-              </div>
-              <div className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
-                <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>50+</p>
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">Expert Team</p>
-              </div>
-              <div className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
-                <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>100%</p>
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">Safety Record</p>
-              </div>
+              {[
+                { numKey: "stat_1_number", labelKey: "stat_1_label", num: "20+", label: "Years Experience" },
+                { numKey: "stat_2_number", labelKey: "stat_2_label", num: "100+", label: "Projects Delivered" },
+                { numKey: "stat_3_number", labelKey: "stat_3_label", num: "50+", label: "Expert Team" },
+                { numKey: "stat_4_number", labelKey: "stat_4_label", num: "100%", label: "Safety Record" },
+              ].map((stat) => (
+                <div key={stat.numKey} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
+                  <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>
+                    {editMode ? (
+                      <EditableText
+                        value={t.get(stat.numKey, stat.num)}
+                        onSave={(v) => savePageContent(stat.numKey, v)}
+                        tag="span"
+                      />
+                    ) : (
+                      t.get(stat.numKey, stat.num)
+                    )}
+                  </p>
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-2">
+                    {editMode ? (
+                      <EditableText
+                        value={t.get(stat.labelKey, stat.label)}
+                        onSave={(v) => savePageContent(stat.labelKey, v)}
+                        tag="span"
+                      />
+                    ) : (
+                      t.get(stat.labelKey, stat.label)
+                    )}
+                  </p>
+                </div>
+              ))}
             </motion.div>
           </div>
         </section>

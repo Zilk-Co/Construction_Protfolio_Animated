@@ -5,11 +5,20 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
+const API = import.meta.env.VITE_API_URL || "";
+
+type Client = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
 export default function AdminProjectEdit() {
   const { id } = useParams();
   const projectId = parseInt(id || "0", 10);
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
+  const [clients, setClients] = useState<Client[]>([]);
 
   // Find project by iterating through all projects (useGetProject expects slug, but we only have ID here)
   // Or actually, wait, the API might not have a getProjectById endpoint, let's fetch all and filter or wait... 
@@ -27,6 +36,7 @@ export default function AdminProjectEdit() {
     slug: "",
     location: "",
     client: "",
+    clientId: "" as number | string,
     sector: "",
     size: "",
     scope: "",
@@ -40,6 +50,13 @@ export default function AdminProjectEdit() {
   });
 
   const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    fetch(`${API}/api/clients`)
+      .then(res => res.json())
+      .then(data => setClients(data))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (project) {
@@ -60,6 +77,7 @@ export default function AdminProjectEdit() {
         slug: fullProject.slug || "",
         location: fullProject.location || "",
         client: fullProject.client || "",
+        clientId: fullProject.clientId || "",
         sector: fullProject.sector || "",
         size: fullProject.size || "",
         scope: fullProject.scope || "",
@@ -77,10 +95,28 @@ export default function AdminProjectEdit() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const val = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
-    setFormData(prev => ({
-      ...prev,
-      [name]: name === "categoryId" || name === "serviceId" ? (value === "" ? null : parseInt(value, 10)) : val
-    }));
+    
+    setFormData(prev => {
+      const updates: Record<string, any> = {
+        [name]: name === "categoryId" || name === "serviceId" || name === "clientId" 
+          ? (value === "" ? null : parseInt(value, 10)) 
+          : val
+      };
+      
+      // When client is selected, auto-fill clientName
+      if (name === 'clientId') {
+        if (value) {
+          const selectedClient = clients.find(c => c.id === parseInt(value, 10));
+          if (selectedClient) {
+            updates.client = selectedClient.name;
+          }
+        } else {
+          updates.client = "";
+        }
+      }
+      
+      return { ...prev, ...updates };
+    });
     setIsSaved(false);
   };
 
@@ -90,6 +126,7 @@ export default function AdminProjectEdit() {
       id: projectId,
       data: {
         ...formData,
+        clientId: formData.clientId ? Number(formData.clientId) : null,
         categoryId: formData.categoryId ? Number(formData.categoryId) : undefined,
         serviceId: formData.serviceId ? Number(formData.serviceId) : undefined
       } as any
@@ -189,7 +226,17 @@ export default function AdminProjectEdit() {
 
               <div>
                 <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Client</label>
-                <input name="client" value={formData.client} onChange={handleChange} className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:border-white transition-colors" />
+                <select
+                  name="clientId"
+                  value={formData.clientId || ""}
+                  onChange={handleChange}
+                  className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:border-white transition-colors appearance-none rounded-none"
+                >
+                  <option value="">No Client</option>
+                  {clients.map(c => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

@@ -9,6 +9,7 @@ import { usePageContent } from "@/hooks/usePageContent";
 import { EditEntityCard } from "@/components/EditEntityCard";
 import { EditableText } from "@/components/EditableText";
 import { useEditMode } from "@/components/EditModeProvider";
+import { HeroImageEditor } from "@/components/HeroImageEditor";
 
 const PROJECTS_HERO_BG =
   "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75";
@@ -73,7 +74,11 @@ export default function Projects() {
          <section className="relative pt-28 pb-16 px-6 overflow-hidden md:pt-44 md:pb-24">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${PROJECTS_HERO_BG})` }}
+            style={{ backgroundImage: `url(${t.get("hero_bg", PROJECTS_HERO_BG)})` }}
+          />
+          <HeroImageEditor
+            value={t.get("hero_bg", PROJECTS_HERO_BG)}
+            onSave={(url) => savePageContent("hero_bg", url)}
           />
           <div className="absolute inset-0 bg-black/72" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.8) 100%)" }} />

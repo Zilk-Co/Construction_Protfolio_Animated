@@ -2,6 +2,21 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Image, Link as LinkIcon, Upload, X, Check } from "lucide-react";
 
+const PREDEFINED_GALLERY = [
+  "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75",
+  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&q=75",
+  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=75",
+  "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&q=75",
+  "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=75",
+  "https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=900&q=75",
+  "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=900&q=75",
+  "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?w=900&q=75",
+  "https://images.unsplash.com/photo-1590725140246-20acdee442be?w=900&q=75",
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=75",
+  "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=75",
+  "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=900&q=75",
+];
+
 interface GalleryPickerProps {
   value: string;
   onChange: (url: string) => void;
@@ -25,7 +40,7 @@ export function GalleryPicker({
 
   useEffect(() => { setUrlInput(value); }, [value]);
 
-  const { data, isLoading } = useQuery<{ images: string[] }>({
+  const { data } = useQuery<{ images: string[] }>({
     queryKey: ["gallery"],
     queryFn: async () => {
       const resp = await fetch("/api/gallery");
@@ -35,7 +50,7 @@ export function GalleryPicker({
     enabled: galleryOpen,
   });
 
-  const images = data?.images ?? [];
+  const images = [...PREDEFINED_GALLERY, ...(data?.images ?? []).filter(u => !PREDEFINED_GALLERY.includes(u))];
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -114,33 +129,27 @@ export function GalleryPicker({
               </button>
             </div>
             <div className="overflow-y-auto p-6">
-              {isLoading ? (
-                <div className="text-center text-[hsl(220,12%,45%)] text-sm py-8">Loading gallery...</div>
-              ) : images.length === 0 ? (
-                <div className="text-center text-[hsl(220,12%,45%)] text-sm py-8">No images found.</div>
-              ) : (
-                <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
-                  {images.map((url) => (
-                    <button
-                      key={url}
-                      type="button"
-                      onClick={() => { onChange(url); setUrlInput(url); setGalleryOpen(false); setMode("url"); }}
-                      className={`relative aspect-square overflow-hidden border-2 transition-colors group ${
-                        value === url
-                          ? "border-[hsl(38,72%,52%)] ring-1 ring-[hsl(38,72%,52%)]"
-                          : "border-transparent hover:border-[hsl(220,15%,30%)]"
-                      }`}
-                    >
-                      <img src={url} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                      {value === url && (
-                        <div className="absolute top-1 right-1 w-5 h-5 bg-[hsl(38,72%,52%)] flex items-center justify-center">
-                          <Check size={12} className="text-[hsl(220,18%,9%)]" />
-                        </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                {images.map((url) => (
+                  <button
+                    key={url}
+                    type="button"
+                    onClick={() => { onChange(url); setUrlInput(url); setGalleryOpen(false); setMode("url"); }}
+                    className={`relative aspect-square overflow-hidden border-2 transition-colors group ${
+                      value === url
+                        ? "border-[hsl(38,72%,52%)] ring-1 ring-[hsl(38,72%,52%)]"
+                        : "border-transparent hover:border-[hsl(220,15%,30%)]"
+                    }`}
+                  >
+                    <img src={url} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                    {value === url && (
+                      <div className="absolute top-1 right-1 w-5 h-5 bg-[hsl(38,72%,52%)] flex items-center justify-center">
+                        <Check size={12} className="text-[hsl(220,18%,9%)]" />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

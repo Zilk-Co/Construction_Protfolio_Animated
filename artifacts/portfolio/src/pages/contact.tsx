@@ -8,6 +8,7 @@ import { useGetSettings, useUpdatePageContent } from "@workspace/api-client-reac
 import { usePageContent } from "@/hooks/usePageContent";
 import { EditableText } from "@/components/EditableText";
 import { useEditMode } from "@/components/EditModeProvider";
+import { HeroImageEditor } from "@/components/HeroImageEditor";
 
 const CONTACT_HERO_BG =
   "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&q=75";
@@ -79,7 +80,11 @@ export default function Contact() {
       <div className="min-h-screen text-foreground">
         {/* Hero */}
         <section className="relative pt-44 pb-28 px-6 overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${CONTACT_HERO_BG})` }} />
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${t.get("hero_bg", CONTACT_HERO_BG)})` }} />
+          <HeroImageEditor
+            value={t.get("hero_bg", CONTACT_HERO_BG)}
+            onSave={(url) => savePageContent("hero_bg", url)}
+          />
           <div className="absolute inset-0 bg-black/70" />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.75) 100%)" }} />
           <div className="absolute inset-0 z-[1] pointer-events-none opacity-[0.04] mix-blend-overlay" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat" }} />
