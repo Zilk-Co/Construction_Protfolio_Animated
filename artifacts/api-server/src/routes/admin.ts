@@ -7,6 +7,7 @@ import {
   isAdminSessionValid,
   sessionCookieOptions,
   clientIp,
+  computeDeviceFingerprint,
 } from "../middlewares/auth";
 
 const router: IRouter = Router();
@@ -89,6 +90,8 @@ router.post("/admin/login", async (req, res): Promise<void> => {
     session.adminAuthenticated = true;
     session.adminLoginAt = Date.now();
     session.passwordVersion = passwordVersion;
+    // Bind session to this device/browser context
+    session.deviceFingerprint = computeDeviceFingerprint(req);
     if (req.session.cookie) {
       req.session.cookie.maxAge = undefined;
     }
@@ -107,6 +110,7 @@ router.post("/admin/logout", async (req, res): Promise<void> => {
   const session = adminSession(req);
   session.adminAuthenticated = false;
   session.adminLoginAt = undefined;
+  session.deviceFingerprint = undefined;
   req.session.destroy((err) => {
     if (err) {
       logger.error({ err }, "admin session destroy failed");
@@ -124,6 +128,7 @@ router.get("/admin/me", async (req, res): Promise<void> => {
     if (session.adminAuthenticated) {
       session.adminAuthenticated = false;
       session.adminLoginAt = undefined;
+      session.deviceFingerprint = undefined;
     }
     res.status(401).json({ authenticated: false });
     return;
@@ -132,6 +137,7 @@ router.get("/admin/me", async (req, res): Promise<void> => {
   if (typeof session.passwordVersion === "number" && session.passwordVersion !== passwordVersion) {
     session.adminAuthenticated = false;
     session.adminLoginAt = undefined;
+    session.deviceFingerprint = undefined;
     res.status(401).json({ authenticated: false, reason: "Password changed" });
     return;
   }

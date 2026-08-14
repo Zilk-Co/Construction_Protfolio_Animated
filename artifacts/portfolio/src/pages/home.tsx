@@ -6,6 +6,9 @@ import { Footer } from "@/components/layout/Footer";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import { usePageContent } from "@/hooks/usePageContent";
+import { EditableText } from "@/components/EditableText";
+import { useEditMode } from "@/components/EditModeProvider";
+import { useUpdatePageContent } from "@workspace/api-client-react";
 
 const SERVICES_FALLBACK = "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600";
 
@@ -27,6 +30,8 @@ export default function Home() {
   const loadedImagesRef = useRef<Record<number, boolean>>({});
   const [, forceRender] = useState(0);
   const t = usePageContent("home");
+  const { editMode } = useEditMode();
+  const updatePageContent = useUpdatePageContent();
 
   const displayProjects = Array.isArray(featuredProjects) ? featuredProjects.slice(0, 3) : [];
 
@@ -65,6 +70,12 @@ export default function Home() {
   }, [displayProjects]);
 
   const featuredServices = Array.isArray(services) ? services : [];
+
+  const savePageContent = async (key: string, value: string) => {
+    await updatePageContent.mutateAsync({
+      data: { updates: [{ page: "home", key, value }] },
+    });
+  };
 
   return (
     <PageTransition>
@@ -179,7 +190,16 @@ export default function Home() {
                 <div className="text-center px-8">
                   <img src="/logo.png" alt="Azhar Engineering" className="h-14 md:h-18 w-auto object-contain mb-4 mx-auto" style={{ filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.8))" }} />
                   <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold tracking-tight uppercase text-white mb-4" style={{ textShadow: "0 4px 30px rgba(0,0,0,0.85), 0 2px 8px rgba(0,0,0,0.9)" }}>
-                    {t.get("hero_headline", "Architecture & Construction")}
+                    {editMode ? (
+                      <EditableText
+                        value={t.get("hero_headline", "Architecture & Construction")}
+                        onSave={(v) => savePageContent("hero_headline", v)}
+                        tag="span"
+                        className="inline"
+                      />
+                    ) : (
+                      t.get("hero_headline", "Architecture & Construction")
+                    )}
                   </h1>
                   <p className="text-sm md:text-base text-gray-200 max-w-xl mx-auto mb-8 leading-relaxed" style={{ textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}>
                     {t.get("hero_description", "Delivering landmark architectural and construction projects across Pakistan and the Middle East since 2005.")}
@@ -203,10 +223,28 @@ export default function Home() {
           <div className="max-w-screen-2xl mx-auto text-center">
             <img src="/logo.png" alt="Azhar Engineering" className="h-12 w-auto object-contain mb-4 mx-auto" />
             <h1 className="text-3xl font-serif font-bold tracking-tight uppercase mb-3">
-              {t.get("hero_headline", "Architecture & Construction")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_headline", "Architecture & Construction")}
+                  onSave={(v) => savePageContent("hero_headline", v)}
+                  tag="span"
+                  className="inline"
+                />
+              ) : (
+                t.get("hero_headline", "Architecture & Construction")
+              )}
             </h1>
             <p className="text-sm text-[hsl(220,12%,55%)] max-w-md mx-auto leading-relaxed mb-6">
-              {t.get("hero_description", "Delivering landmark architectural and construction projects across Pakistan and the Middle East since 2005.")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_description", "Delivering landmark architectural and construction projects across Pakistan and the Middle East since 2005.")}
+                  onSave={(v) => savePageContent("hero_description", v)}
+                  tag="span"
+                  className="inline"
+                />
+              ) : (
+                t.get("hero_description", "Delivering landmark architectural and construction projects across Pakistan and the Middle East since 2005.")
+              )}
             </p>
             <div className="flex items-center justify-center gap-3">
               <Link href="/contact" className="bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-6 py-3 text-xs tracking-[0.2em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors inline-flex items-center gap-2">

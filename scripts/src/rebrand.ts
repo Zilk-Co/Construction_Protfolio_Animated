@@ -18,7 +18,6 @@ import {
   servicesTable,
   projectsTable,
   projectImagesTable,
-  machineryTable,
   categoriesTable,
   documentsTable,
 } from "@workspace/db";
@@ -71,7 +70,6 @@ async function main(): Promise<void> {
     { table: "services", columns: [servicesTable.description, servicesTable.longDescription, servicesTable.name, servicesTable.slug] },
     { table: "projects", columns: [projectsTable.title, projectsTable.location, projectsTable.client, projectsTable.sector, projectsTable.scope, projectsTable.longDescription, projectsTable.slug] },
     { table: "project_images", columns: [projectImagesTable.imageUrl] },
-    { table: "machinery", columns: [machineryTable.name, machineryTable.description, machineryTable.longDescription, machineryTable.category, machineryTable.slug] },
     { table: "categories", columns: [categoriesTable.name] },
     { table: "documents", columns: [documentsTable.title, documentsTable.description, documentsTable.fileName] },
   ];

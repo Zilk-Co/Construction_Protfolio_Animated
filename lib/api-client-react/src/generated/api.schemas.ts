@@ -127,44 +127,6 @@ export interface PublishToggle {
   published: boolean;
 }
 
-export interface MachineryItem {
-  id: number;
-  name: string;
-  slug: string;
-  /** @nullable */
-  category?: string | null;
-  /** @nullable */
-  description?: string | null;
-  /** @nullable */
-  longDescription?: string | null;
-  /** @nullable */
-  imageUrl?: string | null;
-  /** @nullable */
-  galleryImages?: string | null;
-  /** @nullable */
-  year?: string | null;
-  /** @nullable */
-  condition?: string | null;
-  published: boolean;
-  featured?: boolean;
-}
-
-export interface MachineryInput {
-  /** @minLength 1 */
-  name: string;
-  /** @minLength 1 */
-  slug: string;
-  category?: string;
-  description?: string;
-  longDescription?: string;
-  imageUrl?: string;
-  galleryImages?: string;
-  year?: string;
-  condition?: string;
-  published?: boolean;
-  featured?: boolean;
-}
-
 export interface ServicesItem {
   id: number;
   name: string;
@@ -212,6 +174,7 @@ export interface AdminCredentials {
 
 export interface AdminSession {
   authenticated: boolean;
+  expiresInMs?: number;
 }
 
 export interface SiteSettings {
@@ -238,10 +201,6 @@ export interface SiteSettings {
 export type ListProjectsParams = {
 published?: boolean;
 category_id?: number;
-};
-
-export type ListMachineryParams = {
-published?: boolean;
 };
 
 export type ListServicesParams = {

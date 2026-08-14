@@ -60,7 +60,6 @@ export function Footer() {
                 { href: "/about", label: "About" },
                 { href: "/projects", label: "Projects" },
                 { href: "/services", label: "Services" },
-                { href: "/machinery", label: "Machinery" },
                 { href: "/clients", label: "Clients" },
                 { href: "/safety", label: "Safety" },
                 { href: "/documents", label: "Documents" },

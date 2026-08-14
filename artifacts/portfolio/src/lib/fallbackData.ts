@@ -1,4 +1,4 @@
-import type { Project, ProjectSummary, MachineryItem, ServicesItem } from "@workspace/api-client-react";
+import type { Project, ProjectSummary, ServicesItem } from "@workspace/api-client-react";
 
 const IMG = (id: string, w = 900) => `https://images.unsplash.com/${id}?w=${w}&q=75`;
 
@@ -12,19 +12,6 @@ export const FALLBACK_PROJECTS: ProjectSummary[] = [
   { id: 7, title: "Azure Heights", slug: "azure-heights", location: "Dubai Marina", client: "Azure Properties", sector: "Residential", status: "In Progress", published: true, featured: false, categoryId: 2, year: "2024", categoryName: "Residential", heroImage: IMG("photo-1545324418-cc1a3fa10c00") },
   { id: 8, title: "Verdant Civic Park", slug: "verdant-civic-park", location: "Islamabad", client: "Capital Development Authority", sector: "Public", status: "Completed", published: true, featured: false, categoryId: 5, year: "2020", categoryName: "Infrastructure", heroImage: IMG("photo-1448630360428-65456885c650") },
   { id: 9, title: "Atrium Business Hub", slug: "atrium-business-hub", location: "Karachi", client: "Atrium Holdings", sector: "Commercial", status: "Completed", published: true, featured: false, categoryId: 1, year: "2019", categoryName: "Commercial", heroImage: IMG("photo-1497366216548-37526070297c") },
-];
-
-const MACH_IMG = (id: string) => IMG(id, 600);
-
-export const FALLBACK_MACHINERY: MachineryItem[] = [
-  { id: 1, name: "Caterpillar 390F Excavator", slug: "caterpillar-390f-excavator", category: "Excavation", description: "90-ton class hydraulic excavator for deep foundation and bulk earthworks.", imageUrl: MACH_IMG("photo-1581094288338-2314dddb7ece"), year: "2021", condition: "Excellent", published: true, featured: true },
-  { id: 2, name: "Liebherr LTM 1750 Crane", slug: "liebherr-ltm-1750-crane", category: "Lifting", description: "750-ton mobile crane for heavy lifts on high-rise and industrial projects.", imageUrl: MACH_IMG("photo-1567899378494-47b22a2ae96a"), year: "2020", condition: "Excellent", published: true, featured: true },
-  { id: 3, name: "Komatsu D475A Bulldozer", slug: "komatsu-d475a-bulldozer", category: "Earthworks", description: "108-ton class bulldozer for site grading and large-scale earthmoving.", imageUrl: MACH_IMG("photo-1597844808175-c1c4e8c3a3e6"), year: "2019", condition: "Good", published: true, featured: true },
-  { id: 4, name: "Volvo A40G Articulated Hauler", slug: "volvo-a40g-articulated-hauler", category: "Hauling", description: "45-ton off-road hauler built for soft ground and steep haul roads.", imageUrl: MACH_IMG("photo-1530824775361-c4cf2d5b6b3f"), year: "2022", condition: "Excellent", published: true, featured: true },
-  { id: 5, name: "Putzmeister BSF 63-5.16H", slug: "putzmeister-bsf-63-concrete-pump", category: "Concrete", description: "63-meter boom concrete pump for high-volume pours on towers.", imageUrl: MACH_IMG("photo-1503387762-592deb58ef4e"), year: "2020", condition: "Good", published: true, featured: false },
-  { id: 6, name: "Bauer BG 55 Piling Rig", slug: "bauer-bg-55-piling-rig", category: "Foundations", description: "Rotary piling rig for bored cast-in-situ piles up to 80m depth.", imageUrl: MACH_IMG("photo-1487958449943-2429e8be8625"), year: "2018", condition: "Good", published: true, featured: false },
-  { id: 7, name: "JCB 540-180 Telehandler", slug: "jcb-540-180-telehandler", category: "Material Handling", description: "18-meter telehandler for elevated material placement.", imageUrl: MACH_IMG("photo-1581092580497-e0d23cbdf1dc"), year: "2022", condition: "Excellent", published: true, featured: false },
-  { id: 8, name: "Hamm H13i Compactor", slug: "hamm-h13i-compactor", category: "Compaction", description: "14-ton soil compactor with vibration intelligence for roadbeds.", imageUrl: MACH_IMG("photo-1590736969955-71cc94901144"), year: "2021", condition: "Excellent", published: true, featured: false },
 ];
 
 export function buildFallbackProject(slug: string): Project | null {
@@ -42,10 +29,6 @@ export function buildFallbackProject(slug: string): Project | null {
       { id: 4, projectId: summary.id, imageUrl: IMG("photo-1503387762-592deb58ef4e"), isHero: false, sortOrder: 3 },
     ] as any,
   } as Project;
-}
-
-export function buildFallbackMachinery(slug: string): MachineryItem | null {
-  return FALLBACK_MACHINERY.find(m => m.slug === slug) ?? null;
 }
 
 const SRV_IMG = (id: string) => IMG(id, 600);

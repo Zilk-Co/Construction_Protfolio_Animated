@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { useGetAdminMe, useAdminLogout } from "@workspace/api-client-react";
-import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Wrench, Layers, FileText, LayoutDashboard, Users, Shield, MessageSquare } from "lucide-react";
+import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Layers, FileText, LayoutDashboard, Users, Shield, MessageSquare } from "lucide-react";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -42,12 +42,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       items: [
         { href: "/admin", label: "All Projects", icon: FolderOpen },
         { href: "/admin/projects/new", label: "Add Project", icon: Plus },
-      ],
-    },
-    {
-      label: "Fleet",
-      items: [
-        { href: "/admin/machinery", label: "All Equipment", icon: Wrench },
       ],
     },
     {

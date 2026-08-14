@@ -29,9 +29,6 @@ export const PAGE_CONTENT_SEED: Array<{
   { page: "home", key: "intro_cta_label", category: "Intro Strip", label: "Intro CTA Label", value: "View All Projects", type: "text", sortOrder: 3 },
   { page: "home", key: "selected_works_title", category: "Selected Works", label: "Section Title", value: "Selected Works", type: "text", sortOrder: 0 },
   { page: "home", key: "selected_works_all_label", category: "Selected Works", label: "All Projects Link", value: "All Projects", type: "text", sortOrder: 1 },
-  { page: "home", key: "machinery_eyebrow", category: "Machinery", label: "Section Eyebrow", value: "Equipment & Fleet", type: "text", sortOrder: 0 },
-  { page: "home", key: "machinery_title", category: "Machinery", label: "Section Title", value: "Our Machinery", type: "text", sortOrder: 1 },
-  { page: "home", key: "machinery_all_label", category: "Machinery", label: "All Equipment Link", value: "All Equipment", type: "text", sortOrder: 2 },
   { page: "home", key: "services_eyebrow", category: "Services", label: "Section Eyebrow", value: "What We Do", type: "text", sortOrder: 0 },
   { page: "home", key: "services_title", category: "Services", label: "Section Title", value: "Our Services", type: "text", sortOrder: 1 },
   { page: "home", key: "services_all_label", category: "Services", label: "All Services Link", value: "View All Services", type: "text", sortOrder: 2 },
@@ -48,13 +45,6 @@ export const PAGE_CONTENT_SEED: Array<{
   { page: "projects", key: "empty_state", category: "Empty State", label: "No Results Message", value: "No projects match this filter", type: "text", sortOrder: 0 },
   { page: "projects", key: "count_label_singular", category: "Count", label: "Count Label (1)", value: "project", type: "text", sortOrder: 0 },
   { page: "projects", key: "count_label_plural", category: "Count", label: "Count Label (n)", value: "projects", type: "text", sortOrder: 1 },
-
-  // ── Machinery ──────────────────────────────────────────
-  { page: "machinery", key: "hero_eyebrow", category: "Hero", label: "Hero Eyebrow", value: "Equipment & Fleet", type: "text", sortOrder: 0 },
-  { page: "machinery", key: "hero_title", category: "Hero", label: "Hero Title", value: "Machinery", type: "text", sortOrder: 1 },
-  { page: "machinery", key: "hero_subtitle", category: "Hero", label: "Hero Subtitle", value: "Our fleet of specialised construction equipment supports projects across the region, from excavation and piling to concrete works and heavy lifting.", type: "textarea", sortOrder: 2 },
-  { page: "machinery", key: "filter_all_label", category: "Filters", label: "All Equipment Button", value: "All Equipment", type: "text", sortOrder: 0 },
-  { page: "machinery", key: "empty_state", category: "Empty State", label: "No Results Message", value: "No machinery match this filter", type: "text", sortOrder: 0 },
 
   // ── Services ───────────────────────────────────────────
   { page: "services", key: "hero_eyebrow", category: "Hero", label: "Hero Eyebrow", value: "Core Expertise", type: "text", sortOrder: 0 },

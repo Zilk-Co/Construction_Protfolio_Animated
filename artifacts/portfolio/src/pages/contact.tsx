@@ -190,7 +190,6 @@ export default function Contact() {
                         <option value="" className="bg-[hsl(220,18%,12%)]">Select enquiry type</option>
                         <option value="new-project" className="bg-[hsl(220,18%,12%)]">New Project</option>
                         <option value="civil" className="bg-[hsl(220,18%,12%)]">Civil Works</option>
-                        <option value="machinery" className="bg-[hsl(220,18%,12%)]">Machinery Hire</option>
                         <option value="general" className="bg-[hsl(220,18%,12%)]">General Enquiry</option>
                         <option value="partnership" className="bg-[hsl(220,18%,12%)]">Partnership</option>
                       </select>

@@ -2,7 +2,7 @@ import pg from "pg";
 const p = new pg.Pool({ connectionString: process.env.DATABASE_URL, connectionTimeoutMillis: 15000 });
 const tables = await p.query("select tablename from pg_tables where schemaname='public' order by tablename");
 console.log("tables:", tables.rows.map((x) => x.tablename).join(", ") || "(no tables)");
-for (const t of ["projects", "machinery", "settings", "page_content", "services", "documents", "categories"]) {
+for (const t of ["projects", "settings", "page_content", "services", "documents", "categories"]) {
   try {
     const r = await p.query(`select count(*)::int as n from ${t}`);
     console.log(`${t}: ${r.rows[0].n} row(s)`);

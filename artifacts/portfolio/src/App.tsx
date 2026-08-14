@@ -8,6 +8,8 @@ import { ParticleBackground } from "@/components/layout/ParticleBackground";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { AdminFloatingButton } from "@/components/layout/AdminFloatingButton";
 import { AiAssistant } from "@/components/layout/AiAssistant";
+import { EditModeProvider } from "@/components/EditModeProvider";
+import { EditModeProjectManager } from "@/components/EditModeProjectManager";
 import Home from "@/pages/home";
 import Projects from "@/pages/projects";
 import ProjectDetail from "@/pages/project-detail";
@@ -16,8 +18,6 @@ import Safety from "@/pages/safety";
 import Contact from "@/pages/contact";
 import ServicesPage from "@/pages/services";
 import ServiceDetail from "@/pages/services-detail";
-import MachineryPage from "@/pages/machinery";
-import MachineryDetail from "@/pages/machinery-detail";
 import ClientsPage from "@/pages/clients";
 import ClientDetail from "@/pages/client-detail";
 import DocumentsPage from "@/pages/documents";
@@ -27,8 +27,6 @@ import AdminDashboard from "@/pages/admin/dashboard";
 import AdminProjectNew from "@/pages/admin/project-new";
 import AdminProjectEdit from "@/pages/admin/project-edit";
 import AdminProjectImages from "@/pages/admin/project-images";
-import AdminMachinery from "@/pages/admin/machinery";
-import AdminMachineryEdit from "@/pages/admin/machinery-edit";
 import AdminServices from "@/pages/admin/services";
 import AdminServicesEdit from "@/pages/admin/services-edit";
 import AdminSettings from "@/pages/admin/settings";
@@ -51,6 +49,7 @@ function Router() {
       {!isAdmin && <Navbar />}
       <CustomCursor />
       <AdminFloatingButton />
+      {!isAdmin && <EditModeProjectManager />}
       <AiAssistant />
       <Switch>
         {/* Public routes */}
@@ -60,12 +59,6 @@ function Router() {
         </Route>
         <Route path="/projects/:slug">
           {() => <ProjectDetail />}
-        </Route>
-        <Route path="/machinery">
-          <div className="pt-24"><MachineryPage /></div>
-        </Route>
-        <Route path="/machinery/:slug">
-          <div className="pt-24"><MachineryDetail /></div>
         </Route>
         <Route path="/services">
           <div className="pt-24"><ServicesPage /></div>
@@ -100,9 +93,6 @@ function Router() {
         <Route path="/admin/projects/new" component={AdminProjectNew} />
         <Route path="/admin/projects/:id/edit" component={AdminProjectEdit} />
         <Route path="/admin/projects/:id/images" component={AdminProjectImages} />
-        <Route path="/admin/machinery" component={AdminMachinery} />
-        <Route path="/admin/machinery/new" component={AdminMachineryEdit} />
-        <Route path="/admin/machinery/:id/edit" component={AdminMachineryEdit} />
         <Route path="/admin/services" component={AdminServices} />
         <Route path="/admin/services/new" component={AdminServicesEdit} />
         <Route path="/admin/services/:id/edit" component={AdminServicesEdit} />
@@ -123,7 +113,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
+          <EditModeProvider>
+            <Router />
+          </EditModeProvider>
         </WouterRouter>
     </QueryClientProvider>
   );

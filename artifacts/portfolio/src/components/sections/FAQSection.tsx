@@ -12,10 +12,6 @@ const FAQ_ITEMS = [
     a: "We work across commercial, residential, industrial, and infrastructure projects — from new builds and renovations to specialist civil works. Our team manages everything from concept through handover.",
   },
   {
-    q: "Do you provide machinery hire?",
-    a: "Yes. We maintain a fleet of heavy-lifting, earthmoving, concrete, and piling equipment available for short-term and long-term hire across Pakistan.",
-  },
-  {
     q: "What areas do you operate in?",
     a: "Our primary operations are in Karachi and across Pakistan. We have also delivered projects in the Middle East and can mobilise to other regions on request.",
   },

@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 import { db } from "./src/index";
-import { categoriesTable, projectsTable, machineryTable, projectImagesTable } from "./src/schema";
+import { categoriesTable, projectsTable, projectImagesTable } from "./src/schema";
 import { eq } from "drizzle-orm";
 import { resolve } from "path";
 import { fileURLToPath } from "url";
@@ -18,7 +18,6 @@ async function seed() {
   // Clear existing data
   await db.delete(projectImagesTable);
   await db.delete(projectsTable);
-  await db.delete(machineryTable);
   await db.delete(categoriesTable);
 
   // Insert categories
@@ -149,104 +148,6 @@ async function seed() {
 
   await db.insert(projectImagesTable).values(projectImages);
   console.log("Inserted project images:", projectImages.length);
-
-  // Insert machinery
-  const machinery = await db.insert(machineryTable).values([
-    {
-      name: "Caterpillar 320GC Excavator",
-      slug: "caterpillar-320gc-excavator",
-      category: "Excavators",
-      description: "Reliable and fuel-efficient excavator for general construction and excavation work.",
-      longDescription: "The Caterpillar 320GC Excavator offers excellent performance and fuel efficiency for general construction applications. With a powerful engine and advanced hydraulic system, it delivers productivity while minimizing operating costs. The spacious cab provides operator comfort and excellent visibility.",
-      imageUrl: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800",
-        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800",
-      ]),
-      year: "2021",
-      condition: "Excellent",
-      published: true,
-      featured: true,
-    },
-    {
-      name: "JCB 3CX Backhoe Loader",
-      slug: "jcb-3cx-backhoe-loader",
-      category: "Loaders",
-      description: "Versatile backhoe loader ideal for construction, landscaping, and utility work.",
-      longDescription: "The JCB 3CX Backhoe Loader is renowned for its versatility and performance. Equipped with a powerful engine and advanced transmission, it handles a wide range of tasks from excavation to loading. The ergonomic design ensures operator comfort during long work hours.",
-      imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800",
-        "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800",
-      ]),
-      year: "2022",
-      condition: "Good",
-      published: true,
-      featured: true,
-    },
-    {
-      name: "Komatsu D155AX-6 Dozer",
-      slug: "komatsu-d155ax-6-dozer",
-      category: "Dozers",
-      description: "Heavy-duty bulldozer for earthmoving and construction projects.",
-      longDescription: "The Komatsu D155AX-6 Dozer delivers exceptional power and efficiency for large-scale earthmoving projects. Featuring advanced blade control technology and a comfortable operator station, it maximizes productivity while minimizing fatigue. The machine is designed for durability in demanding work environments.",
-      imageUrl: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800",
-      ]),
-      year: "2020",
-      condition: "Excellent",
-      published: true,
-      featured: true,
-    },
-    {
-      name: "Liebherr LTM 1120-4.1 Mobile Crane",
-      slug: "liebherr-ltm-1120-4-1-mobile-crane",
-      category: "Cranes",
-      description: "High-capacity mobile crane for lifting and construction operations.",
-      longDescription: "The Liebherr LTM 1120-4.1 Mobile Crane offers exceptional lifting capacity and reach for complex construction projects. With its telescopic boom and advanced safety systems, it handles demanding lifting operations with precision. The crane's compact design allows operation in confined spaces.",
-      imageUrl: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800",
-      ]),
-      year: "2023",
-      condition: "Excellent",
-      published: true,
-      featured: true,
-    },
-    {
-      name: "Volvo A40G Articulated Hauler",
-      slug: "volvo-a40g-articulated-hauler",
-      category: "Haulers",
-      description: "Robust articulated hauler for mining and heavy construction applications.",
-      longDescription: "The Volvo A40G Articulated Hauler is built for the toughest hauling applications. With its powerful engine and advanced transmission, it delivers high productivity in mining and large construction projects. The hauler features excellent stability and operator comfort for demanding work conditions.",
-      imageUrl: "https://images.unsplash.com/photo-1580901368919-7738efb0f87e?w=800",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1580901368919-7738efb0f87e?w=800",
-      ]),
-      year: "2022",
-      condition: "Good",
-      published: true,
-      featured: false,
-    },
-    {
-      name: "Hitachi ZW220-6 Wheel Loader",
-      slug: "hitachi-zw220-6-wheel-loader",
-      category: "Loaders",
-      description: "Efficient wheel loader for material handling and construction sites.",
-      longDescription: "The Hitachi ZW220-6 Wheel Loader combines power and efficiency for material handling operations. With its advanced hydraulic system and comfortable cab, it delivers high productivity while ensuring operator safety. The loader is ideal for construction sites, quarries, and material handling facilities.",
-      imageUrl: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800",
-      galleryImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800",
-      ]),
-      year: "2021",
-      condition: "Excellent",
-      published: true,
-      featured: false,
-    },
-  ]).returning();
-
-  console.log("Inserted machinery:", machinery.length);
 
   console.log("Database seeded successfully!");
 }

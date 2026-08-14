@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, projectsTable, projectImagesTable, servicesTable, machineryTable, settingsTable } from "@workspace/db";
+import { db, projectsTable, projectImagesTable, servicesTable, settingsTable } from "@workspace/db";
 import { desc, eq } from "drizzle-orm";
 
 const router: IRouter = Router();
@@ -36,20 +36,6 @@ router.get("/gallery", async (_req, res): Promise<void> => {
       if (s.galleryImages) {
         try {
           const arr = JSON.parse(s.galleryImages);
-          if (Array.isArray(arr)) for (const g of arr) if (g) urls.add(g);
-        } catch { /* ignore */ }
-      }
-    }
-  } catch { /* non-fatal */ }
-
-  // Machinery (main + gallery)
-  try {
-    const mach = await db.select({ imageUrl: machineryTable.imageUrl, galleryImages: machineryTable.galleryImages }).from(machineryTable);
-    for (const m of mach) {
-      if (m.imageUrl) urls.add(m.imageUrl);
-      if (m.galleryImages) {
-        try {
-          const arr = JSON.parse(m.galleryImages);
           if (Array.isArray(arr)) for (const g of arr) if (g) urls.add(g);
         } catch { /* ignore */ }
       }
