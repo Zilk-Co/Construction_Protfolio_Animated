@@ -82,7 +82,7 @@ export default function Home() {
     <PageTransition>
       <div className="min-h-screen text-foreground">
         {/* ═══════ MOBILE: Auto-cycling carousel ═══════ */}
-        <section className="h-screen w-full relative md:hidden">
+        <section className="h-[100dvh] w-full relative md:hidden">
           <div className="absolute inset-0 z-[5] pointer-events-none opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat" }} />
           {isLoading ? (
             <div className="w-full h-full flex items-center justify-center">
@@ -90,7 +90,7 @@ export default function Home() {
             </div>
           ) : displayProjects.length === 0 ? (
             <div className="w-full h-full flex items-center justify-center bg-[hsl(220,18%,8%)]">
-              <div className="text-center">
+              <div className="text-center px-6">
                 <p className="text-gray-500 text-sm tracking-widest uppercase mb-2">No Projects Yet</p>
                 <p className="text-gray-600 text-xs">Add projects in the admin dashboard</p>
               </div>
@@ -116,12 +116,12 @@ export default function Home() {
                         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                         style={{ backgroundImage: `url(${project.heroImage})` }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
-                      <div className="absolute inset-0 flex flex-col justify-end p-6 pb-20">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
+                      <div className="absolute inset-0 flex flex-col justify-end p-5 pb-24 safe-area-bottom">
                         <p className="text-[11px] tracking-[0.3em] uppercase text-[hsl(38,72%,65%)] mb-2 font-semibold" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.9)" }}>
                           {project.location || "Global"}
                         </p>
-                        <h2 className="text-3xl font-serif font-bold tracking-tight uppercase leading-tight mb-3" style={{ textShadow: "0 2px 16px rgba(0,0,0,0.85)" }}>
+                        <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight uppercase leading-tight mb-3" style={{ textShadow: "0 2px 16px rgba(0,0,0,0.85)" }}>
                           {project.title}
                         </h2>
                         <div className="flex items-center gap-2">
@@ -134,7 +134,7 @@ export default function Home() {
                   </EditEntityCard>
                 );
               })}
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5">
+              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5">
                 {displayProjects.map((_: any, i: number) => (
                   <button key={i} onClick={() => goToSlide(i)} aria-label={`Go to slide ${i + 1}`} className={`transition-all duration-300 rounded-full ${i === currentSlide ? "w-6 h-2 bg-[hsl(38,72%,52%)]" : "w-2 h-2 bg-white/40 hover:bg-white/70"}`} />
                 ))}
@@ -222,6 +222,7 @@ export default function Home() {
                   t.get("about_eyebrow", "About Us")
                 )}
               </p>
+              <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
               <h2 className="text-3xl md:text-5xl font-serif font-bold uppercase tracking-tight mb-6">
                 {editMode ? (
                   <EditableText
@@ -259,14 +260,14 @@ export default function Home() {
                 {t.get("about_cta", "Learn More About Us")} <ArrowRight size={13} />
               </Link>
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }} className="grid grid-cols-2 gap-4">
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }} className="grid grid-cols-2 gap-px bg-[hsl(220,15%,18%)] border border-[hsl(220,15%,18%)]">
               {[
                 { numKey: "stat_1_number", labelKey: "stat_1_label", num: "20+", label: "Years Experience" },
                 { numKey: "stat_2_number", labelKey: "stat_2_label", num: "100+", label: "Projects Delivered" },
                 { numKey: "stat_3_number", labelKey: "stat_3_label", num: "50+", label: "Expert Team" },
                 { numKey: "stat_4_number", labelKey: "stat_4_label", num: "100%", label: "Safety Record" },
               ].map((stat) => (
-                <div key={stat.numKey} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 text-center">
+                <div key={stat.numKey} className="bg-[hsl(220,18%,10%)] p-6 text-center hover:bg-[hsl(220,18%,11%)] transition-colors duration-300">
                   <p className="text-3xl md:text-4xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>
                     {editMode ? (
                       <EditableText
@@ -308,7 +309,7 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-14">
               {displayProjects.map((project: any, i: number) => (
-                <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }} whileHover={{ y: -8, transition: { duration: 0.2 } }}>
+                <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }} whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.25 } }}>
                   <Link href={`/projects/${project.slug}`} className="block group">
                     <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,18%)] group-hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
                       <motion.div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${project.heroImage})` }} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "100px" }} whileHover={{ scale: 1.05 }} transition={{ opacity: { duration: 0.4 }, scale: { duration: 0.7, ease: [0.33, 1, 0.68, 1] } }} />
@@ -375,8 +376,8 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredServices.map((item: any, i: number) => (
-                <motion.div key={item.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.6 }}>
-                  <Link href={`/services/${item.slug}`} className="block bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,18%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group">
+                <motion.div key={item.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.6 }} whileHover={{ scale: 1.02, transition: { duration: 0.25 } }}>
+                  <Link href={`/services/${item.slug}`} className="block h-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,18%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group">
                     <div className="aspect-[16/10] overflow-hidden relative bg-[hsl(220,15%,16%)]">
                       <img src={item.imageUrl || SERVICES_FALLBACK} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500" onError={e => { (e.target as HTMLImageElement).src = SERVICES_FALLBACK; }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,9%)]/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
@@ -473,7 +474,7 @@ function ClientsSection() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {clients.map((client, i) => (
-            <motion.div key={client.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06, duration: 0.5 }}>
+            <motion.div key={client.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06, duration: 0.5 }} whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}>
               <Link href={`/clients/${client.slug}`} className="block border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 hover:border-[hsl(38,72%,52%)] transition-all duration-300 group text-center">
                 {client.logoUrl ? (
                   <img src={client.logoUrl} alt={client.name} className="h-12 w-auto object-contain mx-auto mb-3" />

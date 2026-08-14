@@ -34,19 +34,24 @@ export default function ClientDetail() {
   useEffect(() => {
     const API = import.meta.env.VITE_API_URL || "";
     setLoading(true);
+    let clientData: Client | null = null;
     fetch(`${API}/api/clients/${slug}`)
       .then(r => {
         if (!r.ok) throw new Error("Not found");
         return r.json();
       })
       .then(c => {
+        clientData = c;
         setClient(c);
         return fetch(`${API}/api/projects`);
       })
       .then(r => r.json())
       .then(allProjects => {
         const matched = Array.isArray(allProjects)
-          ? allProjects.filter((p: any) => p.client?.toLowerCase() === client?.name?.toLowerCase() && p.published)
+          ? allProjects.filter((p: any) =>
+              (p.clientId && clientData && p.clientId === clientData.id) ||
+              (p.client?.toLowerCase() === clientData?.name?.toLowerCase() && p.published)
+            )
           : [];
         setProjects(matched);
       })

@@ -179,11 +179,26 @@ export default function AdminClients() {
           {editClient ? "Edit Client" : "New Client"}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input placeholder="Client Name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
-          <input placeholder="Slug" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
-          <input placeholder="Description" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
-          <input placeholder="Website URL" value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
-          <input placeholder="Logo URL" value={formData.logoUrl} onChange={e => setFormData({ ...formData, logoUrl: e.target.value })} className="bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)]" />
+          <div>
+            <label className="block text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mb-1.5">Client Name *</label>
+            <input placeholder="Enter client name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,35%)]" />
+          </div>
+          <div>
+            <label className="block text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mb-1.5">URL Slug *</label>
+            <input placeholder="client-slug" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,35%)] font-mono" />
+          </div>
+          <div>
+            <label className="block text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mb-1.5">Description</label>
+            <input placeholder="Brief description" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,35%)]" />
+          </div>
+          <div>
+            <label className="block text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mb-1.5">Website URL</label>
+            <input placeholder="https://example.com" value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,35%)]" />
+          </div>
+          <div>
+            <label className="block text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mb-1.5">Logo URL</label>
+            <input placeholder="https://example.com/logo.png" value={formData.logoUrl} onChange={e => setFormData({ ...formData, logoUrl: e.target.value })} className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,35%)]" />
+          </div>
         </div>
         
         {/* Project Assignment (only in edit mode) */}
@@ -232,23 +247,23 @@ export default function AdminClients() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {clients.map(client => (
-            <div key={client.id} className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5 hover:border-[hsl(220,15%,25%)] transition-colors">
+            <div key={client.id} className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5 hover:border-[hsl(220,15%,25%)] transition-colors rounded-sm">
               <div className="flex items-start gap-4 mb-4">
                 {client.logoUrl ? (
-                  <img src={client.logoUrl} alt={client.name} className="w-12 h-12 object-contain bg-[hsl(220,18%,9%)] p-1 border border-[hsl(220,15%,18%)]" />
+                  <img src={client.logoUrl} alt={client.name} className="w-12 h-12 object-contain bg-[hsl(220,18%,9%)] p-1 border border-[hsl(220,15%,18%)] rounded-sm" />
                 ) : (
-                  <div className="w-12 h-12 bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] flex items-center justify-center">
+                  <div className="w-12 h-12 bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] flex items-center justify-center rounded-sm">
                     <span className="text-lg font-serif text-[hsl(220,12%,40%)]">{client.name.charAt(0)}</span>
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <h3 className="font-serif font-bold text-sm truncate">{client.name}</h3>
-                  <p className="text-[10px] text-[hsl(220,12%,40%)] mt-0.5">/{client.slug}</p>
+                  <p className="text-[10px] text-[hsl(220,12%,40%)] mt-0.5 font-mono">/{client.slug}</p>
                 </div>
               </div>
               
               {client.description && (
-                <p className="text-xs text-[hsl(220,12%,55%)] mb-3 line-clamp-2">{client.description}</p>
+                <p className="text-xs text-[hsl(220,12%,55%)] mb-3 line-clamp-2 leading-relaxed">{client.description}</p>
               )}
               
               <div className="flex items-center justify-between mb-4">
@@ -257,7 +272,7 @@ export default function AdminClients() {
                   <span>{client.projectCount || 0} projects</span>
                 </div>
                 {client.website && (
-                  <a href={client.website} target="_blank" rel="noopener noreferrer" className="text-[10px] text-[hsl(220,12%,45%)] hover:text-[hsl(38,72%,52%)] inline-flex items-center gap-1">
+                  <a href={client.website} target="_blank" rel="noopener noreferrer" className="text-[10px] text-[hsl(220,12%,45%)] hover:text-[hsl(38,72%,52%)] inline-flex items-center gap-1 transition-colors">
                     Website <ExternalLink size={9} />
                   </a>
                 )}
@@ -266,12 +281,12 @@ export default function AdminClients() {
               <div className="flex items-center gap-2 pt-3 border-t border-[hsl(220,15%,16%)]">
                 <button 
                   onClick={() => handleToggle(client.id, !client.published)} 
-                  className={`inline-flex items-center gap-1.5 text-[9px] px-2.5 py-1 tracking-[0.15em] uppercase border transition-all ${client.published ? "border-green-800 text-green-500 hover:bg-green-900/20" : "border-[hsl(220,15%,25%)] text-[hsl(220,12%,45%)] hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)]"}`}
+                  className={`inline-flex items-center gap-1.5 text-[9px] px-2.5 py-1 tracking-[0.15em] uppercase border transition-all rounded-sm ${client.published ? "border-green-800 text-green-500 hover:bg-green-900/20" : "border-[hsl(220,15%,25%)] text-[hsl(220,12%,45%)] hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)]"}`}
                 >
                   {client.published ? <><Globe size={9} /> Live</> : <><EyeOff size={9} /> Hidden</>}
                 </button>
                 <div className="flex-1" />
-                <button onClick={() => startEdit(client)} className="text-[hsl(220,12%,45%)] hover:text-[hsl(38,72%,52%)] transition-colors" title="Edit">
+                <button onClick={() => startEdit(client)} className="text-[hsl(220,12%,45%)] hover:text-[hsl(38,72%,52%)] transition-colors p-1" title="Edit">
                   <Pencil size={13} />
                 </button>
                 {confirmDelete === client.id ? (
@@ -280,7 +295,7 @@ export default function AdminClients() {
                     <button onClick={() => setConfirmDelete(null)} className="text-[9px] text-[hsl(220,12%,40%)] uppercase tracking-widest hover:text-foreground">Cancel</button>
                   </div>
                 ) : (
-                  <button onClick={() => setConfirmDelete(client.id)} className="text-[hsl(220,12%,35%)] hover:text-red-400 transition-colors" title="Delete">
+                  <button onClick={() => setConfirmDelete(client.id)} className="text-[hsl(220,12%,35%)] hover:text-red-400 transition-colors p-1" title="Delete">
                     <Trash2 size={13} />
                   </button>
                 )}

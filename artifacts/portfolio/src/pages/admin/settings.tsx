@@ -161,8 +161,8 @@ export default function AdminSettings() {
         <form id="settings-form" onSubmit={handleSubmit} className="pb-24">
           <div className="grid grid-cols-1 gap-6 mb-10">
             {/* Contact Info Section */}
-            <div>
-              <p className="text-[10px] tracking-[0.3em] uppercase text-gray-500 mb-4">Contact Information</p>
+            <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-[hsl(38,72%,52%)] mb-4 font-semibold">Contact Information</p>
               <div className="space-y-4">
                 {FIELDS.map(field => (
                   <motion.div
@@ -170,7 +170,7 @@ export default function AdminSettings() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
-                    <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">
+                    <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">
                       {field.label}
                     </label>
                     {field.type === "textarea" ? (
@@ -179,10 +179,7 @@ export default function AdminSettings() {
                         onChange={e => handleChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
                         rows={3}
-                        className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors resize-none placeholder:text-gray-600 text-white"
-                        style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-                        onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-                        onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                        className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors resize-none placeholder:text-[hsl(220,12%,30%)] text-white"
                       />
                     ) : (
                       <input
@@ -190,10 +187,7 @@ export default function AdminSettings() {
                         value={form[field.key as SettingsKey] ?? ""}
                         onChange={e => handleChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
-                        className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors placeholder:text-gray-600 text-white"
-                        style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-                        onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-                        onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                        className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,30%)] text-white"
                       />
                     )}
                   </motion.div>
@@ -202,8 +196,8 @@ export default function AdminSettings() {
             </div>
 
             {/* CEO / Leadership Section */}
-            <div className="pt-8 border-t border-[hsl(220,15%,18%)]">
-              <p className="text-[10px] tracking-[0.3em] uppercase text-gray-500 mb-4">Leadership — About Page</p>
+            <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-[hsl(38,72%,52%)] mb-4 font-semibold">Leadership — About Page</p>
               <div className="space-y-4">
                 {CEO_FIELDS.map(field => (
                   <motion.div
@@ -211,7 +205,7 @@ export default function AdminSettings() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
-                    <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">
+                    <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">
                       {field.label}
                     </label>
                     {field.type === "textarea" ? (
@@ -220,10 +214,7 @@ export default function AdminSettings() {
                         onChange={e => handleChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
                         rows={3}
-                        className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors resize-none placeholder:text-gray-600 text-white"
-                        style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-                        onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-                        onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                        className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors resize-none placeholder:text-[hsl(220,12%,30%)] text-white"
                       />
                     ) : (
                       <input
@@ -231,10 +222,7 @@ export default function AdminSettings() {
                         value={form[field.key] ?? ""}
                         onChange={e => handleChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
-                        className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors placeholder:text-gray-600 text-white"
-                        style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-                        onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-                        onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                        className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,30%)] text-white"
                       />
                     )}
                   </motion.div>
@@ -254,8 +242,8 @@ export default function AdminSettings() {
             </div>
 
             {/* Brand & Social Section */}
-            <div className="pt-8 border-t border-[hsl(220,15%,18%)]">
-              <p className="text-[10px] tracking-[0.3em] uppercase text-gray-500 mb-4">Brand & Social Media</p>
+            <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-[hsl(38,72%,52%)] mb-4 font-semibold">Brand & Social Media</p>
               <div className="space-y-4">
                 {BRAND_FIELDS.map(field => (
                   <motion.div
@@ -263,7 +251,7 @@ export default function AdminSettings() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
-                    <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">
+                    <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">
                       {field.label}
                     </label>
                     <input
@@ -271,10 +259,7 @@ export default function AdminSettings() {
                       value={form[field.key] ?? ""}
                       onChange={e => handleChange(field.key, e.target.value)}
                       placeholder={field.placeholder}
-                      className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors placeholder:text-gray-600 text-white"
-                      style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-                      onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-                      onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                      className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,30%)] text-white"
                     />
                   </motion.div>
                 ))}
@@ -293,7 +278,7 @@ export default function AdminSettings() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                     >
-                      <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">
+                      <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">
                         {field.label}
                       </label>
                       <input
@@ -301,10 +286,7 @@ export default function AdminSettings() {
                         value={form[field.key] ?? ""}
                         onChange={e => handleChange(field.key, e.target.value)}
                         placeholder={field.placeholder}
-                        className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors placeholder:text-gray-600 text-white"
-                        style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-                        onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-                        onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
+                        className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,30%)] text-white"
                       />
                     </motion.div>
                   ))}
@@ -353,88 +335,78 @@ export default function AdminSettings() {
       )}
       {/* Password Change */}
       <div className="mt-12 pt-10 border-t border-[hsl(220,15%,18%)]">
-        <div className="flex items-center gap-3 mb-6">
-          <Lock size={14} className="text-[hsl(220,12%,45%)]" />
-          <p className="text-[10px] tracking-[0.3em] uppercase text-gray-500">Change Admin Password</p>
+        <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-5">
+          <div className="flex items-center gap-3 mb-6">
+            <Lock size={14} className="text-[hsl(220,12%,45%)]" />
+            <p className="text-[10px] tracking-[0.3em] uppercase text-[hsl(38,72%,52%)] font-semibold">Change Admin Password</p>
+          </div>
+
+          <form onSubmit={handlePasswordChange} className="max-w-md space-y-4">
+            {/* Current Password */}
+            <div>
+              <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Current Password</label>
+              <div className="relative">
+                <input
+                  type={showCurrent ? "text" : "password"}
+                  value={pwForm.currentPassword}
+                  onChange={e => setPwForm(p => ({ ...p, currentPassword: e.target.value }))}
+                  required
+                  className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors text-white"
+                />
+                <button type="button" onClick={() => setShowCurrent(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[hsl(220,12%,40%)] hover:text-[hsl(220,12%,55%)] transition-colors">
+                  {showCurrent ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+              </div>
+            </div>
+
+            {/* New Password */}
+            <div>
+              <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">New Password</label>
+              <div className="relative">
+                <input
+                  type={showNew ? "text" : "password"}
+                  value={pwForm.newPassword}
+                  onChange={e => setPwForm(p => ({ ...p, newPassword: e.target.value }))}
+                  required
+                  className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 pr-10 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors text-white"
+                />
+                <button type="button" onClick={() => setShowNew(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[hsl(220,12%,40%)] hover:text-[hsl(220,12%,55%)] transition-colors">
+                  {showNew ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Confirm New Password</label>
+              <input
+                type="password"
+                value={pwForm.confirmPassword}
+                onChange={e => setPwForm(p => ({ ...p, confirmPassword: e.target.value }))}
+                required
+                className="w-full bg-[hsl(220,18%,9%)] border border-[hsl(220,15%,18%)] px-4 py-3 text-sm focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors text-white"
+              />
+            </div>
+
+            {pwError && <p className="text-red-400 text-xs">{pwError}</p>}
+
+            <div className="flex items-center gap-4 pt-2">
+              <button
+                type="submit"
+                disabled={changePassword.isPending}
+                className="inline-flex items-center gap-2 px-6 py-3 text-xs tracking-[0.2em] uppercase font-bold transition-colors disabled:opacity-50 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] hover:bg-[hsl(38,72%,60%)] rounded-sm"
+              >
+                <Lock size={12} />
+                {changePassword.isPending ? "Changing..." : "Change Password"}
+              </button>
+              {pwSaved && (
+                <span className="text-xs tracking-widest uppercase" style={{ color: "hsl(38,72%,58%)" }}>
+                  ✓ Password changed
+                </span>
+              )}
+            </div>
+          </form>
         </div>
-
-        <form onSubmit={handlePasswordChange} className="max-w-md space-y-4">
-          {/* Current Password */}
-          <div>
-            <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">Current Password</label>
-            <div className="relative">
-              <input
-                type={showCurrent ? "text" : "password"}
-                value={pwForm.currentPassword}
-                onChange={e => setPwForm(p => ({ ...p, currentPassword: e.target.value }))}
-                required
-                className="w-full border px-4 py-3 pr-10 text-sm focus:outline-none transition-colors text-white"
-                style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-                onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-                onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
-              />
-              <button type="button" onClick={() => setShowCurrent(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400">
-                {showCurrent ? <EyeOff size={14} /> : <Eye size={14} />}
-              </button>
-            </div>
-          </div>
-
-          {/* New Password */}
-          <div>
-            <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">New Password</label>
-            <div className="relative">
-              <input
-                type={showNew ? "text" : "password"}
-                value={pwForm.newPassword}
-                onChange={e => setPwForm(p => ({ ...p, newPassword: e.target.value }))}
-                required
-                className="w-full border px-4 py-3 pr-10 text-sm focus:outline-none transition-colors text-white"
-                style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-                onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-                onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
-              />
-              <button type="button" onClick={() => setShowNew(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-400">
-                {showNew ? <EyeOff size={14} /> : <Eye size={14} />}
-              </button>
-            </div>
-          </div>
-
-          {/* Confirm Password */}
-          <div>
-            <label className="block text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-2">Confirm New Password</label>
-            <input
-              type="password"
-              value={pwForm.confirmPassword}
-              onChange={e => setPwForm(p => ({ ...p, confirmPassword: e.target.value }))}
-              required
-              className="w-full border px-4 py-3 text-sm focus:outline-none transition-colors text-white"
-              style={{ backgroundColor: "hsl(220,18%,12%)", borderColor: "hsl(220,15%,24%)" }}
-              onFocus={e => (e.currentTarget.style.borderColor = "hsl(38,72%,52%)")}
-              onBlur={e => (e.currentTarget.style.borderColor = "hsl(220,15%,24%)")}
-            />
-          </div>
-
-          {pwError && <p className="text-red-400 text-xs">{pwError}</p>}
-
-          <div className="flex items-center gap-4 pt-2">
-            <button
-              type="submit"
-              disabled={changePassword.isPending}
-              className="inline-flex items-center gap-2 px-6 py-3 text-xs tracking-[0.2em] uppercase font-bold transition-colors disabled:opacity-50"
-              style={{ backgroundColor: "hsl(38,72%,52%)", color: "hsl(220,18%,9%)" }}
-              onMouseEnter={e => { if (!changePassword.isPending) e.currentTarget.style.backgroundColor = "hsl(38,72%,62%)"; }}
-              onMouseLeave={e => (e.currentTarget.style.backgroundColor = "hsl(38,72%,52%)")}
-            >
-              <Lock size={12} />
-              {changePassword.isPending ? "Changing..." : "Change Password"}
-            </button>
-            {pwSaved && (
-              <span className="text-xs tracking-widest uppercase" style={{ color: "hsl(38,72%,58%)" }}>
-                ✓ Password changed
-              </span>
-            )}
-          </div>
-        </form>
       </div>
     </AdminLayout>
   );

@@ -100,7 +100,7 @@ export default function Services() {
         </section>
 
         {/* Services Grid */}
-        <section className="py-16 px-6">
+        <section className="py-24 px-6">
           <div className="max-w-screen-2xl mx-auto">
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -125,8 +125,10 @@ export default function Services() {
                   <motion.div
                     key={item.id}
                     initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ delay: i * 0.08, duration: 0.6 }}
+                    whileHover={{ y: -6, transition: { duration: 0.25 } }}
                     className="bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group h-full focus:outline-none focus:ring-2 focus:ring-[hsl(38,72%,52%)] focus:ring-offset-2 focus:ring-offset-[hsl(220,18%,9%)]"
                   >
                     <EditEntityCard
@@ -175,9 +177,9 @@ export default function Services() {
         </section>
 
         {/* Methodology */}
-        <section className="px-6 py-20 border-t border-[hsl(220,15%,20%)]">
+        <section className="px-6 py-24 border-t border-[hsl(220,15%,20%)]">
           <div className="max-w-screen-2xl mx-auto">
-            <div className="max-w-2xl mb-14">
+            <div className="max-w-2xl mb-16">
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -187,6 +189,7 @@ export default function Services() {
               >
                 {t.get("method_eyebrow", "How We Work")}
               </motion.p>
+              <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -214,12 +217,12 @@ export default function Services() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.5 }}
-                  className="bg-[hsl(220,18%,11%)] p-8 group hover:bg-[hsl(220,18%,13%)] transition-colors"
+                  className="bg-[hsl(220,18%,11%)] p-8 lg:p-10 group hover:bg-[hsl(220,18%,13%)] transition-colors"
                 >
                   <p className="font-serif text-4xl font-bold text-[hsl(220,15%,26%)] group-hover:text-[hsl(38,72%,52%)] transition-colors mb-5">
                     {step.icon}
                   </p>
-                  <h3 className="font-serif font-bold text-lg uppercase tracking-tight text-white mb-2">
+                  <h3 className="font-serif font-bold text-lg uppercase tracking-tight text-white mb-3">
                     {t.get(`method_${step.key}_title`, "")}
                   </h3>
                   <p className="text-sm text-gray-400 leading-relaxed">

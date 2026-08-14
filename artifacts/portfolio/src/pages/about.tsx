@@ -285,14 +285,14 @@ export default function About() {
                 {t.get("stats_title", "Company Statistics")}
               </motion.h2>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[hsl(220,15%,18%)] border border-[hsl(220,15%,18%)]">
               {[
                 { key: "years", value: "20+", label: "Years Experience" },
                 { key: "projects", value: "100+", label: "Projects Completed" },
                 { key: "team", value: "50+", label: "Expert Team Members" },
                 { key: "safety", value: "100%", label: "Safety Record" },
               ].map((stat, i) => (
-                <motion.div key={stat.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-8 text-center">
+                <motion.div key={stat.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }} className="bg-[hsl(220,18%,10%)] p-8 md:p-10 text-center hover:bg-[hsl(220,18%,11%)] transition-colors duration-300">
                   <p className="text-4xl md:text-5xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>{t.get(`stats_${stat.key}_value`, stat.value)}</p>
                   <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,50%)] mt-3">{t.get(`stats_${stat.key}_label`, stat.label)}</p>
                 </motion.div>
@@ -322,7 +322,7 @@ export default function About() {
                 { key: "timely", num: "05", title: "Timely Delivery", desc: "Proven track record of completing projects on schedule without compromising quality." },
                 { key: "client", num: "06", title: "Client Focus", desc: "Deep understanding of client needs with personalized service and transparent communication." },
               ].map((item, i) => (
-                <motion.div key={item.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-8 hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
+                <motion.div key={item.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }} whileHover={{ y: -4, transition: { duration: 0.2 } }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-8 hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
                   <span className="text-3xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>{item.num}</span>
                   <h3 className="text-lg font-serif font-bold uppercase tracking-tight mt-4 mb-3 text-white">
                     {t.get(`strengths_${item.key}_title`, item.title)}
@@ -340,6 +340,16 @@ export default function About() {
         <section className="py-24 px-6 bg-[hsl(220,18%,8%)]">
           <div className="max-w-screen-2xl mx-auto">
             <div className="text-center mb-16">
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-[10px] tracking-[0.35em] uppercase mb-4"
+                style={{ color: "hsl(38,85%,62%)" }}
+              >
+                {t.get("values_eyebrow_label", "Core Values")}
+              </motion.p>
+              <div className="w-10 h-px mx-auto mb-8" style={{ backgroundColor: "hsl(38,72%,52%)" }} />
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -367,6 +377,7 @@ export default function About() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: n * 0.08, duration: 0.6 }}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
                   className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,11%)] p-8 hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300"
                 >
                   <div

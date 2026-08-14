@@ -139,7 +139,7 @@ export default function AdminServicesEdit() {
       <div className="max-w-2xl">
         {/* Header */}
         <div className="flex items-center gap-4 mb-10 pb-6 border-b border-[hsl(220,15%,18%)]">
-          <Link href="/admin/services" className="text-[hsl(220,12%,45%)] hover:text-foreground transition-colors">
+          <Link href="/admin/services" className="text-[hsl(220,12%,45%)] hover:text-white transition-colors">
             <ArrowLeft size={16} />
           </Link>
           <div>
@@ -237,7 +237,7 @@ export default function AdminServicesEdit() {
             {form.galleryImages.split("\n").filter(Boolean).length > 0 && (
               <div className="mt-3 flex gap-2 flex-wrap">
                 {form.galleryImages.split("\n").filter(s => s.trim()).map((url, i) => (
-                  <div key={i} className="w-20 h-14 overflow-hidden border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,11%)]">
+                  <div key={i} className="w-20 h-14 overflow-hidden border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,11%)] rounded-sm">
                     <img src={url.trim()} alt="" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }} />
                   </div>
                 ))}
@@ -282,7 +282,7 @@ export default function AdminServicesEdit() {
               type="submit"
               form="services-edit-form"
               disabled={isPending}
-              className="inline-flex items-center gap-2 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-8 py-3 text-xs tracking-[0.25em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors disabled:opacity-40"
+              className="inline-flex items-center gap-2 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-8 py-3 text-xs tracking-[0.25em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors disabled:opacity-40 rounded-sm"
             >
               <Save size={13} />
               {isPending ? "Saving..." : isNew ? "Add Service" : "Save Changes"}

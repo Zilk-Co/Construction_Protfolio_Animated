@@ -137,22 +137,22 @@ export default function Projects() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex items-center gap-1 border-t border-[hsl(220,15%,20%)] pt-6 pb-3"
+              className="flex items-center gap-1 border-t border-[hsl(220,15%,20%)] pt-6 pb-3 overflow-x-auto scrollbar-none"
             >
               {STATUS_TABS.map(tab => (
                 <button
                   key={tab.label}
                   onClick={() => setSelectedStatus(tab.value)}
-                  className={`px-5 py-2 text-[11px] tracking-[0.2em] uppercase transition-all font-medium ${
+                  className={`px-5 py-2 text-[11px] tracking-[0.2em] uppercase transition-all font-medium whitespace-nowrap shrink-0 ${
                     selectedStatus === tab.value
                       ? "text-[hsl(220,18%,9%)] bg-[hsl(38,72%,52%)] font-bold"
-                      : "text-gray-400 hover:text-white border border-[hsl(220,15%,26%)] hover:border-[hsl(38,72%,52%)]"
+                      : "text-gray-400 hover:text-white border border-[hsl(220,15%,26%)] hover:border-[hsl(38,72%,52%)] hover:bg-[hsl(220,15%,22%)]"
                   }`}
                 >
                   {tab.label}
                 </button>
               ))}
-              <span className="ml-auto text-xs text-gray-500">
+              <span className="ml-auto text-xs text-gray-500 shrink-0 pl-4">
                 {filteredProjects.length} {filteredProjects.length === 1 ? t.get("count_label_singular", "project") : t.get("count_label_plural", "projects")}
               </span>
             </motion.div>
@@ -162,12 +162,12 @@ export default function Projects() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15 }}
-              className="flex flex-wrap items-center gap-2 border-t border-[hsl(220,15%,20%)] pt-6 pb-3"
+              className="flex items-center gap-2 border-t border-[hsl(220,15%,20%)] pt-6 pb-3 overflow-x-auto scrollbar-none"
             >
               <SlidersHorizontal size={12} className="text-gray-500 mr-2 shrink-0" />
               <button
                 onClick={() => setSelectedCategory(null)}
-                className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${selectedCategory === null ? "text-[hsl(220,18%,9%)] font-bold" : "border border-[hsl(220,15%,26%)] text-gray-400 hover:text-white hover:border-[hsl(38,72%,52%)]"}`}
+                className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all whitespace-nowrap shrink-0 ${selectedCategory === null ? "text-[hsl(220,18%,9%)] font-bold" : "border border-[hsl(220,15%,26%)] text-gray-400 hover:text-white hover:border-[hsl(38,72%,52%)] hover:bg-[hsl(220,15%,22%)]"}`}
                 style={selectedCategory === null ? { backgroundColor: "hsl(38,72%,52%)" } : {}}
               >
                 {t.get("filter_all_label", "All Types")}
@@ -176,7 +176,7 @@ export default function Projects() {
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${selectedCategory === cat.id ? "text-[hsl(220,18%,9%)] font-bold" : "border border-[hsl(220,15%,26%)] text-gray-400 hover:text-white hover:border-[hsl(38,72%,52%)]"}`}
+                  className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all whitespace-nowrap shrink-0 ${selectedCategory === cat.id ? "text-[hsl(220,18%,9%)] font-bold" : "border border-[hsl(220,15%,26%)] text-gray-400 hover:text-white hover:border-[hsl(38,72%,52%)] hover:bg-[hsl(220,15%,22%)]"}`}
                   style={selectedCategory === cat.id ? { backgroundColor: "hsl(38,72%,52%)" } : {}}
                 >
                   {cat.name}
@@ -189,14 +189,14 @@ export default function Projects() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="flex flex-wrap items-center gap-2 border-b border-[hsl(220,15%,20%)] pb-6"
+              className="flex items-center gap-2 border-b border-[hsl(220,15%,20%)] pb-6 overflow-x-auto scrollbar-none"
             >
               <Calendar size={12} className="text-gray-500 mr-2 shrink-0" />
               {DATE_RANGES.map(r => (
                 <button
                   key={r.value}
                   onClick={() => setSelectedRange(r.value)}
-                  className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all ${selectedRange === r.value ? "bg-[hsl(220,15%,22%)] text-white font-bold border border-[hsl(220,15%,32%)]" : "border border-transparent text-gray-500 hover:text-white"}`}
+                  className={`px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-all whitespace-nowrap shrink-0 ${selectedRange === r.value ? "bg-[hsl(220,15%,22%)] text-white font-bold border border-[hsl(220,15%,32%)]" : "border border-transparent text-gray-500 hover:text-white hover:bg-[hsl(220,15%,18%)]"}`}
                 >
                   {r.label}
                 </button>
@@ -223,6 +223,7 @@ export default function Projects() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.07, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -6, transition: { duration: 0.25 } }}
                   data-testid={`card-project-${project.id}`}
                 >
                   <EditEntityCard

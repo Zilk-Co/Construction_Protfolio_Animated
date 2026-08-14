@@ -136,12 +136,14 @@ export default function AdminDashboard() {
           { label: "Clients", value: clients.length, icon: Users, color: "text-white" },
           { label: "Services", value: services.length, icon: Layers, color: "text-white" },
         ].map(stat => (
-          <div key={stat.label} className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] px-5 py-4">
-            <div className="flex items-center justify-between">
+          <div key={stat.label} className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] px-5 py-4 hover:border-[hsl(220,15%,25%)] transition-colors">
+            <div className="flex items-center justify-between mb-2">
               <p className={`text-2xl font-serif font-bold ${stat.color}`}>{stat.value}</p>
-              <stat.icon size={14} className="text-[hsl(220,12%,30%)]" />
+              <div className="w-8 h-8 flex items-center justify-center bg-[hsl(220,18%,14%)] border border-[hsl(220,15%,18%)]">
+                <stat.icon size={13} className="text-[hsl(220,12%,45%)]" />
+              </div>
             </div>
-            <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mt-0.5">{stat.label}</p>
+            <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)]">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -169,9 +171,9 @@ export default function AdminDashboard() {
           {recentMessages.length === 0 ? (
             <p className="text-xs text-[hsl(220,12%,40%)] py-4 text-center tracking-widest uppercase">No messages yet</p>
           ) : (
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               {recentMessages.map(msg => (
-                <Link key={msg.id} href="/admin/messages" className="flex items-center gap-3 px-3 py-2.5 hover:bg-[hsl(220,18%,9%)] transition-colors">
+                <Link key={msg.id} href="/admin/messages" className="flex items-center gap-3 px-3 py-2.5 hover:bg-[hsl(220,18%,9%)] transition-colors rounded-sm">
                   {msg.read ? <MailOpen size={12} className="text-[hsl(220,12%,30%)] shrink-0" /> : <Mail size={12} className="text-[hsl(38,72%,52%)] shrink-0" />}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
@@ -193,28 +195,28 @@ export default function AdminDashboard() {
           <div className="space-y-2">
             <Link
               href="/admin/projects/new"
-              className="flex items-center gap-3 px-3 py-3 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] text-xs tracking-[0.15em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors"
+              className="flex items-center gap-3 px-3 py-3 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] text-xs tracking-[0.15em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors rounded-sm"
             >
               <Plus size={13} />
               New Project
             </Link>
             <Link
               href="/admin/services/new"
-              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors"
+              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors rounded-sm"
             >
               <Plus size={13} />
               New Service
             </Link>
             <Link
               href="/admin/clients"
-              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors"
+              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors rounded-sm"
             >
               <Users size={13} />
               Manage Clients
             </Link>
             <Link
               href="/admin/messages"
-              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors"
+              className="flex items-center gap-3 px-3 py-3 border border-[hsl(220,15%,25%)] text-[hsl(220,12%,55%)] text-xs tracking-[0.15em] uppercase font-semibold hover:border-[hsl(38,72%,52%/50%)] hover:text-[hsl(38,72%,52%)] transition-colors rounded-sm"
             >
               <MessageSquare size={13} />
               Inbox

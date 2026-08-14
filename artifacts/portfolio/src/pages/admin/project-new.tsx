@@ -81,12 +81,13 @@ export default function AdminProjectNew() {
   return (
     <AdminLayout>
       <div className="max-w-2xl mx-auto">
-        <div className="mb-12 border-b border-neutral-800 pb-6 flex items-center justify-between">
+        <div className="mb-12 border-b border-[hsl(220,15%,18%)] pb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-serif tracking-tighter uppercase mb-2">New Project</h1>
-            <p className="text-neutral-500 tracking-widest text-sm uppercase">Initialize profile</p>
+            <p className="text-[10px] tracking-[0.35em] uppercase text-[hsl(38,72%,52%)] mb-1">Portfolio</p>
+            <h1 className="text-3xl font-serif font-bold uppercase tracking-tight">New Project</h1>
+            <p className="text-xs text-[hsl(220,12%,50%)] mt-2">Create a new project profile.</p>
           </div>
-          <Link href="/admin" className="text-xs uppercase tracking-widest text-neutral-400 hover:text-white">
+          <Link href="/admin" className="text-xs uppercase tracking-[0.15em] text-[hsl(220,12%,45%)] hover:text-white transition-colors">
             Cancel
           </Link>
         </div>
@@ -94,48 +95,48 @@ export default function AdminProjectNew() {
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="space-y-6">
             <div>
-              <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Project Title *</label>
+              <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Project Title *</label>
               <input 
                 required
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors font-serif text-xl"
+                className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors font-serif text-xl placeholder:text-[hsl(220,12%,30%)]"
                 placeholder="The Obsidian Tower"
               />
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">URL Slug *</label>
+              <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">URL Slug *</label>
               <input 
                 required
                 name="slug"
                 value={formData.slug}
                 onChange={handleChange}
-                className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors font-mono placeholder:text-[hsl(220,12%,30%)]"
                 placeholder="the-obsidian-tower"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Location</label>
+                <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Location</label>
                 <input 
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
-                  className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+                  className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,30%)]"
                   placeholder="City, Country"
                 />
               </div>
               
               <div>
-                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Status</label>
+                <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Status</label>
                 <select
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+                  className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors appearance-none"
                 >
                   <option value="Working">Working</option>
                   <option value="Completed">Completed</option>
@@ -145,23 +146,23 @@ export default function AdminProjectNew() {
             </div>
             
             <div>
-              <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Sector</label>
+              <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Sector</label>
               <input 
                 name="sector"
                 value={formData.sector}
                 onChange={handleChange}
-                className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors placeholder:text-[hsl(220,12%,30%)]"
                 placeholder="Cultural, Commercial, Civic"
               />
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Service Used *</label>
+              <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Service Used *</label>
               <select
                 name="serviceId"
                 value={formData.serviceId}
                 onChange={handleChange}
-                className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors appearance-none"
               >
                 <option value="">Select a service</option>
                 {services.map(s => (
@@ -171,12 +172,12 @@ export default function AdminProjectNew() {
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2">Client</label>
+              <label className="block text-[10px] tracking-[0.25em] uppercase text-[hsl(220,12%,45%)] mb-2">Client</label>
               <select
                 name="clientId"
                 value={formData.clientId}
                 onChange={handleChange}
-                className="w-full bg-neutral-900 border border-neutral-800 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] px-4 py-3 text-white focus:outline-none focus:border-[hsl(38,72%,52%)] transition-colors appearance-none"
               >
                 <option value="">No Client</option>
                 {clients.map(c => (
@@ -186,11 +187,11 @@ export default function AdminProjectNew() {
             </div>
           </div>
 
-          <div className="pt-6 border-t border-neutral-800">
+          <div className="pt-6 border-t border-[hsl(220,15%,18%)]">
             <button
               type="submit"
               disabled={createProject.isPending}
-              className="px-8 py-3 bg-white text-black font-serif tracking-widest uppercase hover:bg-neutral-200 transition-colors disabled:opacity-50"
+              className="px-8 py-3 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] font-bold tracking-[0.2em] uppercase text-xs hover:bg-[hsl(38,72%,60%)] transition-colors disabled:opacity-50 rounded-sm"
             >
               {createProject.isPending ? "Creating..." : "Create & Continue to Editor"}
             </button>

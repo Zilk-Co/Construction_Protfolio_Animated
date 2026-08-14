@@ -96,24 +96,24 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 py-5 px-3 space-y-5 overflow-y-auto">
+        <nav className="flex-1 py-5 px-3 space-y-6 overflow-y-auto">
           {navSections.map(section => (
-            <div key={section.label} className="space-y-0.5">
-              <p className="px-3 pb-1.5 text-[9px] tracking-[0.3em] uppercase text-[hsl(220,12%,35%)] font-semibold">
+            <div key={section.label} className="space-y-1">
+              <p className="px-3 pb-2 text-[9px] tracking-[0.3em] uppercase text-[hsl(220,12%,40%)] font-semibold">
                 {section.label}
               </p>
               {section.items.map(({ href, label, icon: Icon }) => (
                 <Link
                   key={href}
                   href={href}
-                  className={`flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase transition-all duration-150 ${
+                  className={`flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase transition-all duration-150 rounded-sm ${
                     isActive(href)
-                      ? "border-l-2 font-semibold"
-                      : "text-gray-500 hover:text-white hover:bg-[hsl(220,15%,14%)] border-l-2 border-transparent"
+                      ? "font-semibold"
+                      : "text-[hsl(220,12%,50%)] hover:text-white hover:bg-[hsl(220,15%,14%)]"
                   }`}
-                  style={isActive(href) ? { color: "hsl(38,72%,62%)", backgroundColor: "hsl(38,72%,52%,0.1)", borderLeftColor: "hsl(38,72%,52%)" } : {}}
+                  style={isActive(href) ? { color: "hsl(38,72%,62%)", backgroundColor: "hsl(38,72%,52%,0.08)" } : {}}
                 >
-                  <Icon size={13} />
+                  <Icon size={13} className={isActive(href) ? "" : ""} />
                   {label}
                 </Link>
               ))}
@@ -122,17 +122,17 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* Bottom actions */}
-        <div className="px-3 py-4 border-t border-[hsl(220,15%,16%)] space-y-0.5">
+        <div className="px-3 py-4 border-t border-[hsl(220,15%,16%)] space-y-1">
           <Link
             href="/"
-            className="flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase text-gray-500 hover:text-white hover:bg-[hsl(220,15%,14%)] transition-all"
+            className="flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase text-[hsl(220,12%,50%)] hover:text-white hover:bg-[hsl(220,15%,14%)] transition-all rounded-sm"
           >
             <Home size={13} />
             View Site
           </Link>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase text-gray-500 hover:text-red-400 hover:bg-[hsl(220,15%,14%)] transition-all"
+            className="w-full flex items-center gap-3 px-3 py-2.5 text-xs tracking-[0.15em] uppercase text-[hsl(220,12%,50%)] hover:text-red-400 hover:bg-[hsl(220,15%,14%)] transition-all rounded-sm"
           >
             <LogOut size={13} />
             Sign Out

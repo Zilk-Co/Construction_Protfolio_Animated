@@ -32,9 +32,9 @@ export function Footer() {
   return (
     <footer className="bg-[hsl(220,18%,7%)] border-t border-[hsl(220,15%,18%)] mt-24">
       <div className="max-w-screen-2xl mx-auto px-6 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 mb-16">
           {/* Brand column */}
-          <div className="md:col-span-1">
+          <div className="sm:col-span-2 md:col-span-1">
             <div className="mb-4">
               <img src="/logo.png" alt={`${companyName} logo`} className="h-12 w-auto object-contain mb-3" />
               <p className="text-xl font-serif font-bold tracking-tight uppercase text-foreground leading-none">

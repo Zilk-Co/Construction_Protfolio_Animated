@@ -93,7 +93,7 @@ export default function AdminMessages() {
         <button onClick={() => setSelectedMessage(null)} className="inline-flex items-center gap-2 text-xs text-[hsl(220,12%,55%)] hover:text-[hsl(38,72%,52%)] transition-colors mb-6">
           <ArrowLeft size={12} /> Back to Inbox
         </button>
-        <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-6">
+        <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-6 rounded-sm">
           <div className="flex items-start justify-between mb-6 pb-4 border-b border-[hsl(220,15%,16%)]">
             <div>
               <h2 className="text-xl font-serif font-bold">{selectedMessage.subject || "No Subject"}</h2>
@@ -101,11 +101,11 @@ export default function AdminMessages() {
               {selectedMessage.phone && <p className="text-xs text-[hsl(220,12%,40%)] mt-0.5 flex items-center gap-1"><Phone size={10} /> {selectedMessage.phone}</p>}
               <p className="text-[10px] text-[hsl(220,12%,35%)] mt-1">{new Date(selectedMessage.createdAt).toLocaleString()}</p>
             </div>
-            <button onClick={() => handleDelete(selectedMessage.id)} className="text-[hsl(220,12%,35%)] hover:text-red-400 transition-colors" title="Delete"><Trash2 size={14} /></button>
+            <button onClick={() => handleDelete(selectedMessage.id)} className="text-[hsl(220,12%,35%)] hover:text-red-400 transition-colors p-1" title="Delete"><Trash2 size={14} /></button>
           </div>
           <div className="text-sm text-[hsl(220,12%,70%)] whitespace-pre-wrap leading-relaxed">{selectedMessage.message}</div>
           <div className="mt-6 pt-4 border-t border-[hsl(220,15%,16%)]">
-            <a href={`mailto:${selectedMessage.email}`} className="inline-flex items-center gap-2 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-4 py-2 text-[10px] tracking-[0.2em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors">
+            <a href={`mailto:${selectedMessage.email}`} className="inline-flex items-center gap-2 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-4 py-2 text-[10px] tracking-[0.2em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors rounded-sm">
               Reply via Email
             </a>
           </div>
@@ -125,12 +125,22 @@ export default function AdminMessages() {
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] px-5 py-4">
-          <p className="text-2xl font-serif font-bold">{stats?.total ?? 0}</p>
-          <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mt-0.5">Total Messages</p>
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-2xl font-serif font-bold">{stats?.total ?? 0}</p>
+            <div className="w-8 h-8 flex items-center justify-center bg-[hsl(220,18%,14%)] border border-[hsl(220,15%,18%)]">
+              <Mail size={13} className="text-[hsl(220,12%,45%)]" />
+            </div>
+          </div>
+          <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)]">Total Messages</p>
         </div>
         <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] px-5 py-4">
-          <p className="text-2xl font-serif font-bold text-[hsl(38,72%,52%)]">{stats?.unread ?? 0}</p>
-          <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)] mt-0.5">Unread</p>
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-2xl font-serif font-bold text-[hsl(38,72%,52%)]">{stats?.unread ?? 0}</p>
+            <div className="w-8 h-8 flex items-center justify-center bg-[hsl(38,72%,52%,0.1)] border border-[hsl(38,72%,52%,0.2)]">
+              <MailOpen size={13} className="text-[hsl(38,72%,52%)]" />
+            </div>
+          </div>
+          <p className="text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,45%)]">Unread</p>
         </div>
       </div>
 
@@ -142,7 +152,7 @@ export default function AdminMessages() {
       ) : (
         <div className="space-y-2">
           {messages.map(msg => (
-            <div key={msg.id} onClick={() => openMessage(msg)} className={`flex items-center gap-4 px-5 py-4 border cursor-pointer transition-all hover:bg-[hsl(220,18%,11%)] ${msg.read ? "border-[hsl(220,15%,16%)] bg-[hsl(220,18%,7%)]" : "border-[hsl(38,72%,52%,30%)] bg-[hsl(220,18%,11%)]"}`}>
+            <div key={msg.id} onClick={() => openMessage(msg)} className={`flex items-center gap-4 px-5 py-4 border cursor-pointer transition-all hover:bg-[hsl(220,18%,11%)] rounded-sm ${msg.read ? "border-[hsl(220,15%,16%)] bg-[hsl(220,18%,7%)]" : "border-[hsl(38,72%,52%,30%)] bg-[hsl(220,18%,11%)]"}`}>
               <div className="shrink-0">
                 {msg.read ? <MailOpen size={14} className="text-[hsl(220,12%,35%)]" /> : <Mail size={14} className="text-[hsl(38,72%,52%)]" />}
               </div>
@@ -156,7 +166,7 @@ export default function AdminMessages() {
               <div className="shrink-0 text-right">
                 <p className="text-[10px] text-[hsl(220,12%,35%)]">{new Date(msg.createdAt).toLocaleDateString()}</p>
               </div>
-              <button onClick={e => { e.stopPropagation(); setConfirmDelete(msg.id); }} className="shrink-0 text-[hsl(220,12%,30%)] hover:text-red-400 transition-colors" title="Delete">
+              <button onClick={e => { e.stopPropagation(); setConfirmDelete(msg.id); }} className="shrink-0 text-[hsl(220,12%,30%)] hover:text-red-400 transition-colors p-1" title="Delete">
                 <Trash2 size={12} />
               </button>
             </div>
@@ -167,12 +177,12 @@ export default function AdminMessages() {
       {/* Confirm delete modal */}
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setConfirmDelete(null)}>
-          <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-6 max-w-sm w-full mx-4" onClick={e => e.stopPropagation()}>
+          <div className="bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] p-6 max-w-sm w-full mx-4 rounded-sm" onClick={e => e.stopPropagation()}>
             <p className="text-sm font-serif font-bold mb-2">Delete Message?</p>
             <p className="text-xs text-[hsl(220,12%,50%)] mb-4">This action cannot be undone.</p>
             <div className="flex gap-2 justify-end">
-              <button onClick={() => handleDelete(confirmDelete)} className="bg-red-900/50 border border-red-800 text-red-400 px-4 py-2 text-[10px] tracking-[0.2em] uppercase hover:bg-red-900/80 transition-colors">Delete</button>
-              <button onClick={() => setConfirmDelete(null)} className="px-4 py-2 text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,55%)] hover:text-white border border-[hsl(220,15%,25%)] transition-colors">Cancel</button>
+              <button onClick={() => handleDelete(confirmDelete)} className="bg-red-900/50 border border-red-800 text-red-400 px-4 py-2 text-[10px] tracking-[0.2em] uppercase hover:bg-red-900/80 transition-colors rounded-sm">Delete</button>
+              <button onClick={() => setConfirmDelete(null)} className="px-4 py-2 text-[10px] tracking-[0.2em] uppercase text-[hsl(220,12%,55%)] hover:text-white border border-[hsl(220,15%,25%)] transition-colors rounded-sm">Cancel</button>
             </div>
           </div>
         </div>
