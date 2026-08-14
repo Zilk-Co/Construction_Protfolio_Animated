@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
-import { useGetSettings } from "@workspace/api-client-react";
+import { useGetSettings, useUpdatePageContent } from "@workspace/api-client-react";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useDocuments } from "@/hooks/useDocuments";
 import { FileText, Download } from "lucide-react";
+import { EditableText } from "@/components/EditableText";
+import { useEditMode } from "@/components/EditModeProvider";
 
 const DEFAULT_HERO_BG = "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=80";
 const DEFAULT_JOURNEY_BG = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80";
@@ -16,6 +18,14 @@ export default function About() {
   const t = usePageContent("about");
   const { data: settings } = useGetSettings();
   const { data: documents = [], isLoading: docsLoading } = useDocuments();
+  const { editMode } = useEditMode();
+  const updatePageContent = useUpdatePageContent();
+
+  const savePageContent = async (key: string, value: string) => {
+    await updatePageContent.mutateAsync({
+      data: { updates: [{ page: "about", key, value }] },
+    });
+  };
 
   const heroBg = t.get("hero_bg", DEFAULT_HERO_BG);
   const journeyBg = t.get("journey_bg", DEFAULT_JOURNEY_BG);
@@ -54,10 +64,26 @@ export default function About() {
               className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight uppercase mb-6 text-white"
               style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
             >
-              {t.get("hero_title", "Building Pakistan's")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_title", "Building Pakistan's")}
+                  onSave={(v) => savePageContent("hero_title", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("hero_title", "Building Pakistan's")
+              )}
               <br />
               <span style={{ color: "hsl(38,72%,52%)" }}>
-                {t.get("hero_title_accent", "Infrastructure")}
+                {editMode ? (
+                  <EditableText
+                    value={t.get("hero_title_accent", "Infrastructure")}
+                    onSave={(v) => savePageContent("hero_title_accent", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("hero_title_accent", "Infrastructure")
+                )}
               </span>
             </motion.h1>
             <motion.p
@@ -67,7 +93,15 @@ export default function About() {
               className="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed"
               style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
             >
-              {t.get("hero_subtitle", "Azhar Engineering (Pvt.) Ltd is a leading construction and engineering firm dedicated to transforming the urban landscape with uncompromising quality and integrity.")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_subtitle", "Azhar Engineering (Pvt.) Ltd is a leading construction and engineering firm dedicated to transforming the urban landscape with uncompromising quality and integrity.")}
+                  onSave={(v) => savePageContent("hero_subtitle", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("hero_subtitle", "Azhar Engineering (Pvt.) Ltd is a leading construction and engineering firm dedicated to transforming the urban landscape with uncompromising quality and integrity.")
+              )}
             </motion.p>
           </div>
         </section>
@@ -183,20 +217,52 @@ export default function About() {
               <p className="text-[10px] tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(38,85%,62%)" }}>{t.get("mission_eyebrow", "Our Mission")}</p>
               <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
               <h3 className="text-2xl md:text-3xl font-serif font-bold uppercase tracking-tight mb-6 text-white">
-                {t.get("mission_title", "Delivering Excellence")}
+                {editMode ? (
+                  <EditableText
+                    value={t.get("mission_title", "Delivering Excellence")}
+                    onSave={(v) => savePageContent("mission_title", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("mission_title", "Delivering Excellence")
+                )}
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                {t.get("mission_body", "To deliver innovative, sustainable, and high-quality construction and engineering solutions that exceed client expectations while contributing to the development of Pakistan's infrastructure.")}
+                {editMode ? (
+                  <EditableText
+                    value={t.get("mission_body", "To deliver innovative, sustainable, and high-quality construction and engineering solutions that exceed client expectations while contributing to the development of Pakistan's infrastructure.")}
+                    onSave={(v) => savePageContent("mission_body", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("mission_body", "To deliver innovative, sustainable, and high-quality construction and engineering solutions that exceed client expectations while contributing to the development of Pakistan's infrastructure.")
+                )}
               </p>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-10">
               <p className="text-[10px] tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(38,85%,62%)" }}>{t.get("vision_eyebrow", "Our Vision")}</p>
               <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
               <h3 className="text-2xl md:text-3xl font-serif font-bold uppercase tracking-tight mb-6 text-white">
-                {t.get("vision_title", "Shaping Tomorrow")}
+                {editMode ? (
+                  <EditableText
+                    value={t.get("vision_title", "Shaping Tomorrow")}
+                    onSave={(v) => savePageContent("vision_title", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("vision_title", "Shaping Tomorrow")
+                )}
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                {t.get("vision_body", "To be recognized as the leading construction and engineering firm in the region, known for our commitment to quality, safety, and sustainable practices that shape communities for generations.")}
+                {editMode ? (
+                  <EditableText
+                    value={t.get("vision_body", "To be recognized as the leading construction and engineering firm in the region, known for our commitment to quality, safety, and sustainable practices that shape communities for generations.")}
+                    onSave={(v) => savePageContent("vision_body", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("vision_body", "To be recognized as the leading construction and engineering firm in the region, known for our commitment to quality, safety, and sustainable practices that shape communities for generations.")
+                )}
               </p>
             </motion.div>
           </div>

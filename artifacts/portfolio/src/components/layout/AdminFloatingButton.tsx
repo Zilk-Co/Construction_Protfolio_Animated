@@ -102,7 +102,7 @@ export function AdminFloatingButton() {
   const isLowTime = timeLeft !== null && timeLeft < 10 * 60 * 1000;
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2">
+    <div className="fixed bottom-6 left-6 z-40 flex flex-col items-start gap-2">
       {/* Session timer badge */}
       <div
         className={`flex items-center gap-1.5 text-[9px] tracking-wider font-mono px-2.5 py-1 border backdrop-blur-md ${

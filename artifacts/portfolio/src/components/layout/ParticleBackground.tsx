@@ -44,7 +44,7 @@ export function ParticleBackground() {
         baseVy: bvy,
         size: Math.random() * 1.8 + 0.5,
         opacity: 0,
-        baseOpacity: Math.random() * 0.28 + 0.08,
+        baseOpacity: Math.random() * 0.24 + 0.14,
       };
     });
 
@@ -126,7 +126,7 @@ export function ParticleBackground() {
           if (distSq > CONNECT_DIST * CONNECT_DIST) continue;
           const dist = Math.sqrt(distSq);
           const fade = 1 - dist / CONNECT_DIST;
-          const alpha = fade * fade * 0.12;
+          const alpha = fade * fade * 0.18;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);

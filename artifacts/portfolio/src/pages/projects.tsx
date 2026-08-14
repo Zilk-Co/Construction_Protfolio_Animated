@@ -1,4 +1,4 @@
-import { useListProjects, useListCategories } from "@workspace/api-client-react";
+import { useListProjects, useListCategories, useUpdatePageContent } from "@workspace/api-client-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
@@ -6,6 +6,9 @@ import { Footer } from "@/components/layout/Footer";
 import { useState } from "react";
 import { SlidersHorizontal, Calendar } from "lucide-react";
 import { usePageContent } from "@/hooks/usePageContent";
+import { EditEntityCard } from "@/components/EditEntityCard";
+import { EditableText } from "@/components/EditableText";
+import { useEditMode } from "@/components/EditModeProvider";
 
 const PROJECTS_HERO_BG =
   "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75";
@@ -44,6 +47,14 @@ export default function Projects() {
   const { data: categories = [] } = useListCategories();
   const { data: projects = [], isLoading } = useListProjects({ published: true });
   const t = usePageContent("projects");
+  const { editMode } = useEditMode();
+  const updatePageContent = useUpdatePageContent();
+
+  const savePageContent = async (key: string, value: string) => {
+    await updatePageContent.mutateAsync({
+      data: { updates: [{ page: "projects", key, value }] },
+    });
+  };
 
   const projectsToShow = Array.isArray(projects) ? projects : [];
 
@@ -84,7 +95,15 @@ export default function Projects() {
               className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight uppercase mb-6 text-white"
               style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
             >
-              {t.get("hero_title", "All Projects")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_title", "All Projects")}
+                  onSave={(v) => savePageContent("hero_title", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("hero_title", "All Projects")
+              )}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -93,7 +112,15 @@ export default function Projects() {
               className="text-lg text-gray-200 max-w-2xl leading-relaxed"
               style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
             >
-              {t.get("hero_subtitle", "Over two decades of landmark architectural and construction projects across Pakistan, the Middle East, and beyond.")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_subtitle", "Over two decades of landmark architectural and construction projects across Pakistan, the Middle East, and beyond.")}
+                  onSave={(v) => savePageContent("hero_subtitle", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("hero_subtitle", "Over two decades of landmark architectural and construction projects across Pakistan, the Middle East, and beyond.")
+              )}
             </motion.p>
           </div>
         </section>
@@ -193,6 +220,13 @@ export default function Projects() {
                   transition={{ delay: i * 0.07, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
                   data-testid={`card-project-${project.id}`}
                 >
+                  <EditEntityCard
+                    entityId={project.id}
+                    entityType="project"
+                    entitySlug={project.slug}
+                    entityName={project.title}
+                    onDeleted={() => window.location.reload()}
+                  >
                   <Link href={`/projects/${project.slug}`} className="block group">
                     <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,20%)] group-hover:border-[hsl(38,72%,52%)] transition-colors duration-300">
                       {project.heroImage ? (
@@ -236,6 +270,7 @@ export default function Projects() {
                       <p className="text-xs text-gray-500">{project.year || "Ongoing"}</p>
                     </div>
                   </Link>
+                  </EditEntityCard>
                 </motion.div>
               ))}
 

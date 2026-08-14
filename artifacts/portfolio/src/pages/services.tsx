@@ -1,10 +1,13 @@
-import { useListServices } from "@workspace/api-client-react";
+import { useListServices, useUpdatePageContent } from "@workspace/api-client-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { ArrowRight } from "lucide-react";
 import { usePageContent } from "@/hooks/usePageContent";
+import { EditEntityCard } from "@/components/EditEntityCard";
+import { EditableText } from "@/components/EditableText";
+import { useEditMode } from "@/components/EditModeProvider";
 
 const HERO_BG_FALLBACK =
   "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&q=80";
@@ -21,6 +24,14 @@ const METHOD_STEPS = [
 export default function Services() {
   const { data: services = [], isLoading } = useListServices({ published: true });
   const t = usePageContent("services");
+  const { editMode } = useEditMode();
+  const updatePageContent = useUpdatePageContent();
+
+  const savePageContent = async (key: string, value: string) => {
+    await updatePageContent.mutateAsync({
+      data: { updates: [{ page: "services", key, value }] },
+    });
+  };
 
   const servicesToShow = Array.isArray(services) ? services : [];
 
@@ -53,7 +64,15 @@ export default function Services() {
               className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight uppercase mb-6 text-white"
               style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
             >
-              {t.get("hero_title", "Operational Services")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_title", "Operational Services")}
+                  onSave={(v) => savePageContent("hero_title", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("hero_title", "Operational Services")
+              )}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
@@ -62,7 +81,15 @@ export default function Services() {
               className="text-lg text-gray-200 max-w-2xl leading-relaxed"
               style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
             >
-              {t.get("hero_subtitle", "A full spectrum of construction and engineering capabilities delivered end-to-end — from first concept to final handover — by one accountable team.")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_subtitle", "A full spectrum of construction and engineering capabilities delivered end-to-end — from first concept to final handover — by one accountable team.")}
+                  onSave={(v) => savePageContent("hero_subtitle", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("hero_subtitle", "A full spectrum of construction and engineering capabilities delivered end-to-end — from first concept to final handover — by one accountable team.")
+              )}
             </motion.p>
           </div>
         </section>
@@ -97,6 +124,12 @@ export default function Services() {
                     transition={{ delay: i * 0.08, duration: 0.6 }}
                     className="bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,20%)] hover:border-[hsl(38,72%,52%)] transition-all duration-300 group h-full focus:outline-none focus:ring-2 focus:ring-[hsl(38,72%,52%)] focus:ring-offset-2 focus:ring-offset-[hsl(220,18%,9%)]"
                   >
+                    <EditEntityCard
+                      entityId={item.id}
+                      entityType="service"
+                      entitySlug={item.slug}
+                      entityName={item.name}
+                    >
                     <Link href={`/services/${item.slug}`} className="block h-full w-full">
                       <div className="aspect-[16/10] overflow-hidden bg-[hsl(220,15%,16%)] relative">
                         <motion.img
@@ -128,6 +161,7 @@ export default function Services() {
                         </span>
                       </div>
                     </Link>
+                    </EditEntityCard>
                   </motion.div>
                 ))}
               </div>

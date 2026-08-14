@@ -10,6 +10,7 @@ import { AdminFloatingButton } from "@/components/layout/AdminFloatingButton";
 import { AiAssistant } from "@/components/layout/AiAssistant";
 import { EditModeProvider } from "@/components/EditModeProvider";
 import { EditModeProjectManager } from "@/components/EditModeProjectManager";
+import { EditToolbar } from "@/components/EditToolbar";
 import Home from "@/pages/home";
 import Projects from "@/pages/projects";
 import ProjectDetail from "@/pages/project-detail";
@@ -48,8 +49,9 @@ function Router() {
       <ParticleBackground />
       {!isAdmin && <Navbar />}
       <CustomCursor />
-      <AdminFloatingButton />
+      {!isAdmin && <AdminFloatingButton />}
       {!isAdmin && <EditModeProjectManager />}
+      {!isAdmin && <EditToolbar />}
       <AiAssistant />
       <Switch>
         {/* Public routes */}
@@ -90,6 +92,7 @@ function Router() {
 
         {/* Admin routes */}
         <Route path="/admin" component={AdminDashboard} />
+        <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route path="/admin/projects/new" component={AdminProjectNew} />
         <Route path="/admin/projects/:id/edit" component={AdminProjectEdit} />
         <Route path="/admin/projects/:id/images" component={AdminProjectImages} />

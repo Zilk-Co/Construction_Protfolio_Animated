@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useEditMode } from "./EditModeProvider";
+import { Pencil } from "lucide-react";
 
 interface EditableTextProps {
   value: string;
   onSave: (newValue: string) => Promise<void>;
-  tag?: "h1" | "h2" | "h3" | "p" | "span";
+  tag?: "h1" | "h2" | "h3" | "p" | "span" | "div";
   className?: string;
   placeholder?: string;
 }
@@ -74,8 +75,8 @@ export function EditableText({
           onBlur={handleSave}
           onKeyDown={handleKeyDown}
           disabled={saving}
-          rows={Tag === "p" || Tag === "span" ? 3 : 1}
-          className={`w-full bg-[hsl(220,18%,12%)] border border-[hsl(38,72%,52%)] px-3 py-2 text-sm text-white focus:outline-none resize-none ${className}`}
+          rows={Tag === "p" || Tag === "span" || Tag === "div" ? 3 : 1}
+          className="w-full bg-[hsl(220,18%,12%)] border border-[hsl(38,72%,52%)] px-3 py-2 text-sm text-white focus:outline-none resize-none"
           placeholder={placeholder}
         />
         {saving && (
@@ -89,11 +90,14 @@ export function EditableText({
 
   return (
     <Tag
-      className={`${className} cursor-pointer border border-transparent hover:border-[hsl(38,72%,52%)]/30 hover:bg-[hsl(38,72%,52%)]/5 transition-all duration-200 px-1 -mx-1`}
+      className={`${className} relative cursor-pointer group/edit border border-dashed border-[hsl(38,72%,52%)]/30 hover:border-[hsl(38,72%,52%)]/60 bg-[hsl(38,72%,52%)]/5 hover:bg-[hsl(38,72%,52%)]/10 transition-all duration-200`}
       onClick={() => setIsEditing(true)}
       title="Click to edit"
     >
       {value || <span className="text-neutral-500 italic">{placeholder}</span>}
+      <span className="absolute -top-2 -right-2 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] p-0.5 opacity-0 group-hover/edit:opacity-100 transition-opacity pointer-events-none">
+        <Pencil size={10} />
+      </span>
     </Tag>
   );
 }

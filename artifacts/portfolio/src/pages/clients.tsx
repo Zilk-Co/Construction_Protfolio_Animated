@@ -5,6 +5,10 @@ import { usePageContent } from "@/hooks/usePageContent";
 import { Link } from "wouter";
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
+import { EditEntityCard } from "@/components/EditEntityCard";
+import { EditableText } from "@/components/EditableText";
+import { useEditMode } from "@/components/EditModeProvider";
+import { useUpdatePageContent } from "@workspace/api-client-react";
 
 const CLIENTS_HERO_BG = "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75";
 
@@ -23,6 +27,14 @@ export default function ClientsPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const t = usePageContent("clients");
+  const { editMode } = useEditMode();
+  const updatePageContent = useUpdatePageContent();
+
+  const savePageContent = async (key: string, value: string) => {
+    await updatePageContent.mutateAsync({
+      data: { updates: [{ page: "clients", key, value }] },
+    });
+  };
 
   useEffect(() => {
     const API = import.meta.env.VITE_API_URL || "";
@@ -47,10 +59,26 @@ export default function ClientsPage() {
               {t.get("clients_eyebrow", "Our Partners")}
             </motion.p>
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight uppercase mb-6 text-white" style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}>
-              {t.get("clients_title", "Our Clients")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("clients_title", "Our Clients")}
+                  onSave={(v) => savePageContent("clients_title", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("clients_title", "Our Clients")
+              )}
             </motion.h1>
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-lg text-gray-200 max-w-2xl leading-relaxed" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>
-              {t.get("clients_subtitle", "We are proud to work with leading organizations across construction, infrastructure, and development.")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("clients_subtitle", "We are proud to work with leading organizations across construction, infrastructure, and development.")}
+                  onSave={(v) => savePageContent("clients_subtitle", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("clients_subtitle", "We are proud to work with leading organizations across construction, infrastructure, and development.")
+              )}
             </motion.p>
           </div>
         </section>
@@ -68,6 +96,13 @@ export default function ClientsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {clients.map((client, i) => (
                   <motion.div key={client.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06, duration: 0.5 }}>
+                    <EditEntityCard
+                      entityId={client.id}
+                      entityType="client"
+                      entitySlug={client.slug}
+                      entityName={client.name}
+                      onDeleted={() => setClients(prev => prev.filter(c => c.id !== client.id))}
+                    >
                     <Link href={`/clients/${client.slug}`} className="block border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-8 hover:border-[hsl(38,72%,52%)] transition-all duration-300 group h-full">
                       <div className="flex items-start justify-between mb-4">
                         {client.logoUrl ? (
@@ -87,6 +122,7 @@ export default function ClientsPage() {
                       {client.description && <p className="text-xs text-[hsl(220,12%,50%)] leading-relaxed line-clamp-3">{client.description}</p>}
                       {client.website && <p className="text-[10px] text-[hsl(220,12%,40%)] mt-3 truncate">{client.website}</p>}
                     </Link>
+                    </EditEntityCard>
                   </motion.div>
                 ))}
               </div>

@@ -9,6 +9,7 @@ import { usePageContent } from "@/hooks/usePageContent";
 import { EditableText } from "@/components/EditableText";
 import { useEditMode } from "@/components/EditModeProvider";
 import { useUpdatePageContent } from "@workspace/api-client-react";
+import { EditEntityCard } from "@/components/EditEntityCard";
 
 const SERVICES_FALLBACK = "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600";
 
@@ -99,8 +100,15 @@ export default function Home() {
               {displayProjects.map((project: any, i: number) => {
                 const isActive = i === currentSlide;
                 return (
-                  <div
+                  <EditEntityCard
                     key={project.id}
+                    entityId={project.id}
+                    entityType="project"
+                    entitySlug={project.slug}
+                    entityName={project.title}
+                    className="absolute inset-0"
+                  >
+                  <div
                     className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}
                   >
                     <Link href={`/projects/${project.slug}`} className="block w-full h-full relative">
@@ -123,6 +131,7 @@ export default function Home() {
                       </div>
                     </Link>
                   </div>
+                  </EditEntityCard>
                 );
               })}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5">
@@ -159,7 +168,15 @@ export default function Home() {
                 const flexValue = hoveredIndex === null ? 1 : isHovered ? 4 : 0.4;
                 const imageLoaded = !!loadedImagesRef.current[i];
                 return (
-                  <motion.div key={project.id} className="relative h-full group cursor-pointer overflow-hidden border-r border-white/10 last:border-r-0" animate={{ flex: flexValue }} transition={{ duration: 0.75, ease: [0.32, 0.72, 0, 1] }} onMouseEnter={() => enterPanel(i)} onMouseLeave={leavePanel}>
+                  <EditEntityCard
+                    key={project.id}
+                    entityId={project.id}
+                    entityType="project"
+                    entitySlug={project.slug}
+                    entityName={project.title}
+                    flexValue={flexValue}
+                  >
+                  <motion.div className="relative h-full w-full group cursor-pointer overflow-hidden border-r border-white/10 last:border-r-0" animate={{ flex: flexValue }} transition={{ duration: 0.75, ease: [0.32, 0.72, 0, 1] }} onMouseEnter={() => enterPanel(i)} onMouseLeave={leavePanel}>
                     <Link href={`/projects/${project.slug}`} className="block w-full h-full relative">
                       {imageLoaded && (
                         <motion.div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${project.heroImage})` }} initial={{ opacity: 0 }} animate={{ opacity: 1, scale: isHovered ? 1.06 : 1 }} transition={{ opacity: { duration: 0.5 }, scale: { duration: 1.4, ease: "easeOut" } }} />
@@ -183,93 +200,60 @@ export default function Home() {
                       </div>
                     </Link>
                   </motion.div>
+                  </EditEntityCard>
                 );
               })}
-              {/* Company identity overlay — always visible on desktop */}
-              <div className="absolute inset-0 z-20 pointer-events-none flex flex-col justify-center items-center">
-                <div className="text-center px-8">
-                  <img src="/logo.png" alt="Azhar Engineering" className="h-14 md:h-18 w-auto object-contain mb-4 mx-auto" style={{ filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.8))" }} />
-                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold tracking-tight uppercase text-white mb-4" style={{ textShadow: "0 4px 30px rgba(0,0,0,0.85), 0 2px 8px rgba(0,0,0,0.9)" }}>
-                    {editMode ? (
-                      <EditableText
-                        value={t.get("hero_headline", "Architecture & Construction")}
-                        onSave={(v) => savePageContent("hero_headline", v)}
-                        tag="span"
-                        className="inline"
-                      />
-                    ) : (
-                      t.get("hero_headline", "Architecture & Construction")
-                    )}
-                  </h1>
-                  <p className="text-sm md:text-base text-gray-200 max-w-xl mx-auto mb-8 leading-relaxed" style={{ textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}>
-                    {t.get("hero_description", "Delivering landmark architectural and construction projects across Pakistan and the Middle East since 2005.")}
-                  </p>
-                  <div className="flex items-center justify-center gap-4">
-                    <Link href="/contact" className="pointer-events-auto bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-8 py-3 text-xs tracking-[0.2em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors inline-flex items-center gap-3" style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.5)" }}>
-                      {t.get("hero_cta", "Get a Quote")} <ArrowRight size={13} />
-                    </Link>
-                    <Link href="/projects" className="pointer-events-auto border border-white/30 text-white px-8 py-3 text-xs tracking-[0.2em] uppercase font-bold hover:bg-white/10 transition-colors" style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.5)" }}>
-                      {t.get("hero_cta_secondary", "View Projects")}
-                    </Link>
-                  </div>
-                </div>
-              </div>
             </>
           )}
         </section>
 
-        {/* ═══════ Mobile Hero Identity (below carousel on mobile) ═══════ */}
-        <section className="md:hidden px-6 py-12 border-b border-[hsl(220,15%,18%)]">
-          <div className="max-w-screen-2xl mx-auto text-center">
-            <img src="/logo.png" alt="Azhar Engineering" className="h-12 w-auto object-contain mb-4 mx-auto" />
-            <h1 className="text-3xl font-serif font-bold tracking-tight uppercase mb-3">
-              {editMode ? (
-                <EditableText
-                  value={t.get("hero_headline", "Architecture & Construction")}
-                  onSave={(v) => savePageContent("hero_headline", v)}
-                  tag="span"
-                  className="inline"
-                />
-              ) : (
-                t.get("hero_headline", "Architecture & Construction")
-              )}
-            </h1>
-            <p className="text-sm text-[hsl(220,12%,55%)] max-w-md mx-auto leading-relaxed mb-6">
-              {editMode ? (
-                <EditableText
-                  value={t.get("hero_description", "Delivering landmark architectural and construction projects across Pakistan and the Middle East since 2005.")}
-                  onSave={(v) => savePageContent("hero_description", v)}
-                  tag="span"
-                  className="inline"
-                />
-              ) : (
-                t.get("hero_description", "Delivering landmark architectural and construction projects across Pakistan and the Middle East since 2005.")
-              )}
-            </p>
-            <div className="flex items-center justify-center gap-3">
-              <Link href="/contact" className="bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-6 py-3 text-xs tracking-[0.2em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors inline-flex items-center gap-2">
-                {t.get("hero_cta", "Get a Quote")} <ArrowRight size={12} />
-              </Link>
-              <Link href="/projects" className="border border-[hsl(220,15%,25%)] text-white px-6 py-3 text-xs tracking-[0.2em] uppercase font-bold hover:border-[hsl(38,72%,52%)] transition-colors">
-                {t.get("hero_cta_secondary", "View Projects")}
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* About Preview */}
+        {/* ═══════ About Preview ═══════ */}
         <section className="py-24 px-6">
           <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
               <p className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-3">
-                {t.get("about_eyebrow", "About Us")}
+                {editMode ? (
+                  <EditableText
+                    value={t.get("about_eyebrow", "About Us")}
+                    onSave={(v) => savePageContent("about_eyebrow", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("about_eyebrow", "About Us")
+                )}
               </p>
               <h2 className="text-3xl md:text-5xl font-serif font-bold uppercase tracking-tight mb-6">
-                {t.get("about_title", "Building Pakistan's")}
-                <span className="block" style={{ color: "hsl(38,72%,52%)" }}>{t.get("about_title_accent", "Infrastructure")}</span>
+                {editMode ? (
+                  <EditableText
+                    value={t.get("about_title", "Building Pakistan's")}
+                    onSave={(v) => savePageContent("about_title", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("about_title", "Building Pakistan's")
+                )}
+                <span className="block" style={{ color: "hsl(38,72%,52%)" }}>
+                  {editMode ? (
+                    <EditableText
+                      value={t.get("about_title_accent", "Infrastructure")}
+                      onSave={(v) => savePageContent("about_title_accent", v)}
+                      tag="span"
+                    />
+                  ) : (
+                    t.get("about_title_accent", "Infrastructure")
+                  )}
+                </span>
               </h2>
               <p className="text-sm text-[hsl(220,12%,55%)] leading-relaxed mb-8">
-                {t.get("about_body", "Azhar Engineering (Pvt.) Ltd is a leading construction and engineering firm dedicated to transforming the urban landscape with uncompromising quality and integrity.")}
+                {editMode ? (
+                  <EditableText
+                    value={t.get("about_body", "Azhar Engineering (Pvt.) Ltd is a leading construction and engineering firm dedicated to transforming the urban landscape with uncompromising quality and integrity.")}
+                    onSave={(v) => savePageContent("about_body", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("about_body", "Azhar Engineering (Pvt.) Ltd is a leading construction and engineering firm dedicated to transforming the urban landscape with uncompromising quality and integrity.")
+                )}
               </p>
               <Link href="/about" className="inline-flex items-center gap-3 border border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] px-6 py-3 text-xs tracking-[0.2em] uppercase hover:bg-[hsl(38,72%,52%)] hover:text-[hsl(220,18%,9%)] transition-all duration-200">
                 {t.get("about_cta", "Learn More About Us")} <ArrowRight size={13} />
@@ -348,10 +332,26 @@ export default function Home() {
             <div className="flex justify-between items-end mb-14">
               <div>
                 <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-[10px] tracking-[0.4em] uppercase text-[hsl(38,72%,52%)] mb-3">
-                  {t.get("services_eyebrow", "What We Do")}
+                  {editMode ? (
+                    <EditableText
+                      value={t.get("services_eyebrow", "What We Do")}
+                      onSave={(v) => savePageContent("services_eyebrow", v)}
+                      tag="span"
+                    />
+                  ) : (
+                    t.get("services_eyebrow", "What We Do")
+                  )}
                 </motion.p>
                 <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl md:text-5xl font-serif font-bold uppercase">
-                  {t.get("services_title", "Our Services")}
+                  {editMode ? (
+                    <EditableText
+                      value={t.get("services_title", "Our Services")}
+                      onSave={(v) => savePageContent("services_title", v)}
+                      tag="span"
+                    />
+                  ) : (
+                    t.get("services_title", "Our Services")
+                  )}
                 </motion.h2>
               </div>
               <Link href="/services" className="text-xs tracking-[0.2em] uppercase text-[hsl(220,12%,55%)] hover:text-[hsl(38,72%,52%)] transition-colors hidden md:flex items-center gap-2">
@@ -393,8 +393,28 @@ export default function Home() {
         <section className="py-20 px-6 bg-[hsl(220,18%,11%)] border-y border-[hsl(220,15%,18%)]">
           <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
             <div>
-              <h2 className="text-2xl md:text-4xl font-serif font-bold uppercase tracking-tight mb-2">{t.get("cta_title", "Have a project in mind?")}</h2>
-              <p className="text-sm text-[hsl(220,12%,55%)]">{t.get("cta_body", "Let us bring your vision to life.")}</p>
+              <h2 className="text-2xl md:text-4xl font-serif font-bold uppercase tracking-tight mb-2">
+                {editMode ? (
+                  <EditableText
+                    value={t.get("cta_title", "Have a project in mind?")}
+                    onSave={(v) => savePageContent("cta_title", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("cta_title", "Have a project in mind?")
+                )}
+              </h2>
+              <p className="text-sm text-[hsl(220,12%,55%)]">
+                {editMode ? (
+                  <EditableText
+                    value={t.get("cta_body", "Let us bring your vision to life.")}
+                    onSave={(v) => savePageContent("cta_body", v)}
+                    tag="span"
+                  />
+                ) : (
+                  t.get("cta_body", "Let us bring your vision to life.")
+                )}
+              </p>
             </div>
             <Link href="/contact" className="shrink-0 bg-[hsl(38,72%,52%)] text-[hsl(220,18%,9%)] px-10 py-4 text-xs tracking-[0.25em] uppercase font-bold hover:bg-[hsl(38,72%,60%)] transition-colors inline-flex items-center gap-3">
               {t.get("cta_button_label", "Start a Conversation")} <ArrowRight size={13} />

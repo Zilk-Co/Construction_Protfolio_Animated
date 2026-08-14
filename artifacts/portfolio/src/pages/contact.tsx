@@ -4,8 +4,10 @@ import { Footer } from "@/components/layout/Footer";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useState } from "react";
-import { useGetSettings } from "@workspace/api-client-react";
+import { useGetSettings, useUpdatePageContent } from "@workspace/api-client-react";
 import { usePageContent } from "@/hooks/usePageContent";
+import { EditableText } from "@/components/EditableText";
+import { useEditMode } from "@/components/EditModeProvider";
 
 const CONTACT_HERO_BG =
   "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&q=75";
@@ -25,6 +27,14 @@ export default function Contact() {
   const [error, setError] = useState("");
   const { data: settings } = useGetSettings();
   const t = usePageContent("contact");
+  const { editMode } = useEditMode();
+  const updatePageContent = useUpdatePageContent();
+
+  const savePageContent = async (key: string, value: string) => {
+    await updatePageContent.mutateAsync({
+      data: { updates: [{ page: "contact", key, value }] },
+    });
+  };
 
   const phone = settings?.phone ?? "+92 334 2976686";
   const email = settings?.email ?? "azharkhaki2005@gmail.com";
@@ -78,10 +88,26 @@ export default function Contact() {
               {t.get("hero_eyebrow", "Get in Touch")}
             </motion.p>
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tight uppercase mb-6 text-white" style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}>
-              {t.get("hero_title", "Contact Us")}
+              {editMode ? (
+                <EditableText
+                  value={t.get("hero_title", "Contact Us")}
+                  onSave={(v) => savePageContent("hero_title", v)}
+                  tag="span"
+                />
+              ) : (
+                t.get("hero_title", "Contact Us")
+              )}
             </motion.h1>
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-lg text-gray-200 max-w-2xl leading-relaxed" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}>
-              {subtitle}
+              {editMode ? (
+                <EditableText
+                  value={subtitle}
+                  onSave={(v) => savePageContent("hero_subtitle", v)}
+                  tag="span"
+                />
+              ) : (
+                subtitle
+              )}
             </motion.p>
           </div>
         </section>

@@ -51,7 +51,7 @@ export default defineConfig({
     allowedHosts: true,
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "http://localhost:3001",
         changeOrigin: true,
         secure: false,
       },
@@ -66,7 +66,7 @@ export default defineConfig({
     allowedHosts: true,
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "http://localhost:3001",
         changeOrigin: true,
         secure: false,
       },
