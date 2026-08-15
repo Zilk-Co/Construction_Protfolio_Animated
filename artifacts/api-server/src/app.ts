@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import pinoHttp from "pino-http";
 import session from "express-session";
+import ConnectPgSimple from "connect-pg-simple";
 import multer from "multer";
 import router from "./routes";
 import { logger } from "./lib/logger";
@@ -138,8 +139,18 @@ const DOCUMENT_SIGNATURES: Record<string, (buf: Buffer) => boolean> = {
   "text/plain": () => true,
 };
 
+const PgSession = ConnectPgSimple(session);
+
+const pgSessionStore = process.env.DATABASE_URL
+  ? new PgSession({
+      conString: process.env.DATABASE_URL,
+      createTableIfMissing: true,
+    })
+  : undefined;
+
 app.use(
   session({
+    store: pgSessionStore,
     secret: process.env.SESSION_SECRET ?? "arch-portfolio-secret-dev",
     resave: false,
     saveUninitialized: false,
