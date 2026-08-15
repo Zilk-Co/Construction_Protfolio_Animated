@@ -88,7 +88,7 @@ export function GalleryPicker({
       </label>
 
       {/* Mode tabs */}
-      <div className="flex gap-1 text-[10px] tracking-[0.15em] uppercase">
+      <div className="flex gap-1 text-[10px] tracking-[0.15em] uppercase overflow-x-auto">
         <button
           type="button"
           onClick={() => setMode("url")}
@@ -165,7 +165,7 @@ export function GalleryPicker({
       {/* Gallery modal */}
       {galleryOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setGalleryOpen(false)}>
-          <div className="bg-[hsl(220,18%,10%)] border border-[hsl(220,15%,20%)] w-full max-w-3xl max-h-[80vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[hsl(220,18%,10%)] border border-[hsl(220,15%,20%)] w-full w-[calc(100%-2rem)] max-w-3xl max-h-[80vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-[hsl(220,15%,18%)]">
               <h3 className="text-sm font-serif uppercase tracking-widest text-[hsl(38,72%,52%)]">Choose from Gallery</h3>
               <button type="button" onClick={() => setGalleryOpen(false)} className="text-[hsl(220,12%,45%)] hover:text-foreground transition-colors">
@@ -202,7 +202,7 @@ export function GalleryPicker({
       {/* Media Library modal */}
       {mediaOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setMediaOpen(false)}>
-          <div className="bg-[hsl(220,18%,10%)] border border-[hsl(220,15%,20%)] w-full max-w-3xl max-h-[80vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[hsl(220,18%,10%)] border border-[hsl(220,15%,20%)] w-full w-[calc(100%-2rem)] max-w-3xl max-h-[80vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-[hsl(220,15%,18%)]">
               <h3 className="text-sm font-serif uppercase tracking-widest text-[hsl(38,72%,52%)]">Media Library</h3>
               <button type="button" onClick={() => setMediaOpen(false)} className="text-[hsl(220,12%,45%)] hover:text-foreground transition-colors">

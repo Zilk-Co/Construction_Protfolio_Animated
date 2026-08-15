@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, Link } from "wouter";
 import { useGetAdminMe, useAdminLogout } from "@workspace/api-client-react";
 import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Layers, FileText, LayoutDashboard, Users, Shield, MessageSquare, Image, Star, Briefcase, BookOpen } from "lucide-react";
@@ -7,6 +7,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const { data: me, isLoading } = useGetAdminMe();
   const logout = useAdminLogout();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !me?.authenticated) {
@@ -107,8 +108,16 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen text-white flex" style={{ backgroundColor: "hsl(220,18%,9%)" }}>
+      {/* Mobile backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-58 shrink-0 border-r border-[hsl(220,15%,16%)] flex flex-col fixed inset-y-0 left-0 z-30" style={{ width: "224px", backgroundColor: "hsl(220,18%,7%)" }}>
+      <aside className={`w-58 shrink-0 border-r border-[hsl(220,15%,16%)] flex flex-col fixed inset-y-0 left-0 z-50 transition-transform duration-300 md:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`} style={{ width: "224px", backgroundColor: "hsl(220,18%,7%)" }}>
         {/* Brand */}
         <div className="px-5 py-6 border-b border-[hsl(220,15%,16%)]">
           <p className="text-sm font-serif font-bold uppercase tracking-tight text-white leading-none">
@@ -165,8 +174,19 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 min-h-screen" style={{ marginLeft: "224px" }}>
+      <div className="flex-1 min-h-screen md:ml-[224px]">
         <div className="px-4 md:px-8 py-8 md:py-10 max-w-5xl overflow-x-auto">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="md:hidden min-w-[44px] min-h-[44px] p-3 mb-4 text-[hsl(220,12%,50%)] hover:text-white transition-colors"
+            aria-label="Open sidebar"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
           {children}
         </div>
       </div>

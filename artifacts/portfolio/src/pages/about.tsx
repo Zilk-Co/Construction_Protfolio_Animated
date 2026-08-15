@@ -45,7 +45,7 @@ export default function About() {
       <div className="min-h-screen text-foreground">
 
         {/* ═══════ HERO ═══════ */}
-        <section className="relative pt-44 pb-28 px-6 overflow-hidden">
+        <section className="relative pt-28 md:pt-44 pb-28 px-6 overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${heroBg})` }}
@@ -223,7 +223,7 @@ export default function About() {
         {/* ═══════ MISSION & VISION ═══════ */}
         <section className="py-24 px-6">
           <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-10">
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 md:p-10">
               <p className="text-[10px] tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(38,85%,62%)" }}>{t.get("mission_eyebrow", "Our Mission")}</p>
               <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
               <h3 className="text-2xl md:text-3xl font-serif font-bold uppercase tracking-tight mb-6 text-white">
@@ -249,7 +249,7 @@ export default function About() {
                 )}
               </p>
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-10">
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 md:p-10">
               <p className="text-[10px] tracking-[0.35em] uppercase mb-4" style={{ color: "hsl(38,85%,62%)" }}>{t.get("vision_eyebrow", "Our Vision")}</p>
               <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-6" />
               <h3 className="text-2xl md:text-3xl font-serif font-bold uppercase tracking-tight mb-6 text-white">

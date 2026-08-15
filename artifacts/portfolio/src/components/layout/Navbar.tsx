@@ -90,7 +90,7 @@ export function Navbar() {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden relative z-50 p-2 text-foreground"
+            className="md:hidden relative z-50 min-w-[44px] min-h-[44px] p-3 text-foreground"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             data-testid="button-mobile-menu"
           >
@@ -107,7 +107,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-30 bg-[hsl(220,18%,7%)] flex flex-col items-center justify-center gap-10 md:hidden"
+            className="fixed inset-0 z-30 bg-[hsl(220,18%,7%)] flex flex-col items-center justify-center gap-10 overflow-y-auto md:hidden"
           >
             {links.map((link, i) => (
               <motion.div

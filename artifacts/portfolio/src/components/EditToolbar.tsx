@@ -28,7 +28,7 @@ export function EditToolbar() {
 
         <div className="h-4 w-px bg-[hsl(220,15%,20%)]" />
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 overflow-x-auto">
           {links.map((link) => (
             <button
               key={link.label}

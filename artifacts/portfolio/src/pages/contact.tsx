@@ -83,7 +83,7 @@ export default function Contact() {
     <PageTransition>
       <div className="min-h-screen text-foreground">
         {/* Hero */}
-        <section className="relative pt-44 pb-28 px-6 overflow-hidden">
+        <section className="relative pt-28 md:pt-44 pb-28 px-6 overflow-hidden">
           <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${t.get("hero_bg", CONTACT_HERO_BG)})` }} />
           <HeroImageEditor
             value={t.get("hero_bg", CONTACT_HERO_BG)}
