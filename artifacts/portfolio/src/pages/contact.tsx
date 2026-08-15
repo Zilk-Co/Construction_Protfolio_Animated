@@ -194,8 +194,8 @@ export default function Contact() {
                   <div className="w-12 h-12 border-2 border-[hsl(38,72%,52%)] mx-auto mb-4 flex items-center justify-center">
                     <span style={{ color: "hsl(38,72%,58%)" }} className="text-xl">✓</span>
                   </div>
-                  <h3 className="font-serif text-xl uppercase tracking-tight mb-2 text-white">{t.get("message_success_title", "Message Received")}</h3>
-                  <p className="text-sm text-gray-400">{t.get("message_success_body", "We will get back to you within 24 hours.")}</p>
+                  <h3 className="font-serif text-xl uppercase tracking-tight mb-2 text-white">{t.get("message_success_title", "Message Sent!")}</h3>
+                  <p className="text-sm text-gray-400">{t.get("message_success_body", "We'll get back to you within 24 hours.")}</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">

@@ -13,6 +13,10 @@ import galleryRouter from "./gallery";
 import clientsRouter from "./clients";
 import policiesRouter from "./policies";
 import messagesRouter from "./messages";
+import blogRouter from "./blog";
+import mediaRouter from "./media";
+import testimonialsRouter from "./testimonials";
+import jobsRouter from "./jobs";
 
 const router: IRouter = Router();
 
@@ -30,5 +34,9 @@ router.use(galleryRouter);
 router.use(clientsRouter);
 router.use(policiesRouter);
 router.use(messagesRouter);
+router.use(blogRouter);
+router.use(mediaRouter);
+router.use(testimonialsRouter);
+router.use(jobsRouter);
 
 export default router;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "wouter";
 import { useGetAdminMe, useAdminLogout } from "@workspace/api-client-react";
-import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Layers, FileText, LayoutDashboard, Users, Shield, MessageSquare } from "lucide-react";
+import { FolderOpen, Settings2, LogOut, Home, SlidersHorizontal, Type, Plus, Cog, Layers, FileText, LayoutDashboard, Users, Shield, MessageSquare, Image, Star, Briefcase, BookOpen } from "lucide-react";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -54,6 +54,30 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       label: "Clients",
       items: [
         { href: "/admin/clients", label: "All Clients", icon: Users },
+      ],
+    },
+    {
+      label: "Media",
+      items: [
+        { href: "/admin/media", label: "Media Library", icon: Image },
+      ],
+    },
+    {
+      label: "Testimonials",
+      items: [
+        { href: "/admin/testimonials", label: "All Testimonials", icon: Star },
+      ],
+    },
+    {
+      label: "Careers",
+      items: [
+        { href: "/admin/jobs", label: "Job Openings", icon: Briefcase },
+      ],
+    },
+    {
+      label: "Blog",
+      items: [
+        { href: "/admin/blog", label: "All Posts", icon: BookOpen },
       ],
     },
     {

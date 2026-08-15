@@ -3,6 +3,7 @@ import { db, messagesTable } from "@workspace/db";
 import { insertMessageSchema } from "@workspace/db/schema";
 import { eq, desc, count } from "drizzle-orm";
 import { requireAdmin } from "../middlewares/auth";
+import { sendContactNotification } from "../lib/mailer";
 
 const router = Router();
 
@@ -10,6 +11,7 @@ router.post("/messages", async (req: Request, res: Response) => {
   const parsed = insertMessageSchema.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Invalid data" }); return; }
   const [message] = await db.insert(messagesTable).values(parsed.data).returning();
+  sendContactNotification(parsed.data).catch(() => {});
   res.status(201).json({ id: message.id, success: true });
 });
 

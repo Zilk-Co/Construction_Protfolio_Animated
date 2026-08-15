@@ -8,3 +8,7 @@ export * from "./documents";
 export * from "./clients";
 export * from "./policies";
 export * from "./messages";
+export * from "./media";
+export * from "./testimonials";
+export * from "./jobs";
+export * from "./blog";

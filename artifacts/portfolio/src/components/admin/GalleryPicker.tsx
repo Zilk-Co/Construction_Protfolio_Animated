@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Image, Link as LinkIcon, Upload, X, Check } from "lucide-react";
+import { Image, Link as LinkIcon, Upload, X, Check, FolderOpen } from "lucide-react";
+
+const API = import.meta.env.VITE_API_URL || "";
 
 const PREDEFINED_GALLERY = [
   "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=75",
@@ -16,6 +18,13 @@ const PREDEFINED_GALLERY = [
   "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=75",
   "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=900&q=75",
 ];
+
+type MediaItem = {
+  id: number;
+  url: string;
+  name: string;
+  alt: string | null;
+};
 
 interface GalleryPickerProps {
   value: string;
@@ -34,8 +43,9 @@ export function GalleryPicker({
   onFileUpload,
   uploading = false,
 }: GalleryPickerProps) {
-  const [mode, setMode] = useState<"url" | "gallery">(value ? "url" : "gallery");
+  const [mode, setMode] = useState<"url" | "gallery" | "media">(value ? "url" : "gallery");
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(false);
   const [urlInput, setUrlInput] = useState(value);
 
   useEffect(() => { setUrlInput(value); }, [value]);
@@ -48,6 +58,16 @@ export function GalleryPicker({
       return resp.json();
     },
     enabled: galleryOpen,
+  });
+
+  const { data: mediaItems = [], isLoading: mediaLoading } = useQuery<MediaItem[]>({
+    queryKey: ["admin-media"],
+    queryFn: async () => {
+      const resp = await fetch(`${API}/api/admin/media`, { credentials: "include" });
+      if (!resp.ok) throw new Error("Failed to load media");
+      return resp.json();
+    },
+    enabled: mediaOpen,
   });
 
   const images = [...PREDEFINED_GALLERY, ...(data?.images ?? []).filter(u => !PREDEFINED_GALLERY.includes(u))];
@@ -93,6 +113,18 @@ export function GalleryPicker({
           <Image size={10} className="inline mr-1" />
           Gallery
         </button>
+        <button
+          type="button"
+          onClick={() => { setMode("media"); setMediaOpen(true); }}
+          className={`px-3 py-1.5 border transition-colors ${
+            mode === "media"
+              ? "border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%)/8%]"
+              : "border-[hsl(220,15%,20%)] text-[hsl(220,12%,45%)] hover:border-[hsl(220,15%,30%)]"
+          }`}
+        >
+          <FolderOpen size={10} className="inline mr-1" />
+          Media Library
+        </button>
       </div>
 
       {/* URL input */}
@@ -113,6 +145,18 @@ export function GalleryPicker({
             <img src={value} alt="" className="w-full h-full object-cover" />
           </div>
           <button type="button" onClick={() => setGalleryOpen(true)} className="text-[10px] tracking-[0.15em] uppercase text-[hsl(38,72%,52%)] hover:text-[hsl(38,72%,62%)] transition-colors">
+            Change
+          </button>
+        </div>
+      )}
+
+      {/* Media Library picker */}
+      {mode === "media" && !mediaOpen && value && (
+        <div className="flex items-center gap-3">
+          <div className="w-20 h-14 overflow-hidden border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,11%)]">
+            <img src={value} alt="" className="w-full h-full object-cover" />
+          </div>
+          <button type="button" onClick={() => setMediaOpen(true)} className="text-[10px] tracking-[0.15em] uppercase text-[hsl(38,72%,52%)] hover:text-[hsl(38,72%,62%)] transition-colors">
             Change
           </button>
         </div>
@@ -150,6 +194,58 @@ export function GalleryPicker({
                   </button>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Media Library modal */}
+      {mediaOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setMediaOpen(false)}>
+          <div className="bg-[hsl(220,18%,10%)] border border-[hsl(220,15%,20%)] w-full max-w-3xl max-h-[80vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[hsl(220,15%,18%)]">
+              <h3 className="text-sm font-serif uppercase tracking-widest text-[hsl(38,72%,52%)]">Media Library</h3>
+              <button type="button" onClick={() => setMediaOpen(false)} className="text-[hsl(220,12%,45%)] hover:text-foreground transition-colors">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="overflow-y-auto p-6">
+              {mediaLoading ? (
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="aspect-square bg-[hsl(220,18%,12%)] border border-[hsl(220,15%,18%)] animate-pulse" />
+                  ))}
+                </div>
+              ) : mediaItems.length === 0 ? (
+                <div className="text-center py-12 text-[hsl(220,12%,40%)] text-xs tracking-widest uppercase">
+                  No images in media library. Add some in Admin &gt; Media.
+                </div>
+              ) : (
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  {mediaItems.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => { onChange(item.url); setUrlInput(item.url); setMediaOpen(false); setMode("url"); }}
+                      className={`relative aspect-square overflow-hidden border-2 transition-colors group ${
+                        value === item.url
+                          ? "border-[hsl(38,72%,52%)] ring-1 ring-[hsl(38,72%,52%)]"
+                          : "border-transparent hover:border-[hsl(220,15%,30%)]"
+                      }`}
+                    >
+                      <img src={item.url} alt={item.alt || item.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <p className="text-[9px] text-white truncate">{item.name || "Unnamed"}</p>
+                      </div>
+                      {value === item.url && (
+                        <div className="absolute top-1 right-1 w-5 h-5 bg-[hsl(38,72%,52%)] flex items-center justify-center">
+                          <Check size={12} className="text-[hsl(220,18%,9%)]" />
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

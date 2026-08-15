@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { trackPageView } from "@/lib/analytics";
 import NotFound from "@/pages/not-found";
 
 import { CustomCursor } from "@/components/layout/CustomCursor";
@@ -36,12 +38,25 @@ import AdminDocuments from "@/pages/admin/documents";
 import AdminClients from "@/pages/admin/clients";
 import AdminPolicies from "@/pages/admin/policies";
 import AdminMessages from "@/pages/admin/messages";
+import AdminBlog from "@/pages/admin/blog";
+import AdminBlogEdit from "@/pages/admin/blog-edit";
+import BlogPage from "@/pages/blog";
+import BlogDetail from "@/pages/blog-detail";
+import AdminMedia from "@/pages/admin/media";
+import AdminTestimonials from "@/pages/admin/testimonials";
+import AdminJobs from "@/pages/admin/jobs";
+import AdminJobsEdit from "@/pages/admin/jobs-edit";
+import Careers, { JobDetail } from "@/pages/careers";
 
 const queryClient = new QueryClient();
 
 function Router() {
   const [location] = useLocation();
   const isAdmin = location.startsWith("/admin");
+
+  useEffect(() => {
+    trackPageView(location);
+  }, [location]);
 
   return (
     <>
@@ -85,6 +100,10 @@ function Router() {
         <Route path="/policies">
           <div className="pt-24"><PoliciesPage /></div>
         </Route>
+        <Route path="/blog" component={BlogPage} />
+        <Route path="/blog/:slug" component={BlogDetail} />
+        <Route path="/careers" component={Careers} />
+        <Route path="/careers/:slug" component={JobDetail} />
 
         {/* Admin login — accessible via /admin-panel (primary) and /admin-login (legacy) */}
         <Route path="/admin-panel" component={AdminLogin} />
@@ -105,6 +124,14 @@ function Router() {
         <Route path="/admin/clients" component={AdminClients} />
         <Route path="/admin/policies" component={AdminPolicies} />
         <Route path="/admin/messages" component={AdminMessages} />
+        <Route path="/admin/blog" component={AdminBlog} />
+        <Route path="/admin/blog/new" component={AdminBlogEdit} />
+        <Route path="/admin/blog/:id/edit" component={AdminBlogEdit} />
+        <Route path="/admin/media" component={AdminMedia} />
+        <Route path="/admin/testimonials" component={AdminTestimonials} />
+        <Route path="/admin/jobs" component={AdminJobs} />
+        <Route path="/admin/jobs/new" component={AdminJobsEdit} />
+        <Route path="/admin/jobs/:id/edit" component={AdminJobsEdit} />
 
         <Route component={NotFound} />
       </Switch>
