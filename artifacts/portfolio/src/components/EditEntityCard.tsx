@@ -43,20 +43,23 @@ export function EditEntityCard({
     try {
       const endpoint =
         entityType === "project"
-          ? `${API}/api/admin/projects/${entityId}`
+          ? `${API}/api/projects/${entityId}/delete`
           : entityType === "client"
           ? `${API}/api/admin/clients/${entityId}`
-          : `${API}/api/admin/services/${entityId}`;
+          : `${API}/api/services/${entityId}/delete`;
 
       const res = await fetch(endpoint, {
         method: "DELETE",
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Delete failed");
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ error: "Delete failed" }));
+        throw new Error(body.error || `Delete failed (${res.status})`);
+      }
       setConfirmDelete(false);
       onDeleted?.();
-    } catch {
-      // silently handle error
+    } catch (err) {
+      alert(`Failed to delete ${entityName}: ${err instanceof Error ? err.message : "Unknown error"}`);
     } finally {
       setDeleting(false);
     }
