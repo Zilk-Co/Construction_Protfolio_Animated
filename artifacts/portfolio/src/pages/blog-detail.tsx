@@ -4,6 +4,7 @@ import { Link, useParams } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { ArrowLeft, Calendar, User } from "lucide-react";
+import { useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL || "";
 
@@ -33,6 +34,10 @@ export default function BlogDetail() {
     },
     enabled: !!slug,
   });
+
+  useEffect(() => {
+    document.title = `${post?.title ?? "Blog Post"} — Azhar Engineering`;
+  }, [post?.title]);
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString("en-US", {

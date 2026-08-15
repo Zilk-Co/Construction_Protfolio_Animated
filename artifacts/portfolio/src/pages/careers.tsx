@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { MapPin, Briefcase, Clock, ArrowRight, ArrowLeft, Mail } from "lucide-react";
+import { useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL || "";
 
@@ -48,6 +49,10 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 export default function Careers() {
+  useEffect(() => {
+    document.title = "Careers — Azhar Engineering";
+  }, []);
+
   return (
     <PageTransition>
       <div className="min-h-screen text-foreground">
@@ -197,6 +202,10 @@ function JobsList() {
 export function JobDetail() {
   const { slug } = useParams();
   const { data: job, isLoading, error } = useJobBySlug(slug || "");
+
+  useEffect(() => {
+    document.title = `${job?.title ?? "Job"} — Azhar Engineering`;
+  }, [job?.title]);
 
   if (isLoading) {
     return (

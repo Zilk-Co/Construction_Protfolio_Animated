@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SlidersHorizontal, Calendar } from "lucide-react";
 import { usePageContent } from "@/hooks/usePageContent";
 import { EditEntityCard } from "@/components/EditEntityCard";
@@ -44,6 +44,10 @@ export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [selectedRange, setSelectedRange] = useState("all");
+
+  useEffect(() => {
+    document.title = "Projects — Azhar Engineering";
+  }, []);
 
   const { data: categories = [] } = useListCategories();
   const { data: projects = [], isLoading } = useListProjects({ published: true });

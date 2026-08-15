@@ -34,6 +34,10 @@ export default function Home() {
   const { editMode } = useEditMode();
   const updatePageContent = useUpdatePageContent();
 
+  useEffect(() => {
+    document.title = "Azhar Engineering — Building Pakistan's Infrastructure";
+  }, []);
+
   const displayProjects = Array.isArray(featuredProjects) ? featuredProjects.slice(0, 3) : [];
 
   useEffect(() => {
@@ -311,14 +315,14 @@ export default function Home() {
               {displayProjects.map((project: any, i: number) => (
                 <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.65 }} whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.25 } }}>
                   <Link href={`/projects/${project.slug}`} className="block group">
-                    <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,18%)] group-hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
+                    <div className="aspect-[4/3] relative overflow-hidden bg-[hsl(220,18%,12%)] mb-5 border border-[hsl(220,15%,18%)] group-hover:border-[hsl(38,72%,52%/0.4)] transition-colors duration-300">
                       <motion.div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${project.heroImage})` }} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "100px" }} whileHover={{ scale: 1.05 }} transition={{ opacity: { duration: 0.4 }, scale: { duration: 0.7, ease: [0.33, 1, 0.68, 1] } }} />
                       {project.status && (
                         <span className={`absolute top-3 right-3 text-[9px] tracking-[0.2em] uppercase px-2.5 py-1 backdrop-blur-sm border ${project.status === "Completed" ? "bg-emerald-900/75 border-emerald-500/30 text-emerald-400" : project.status === "Incoming" ? "bg-amber-900/75 border-amber-500/30 text-amber-400" : "bg-blue-900/75 border-blue-500/30 text-blue-400"}`}>
                           {project.status}
                         </span>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,9%)/60] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,9%/0.6)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
                     <div>
                       <h3 className="text-base font-serif font-bold tracking-tight uppercase mb-1 group-hover:text-[hsl(38,72%,52%)] transition-colors duration-200">{project.title}</h3>
@@ -483,7 +487,7 @@ function TestimonialsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,12%)] p-6 hover:border-[hsl(38,72%,52%)/40] transition-colors duration-300"
+              className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,12%)] p-6 hover:border-[hsl(38,72%,52%/0.4)] transition-colors duration-300"
             >
               <div className="flex items-center gap-0.5 mb-4">
                 {Array.from({ length: Math.min(item.rating || 5, 5) }).map((_: any, j: number) => (

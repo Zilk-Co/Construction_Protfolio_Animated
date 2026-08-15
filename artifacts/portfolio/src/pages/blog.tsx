@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { Calendar, ArrowRight } from "lucide-react";
+import { useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL || "";
 
@@ -31,6 +32,10 @@ export default function BlogPage() {
       return res.json();
     },
   });
+
+  useEffect(() => {
+    document.title = "Blog — Azhar Engineering";
+  }, []);
 
   const publishedPosts = posts.filter((p) => p.published);
 

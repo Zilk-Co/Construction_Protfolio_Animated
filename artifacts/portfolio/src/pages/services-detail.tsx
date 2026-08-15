@@ -2,7 +2,7 @@ import { useParams, Link } from "wouter";
 import { useGetServices } from "@workspace/api-client-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, FolderOpen, X, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -19,6 +19,10 @@ export default function ServiceDetail() {
   const closeLightbox = () => setLightboxIndex(null);
   const prev = () => setLightboxIndex(i => i !== null ? (i - 1 + gallery.length) % gallery.length : null);
   const next = () => setLightboxIndex(i => i !== null ? (i + 1) % gallery.length : null);
+
+  useEffect(() => {
+    document.title = `${item?.name ?? "Service"} — Azhar Engineering`;
+  }, [item?.name]);
 
   if (isLoading) {
     return (

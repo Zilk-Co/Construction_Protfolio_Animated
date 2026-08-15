@@ -3,7 +3,7 @@ import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetSettings, useUpdatePageContent } from "@workspace/api-client-react";
 import { usePageContent } from "@/hooks/usePageContent";
 import { EditableText } from "@/components/EditableText";
@@ -30,6 +30,10 @@ export default function Contact() {
   const t = usePageContent("contact");
   const { editMode } = useEditMode();
   const updatePageContent = useUpdatePageContent();
+
+  useEffect(() => {
+    document.title = "Contact Us — Azhar Engineering";
+  }, []);
 
   const savePageContent = async (key: string, value: string) => {
     await updatePageContent.mutateAsync({
@@ -190,7 +194,7 @@ export default function Contact() {
               <p className="text-[10px] tracking-[0.35em] uppercase mb-1" style={{ color: "hsl(38,85%,62%)" }}>{t.get("message_eyebrow", "Send a Message")}</p>
               <div className="w-8 h-px bg-[hsl(38,72%,52%)] mb-8" />
               {submitted ? (
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="border border-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%)/8%] px-8 py-14 text-center">
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="border border-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%/0.08)] px-8 py-14 text-center">
                   <div className="w-12 h-12 border-2 border-[hsl(38,72%,52%)] mx-auto mb-4 flex items-center justify-center">
                     <span style={{ color: "hsl(38,72%,58%)" }} className="text-xl">✓</span>
                   </div>

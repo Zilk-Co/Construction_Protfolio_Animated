@@ -9,6 +9,7 @@ import { EditEntityCard } from "@/components/EditEntityCard";
 import { EditableText } from "@/components/EditableText";
 import { useEditMode } from "@/components/EditModeProvider";
 import { HeroImageEditor } from "@/components/HeroImageEditor";
+import { useEffect } from "react";
 
 const HERO_BG_FALLBACK =
   "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&q=80";
@@ -27,6 +28,10 @@ export default function Services() {
   const t = usePageContent("services");
   const { editMode } = useEditMode();
   const updatePageContent = useUpdatePageContent();
+
+  useEffect(() => {
+    document.title = "Services — Azhar Engineering";
+  }, []);
 
   const savePageContent = async (key: string, value: string) => {
     await updatePageContent.mutateAsync({

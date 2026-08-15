@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
@@ -36,6 +36,10 @@ const PILLARS = [
 export default function Safety() {
   const t = usePageContent("safety");
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  useEffect(() => {
+    document.title = "Safety & Care — Azhar Engineering";
+  }, []);
 
   return (
     <PageTransition>
@@ -284,7 +288,7 @@ export default function Safety() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 + n * 0.06 }}
-                        className="flex items-start gap-4 border-l-2 border-[hsl(38,72%,52%)/40%] bg-[hsl(220,18%,11%)] px-5 py-4"
+                        className="flex items-start gap-4 border-l-2 border-[hsl(38,72%,52%/0.4)] bg-[hsl(220,18%,11%)] px-5 py-4"
                       >
                         <span className="shrink-0 mt-0.5 flex items-center justify-center w-8 h-8 rounded-full" style={{ backgroundColor: "hsla(38,72%,52%,0.14)", color: "hsl(38,72%,58%)" }}>
                           <Leaf size={14} />

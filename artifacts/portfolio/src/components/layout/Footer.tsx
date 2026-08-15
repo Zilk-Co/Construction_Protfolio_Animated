@@ -61,6 +61,8 @@ export function Footer() {
                 { href: "/projects", label: "Projects" },
                 { href: "/services", label: "Services" },
                 { href: "/clients", label: "Clients" },
+                { href: "/blog", label: "Blog" },
+                { href: "/careers", label: "Careers" },
                 { href: "/safety", label: "Safety" },
                 { href: "/documents", label: "Documents" },
                 { href: "/policies", label: "Policies" },

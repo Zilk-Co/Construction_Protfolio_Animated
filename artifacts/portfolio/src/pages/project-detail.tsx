@@ -3,7 +3,7 @@ import { useParams, Link } from "wouter";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { Footer } from "@/components/layout/Footer";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
 
 export default function ProjectDetail() {
@@ -20,6 +20,10 @@ export default function ProjectDetail() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    document.title = `${project?.title ?? "Project"} — Azhar Engineering`;
+  }, [project?.title]);
 
   if (isLoading) {
     return (
@@ -71,7 +75,7 @@ export default function ProjectDetail() {
               y,
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,7%)] via-[hsl(220,18%,9%)/85%] to-[hsl(220,18%,7%)/40%]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(220,18%,7%)] via-[hsl(220,18%,9%/0.85)] to-[hsl(220,18%,7%/0.4)]" />
           <div className="absolute inset-0 flex flex-col justify-end px-6 pb-16 max-w-screen-2xl mx-auto w-full">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -177,7 +181,7 @@ export default function ProjectDetail() {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ delay: i * 0.06, duration: 0.6 }}
                   onClick={() => openLightbox(i)}
-                  className="mb-6 break-inside-avoid overflow-hidden bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] hover:border-[hsl(38,72%,52%)/50%] transition-colors duration-300 w-full text-left block group cursor-zoom-in"
+                  className="mb-6 break-inside-avoid overflow-hidden bg-[hsl(220,18%,11%)] border border-[hsl(220,15%,18%)] hover:border-[hsl(38,72%,52%/0.5)] transition-colors duration-300 w-full text-left block group cursor-zoom-in"
                 >
                   <img
                     src={img.imageUrl}

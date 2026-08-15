@@ -35,6 +35,10 @@ export default function Policies() {
   const t = usePageContent("safety");
 
   useEffect(() => {
+    document.title = "Our Policies — Azhar Engineering";
+  }, []);
+
+  useEffect(() => {
     const API = import.meta.env.VITE_API_URL || "";
     fetch(`${API}/api/policies`)
       .then(r => r.json())
@@ -94,7 +98,7 @@ export default function Policies() {
                     </div>
                     <div className="space-y-4">
                       {items.map(policy => (
-                        <div key={policy.id} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
+                        <div key={policy.id} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-6 hover:border-[hsl(38,72%,52%/0.4)] transition-colors duration-300">
                           <h3 className="text-lg font-serif font-bold uppercase tracking-tight mb-3 text-white">{policy.title}</h3>
                           {policy.content && <p className="text-sm text-gray-400 leading-relaxed mb-4">{policy.content}</p>}
                           {policy.fileUrl && (

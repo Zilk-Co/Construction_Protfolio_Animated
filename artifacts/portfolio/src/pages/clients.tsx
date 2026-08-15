@@ -37,6 +37,10 @@ export default function ClientsPage() {
   };
 
   useEffect(() => {
+    document.title = "Our Clients — Azhar Engineering";
+  }, []);
+
+  useEffect(() => {
     const API = import.meta.env.VITE_API_URL || "";
     fetch(`${API}/api/clients`)
       .then(r => r.json())

@@ -130,7 +130,7 @@ export default function AdminBlog() {
               </div>
 
               {post.category && (
-                <span className="inline-block text-[9px] tracking-[0.15em] uppercase bg-[hsl(38,72%,52%)/15%] text-[hsl(38,72%,52%)] px-2 py-0.5 mb-2">
+                <span className="inline-block text-[9px] tracking-[0.15em] uppercase bg-[hsl(38,72%,52%/0.15)] text-[hsl(38,72%,52%)] px-2 py-0.5 mb-2">
                   {post.category}
                 </span>
               )}

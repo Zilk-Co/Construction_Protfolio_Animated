@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { FileText, Download } from "lucide-react";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useDocuments } from "@/hooks/useDocuments";
+import { useEffect } from "react";
 
 const DOCUMENTS_HERO_BG =
   "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=75";
@@ -11,6 +12,10 @@ const DOCUMENTS_HERO_BG =
 export default function DocumentsPage() {
   const { data: documents = [], isLoading: docsLoading } = useDocuments();
   const t = usePageContent("about");
+
+  useEffect(() => {
+    document.title = "Documents & Policies — Azhar Engineering";
+  }, []);
 
   return (
     <PageTransition>

@@ -8,6 +8,7 @@ import { FileText, Download } from "lucide-react";
 import { EditableText } from "@/components/EditableText";
 import { useEditMode } from "@/components/EditModeProvider";
 import { HeroImageEditor } from "@/components/HeroImageEditor";
+import { useEffect } from "react";
 
 const DEFAULT_HERO_BG = "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=80";
 const DEFAULT_JOURNEY_BG = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80";
@@ -21,6 +22,10 @@ export default function About() {
   const { data: documents = [], isLoading: docsLoading } = useDocuments();
   const { editMode } = useEditMode();
   const updatePageContent = useUpdatePageContent();
+
+  useEffect(() => {
+    document.title = "About Us — Azhar Engineering";
+  }, []);
 
   const savePageContent = async (key: string, value: string) => {
     await updatePageContent.mutateAsync({
@@ -322,7 +327,7 @@ export default function About() {
                 { key: "timely", num: "05", title: "Timely Delivery", desc: "Proven track record of completing projects on schedule without compromising quality." },
                 { key: "client", num: "06", title: "Client Focus", desc: "Deep understanding of client needs with personalized service and transparent communication." },
               ].map((item, i) => (
-                <motion.div key={item.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }} whileHover={{ y: -4, transition: { duration: 0.2 } }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-8 hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300">
+                <motion.div key={item.key} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }} whileHover={{ y: -4, transition: { duration: 0.2 } }} className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,10%)] p-8 hover:border-[hsl(38,72%,52%/0.4)] transition-colors duration-300">
                   <span className="text-3xl font-serif font-bold" style={{ color: "hsl(38,72%,52%)" }}>{item.num}</span>
                   <h3 className="text-lg font-serif font-bold uppercase tracking-tight mt-4 mb-3 text-white">
                     {t.get(`strengths_${item.key}_title`, item.title)}
@@ -378,7 +383,7 @@ export default function About() {
                   viewport={{ once: true }}
                   transition={{ delay: n * 0.08, duration: 0.6 }}
                   whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,11%)] p-8 hover:border-[hsl(38,72%,52%)/40%] transition-colors duration-300"
+                  className="border border-[hsl(220,15%,18%)] bg-[hsl(220,18%,11%)] p-8 hover:border-[hsl(38,72%,52%/0.4)] transition-colors duration-300"
                 >
                   <div
                     className="w-11 h-11 rounded-full flex items-center justify-center mb-6 text-sm font-bold"

@@ -94,7 +94,7 @@ export function GalleryPicker({
           onClick={() => setMode("url")}
           className={`px-3 py-1.5 border transition-colors ${
             mode === "url"
-              ? "border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%)/8%]"
+              ? "border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%/0.08)]"
               : "border-[hsl(220,15%,20%)] text-[hsl(220,12%,45%)] hover:border-[hsl(220,15%,30%)]"
           }`}
         >
@@ -106,7 +106,7 @@ export function GalleryPicker({
           onClick={() => { setMode("gallery"); setGalleryOpen(true); }}
           className={`px-3 py-1.5 border transition-colors ${
             mode === "gallery"
-              ? "border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%)/8%]"
+              ? "border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%/0.08)]"
               : "border-[hsl(220,15%,20%)] text-[hsl(220,12%,45%)] hover:border-[hsl(220,15%,30%)]"
           }`}
         >
@@ -118,7 +118,7 @@ export function GalleryPicker({
           onClick={() => { setMode("media"); setMediaOpen(true); }}
           className={`px-3 py-1.5 border transition-colors ${
             mode === "media"
-              ? "border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%)/8%]"
+              ? "border-[hsl(38,72%,52%)] text-[hsl(38,72%,52%)] bg-[hsl(38,72%,52%/0.08)]"
               : "border-[hsl(220,15%,20%)] text-[hsl(220,12%,45%)] hover:border-[hsl(220,15%,30%)]"
           }`}
         >

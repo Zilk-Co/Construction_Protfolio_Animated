@@ -72,33 +72,33 @@ function Router() {
         {/* Public routes */}
         <Route path="/" component={Home} />
         <Route path="/projects">
-          <div className="pt-24"><Projects /></div>
+          <Projects />
         </Route>
         <Route path="/projects/:slug">
           {() => <ProjectDetail />}
         </Route>
         <Route path="/services">
-          <div className="pt-24"><ServicesPage /></div>
+          <ServicesPage />
         </Route>
         <Route path="/services/:slug">
           <div className="pt-24"><ServiceDetail /></div>
         </Route>
         <Route path="/about">
-          <div className="pt-24"><About /></div>
+          <About />
         </Route>
         <Route path="/safety">
-          <div className="pt-24"><Safety /></div>
+          <Safety />
         </Route>
         <Route path="/contact">
-          <div className="pt-24"><Contact /></div>
+          <Contact />
         </Route>
         <Route path="/clients" component={ClientsPage} />
         <Route path="/clients/:slug" component={ClientDetail} />
         <Route path="/documents">
-          <div className="pt-24"><DocumentsPage /></div>
+          <DocumentsPage />
         </Route>
         <Route path="/policies">
-          <div className="pt-24"><PoliciesPage /></div>
+          <PoliciesPage />
         </Route>
         <Route path="/blog" component={BlogPage} />
         <Route path="/blog/:slug" component={BlogDetail} />

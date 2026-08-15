@@ -69,7 +69,7 @@ export function Navbar() {
                 className={`relative text-xs tracking-[0.2em] uppercase font-medium transition-all duration-200 group px-4 py-1.5 rounded-full ${
                   isActive(link.href)
                     ? !scrolled
-                      ? "bg-[hsl(38,72%,52%)/25%] text-[hsl(38,72%,80%)]"
+                      ? "bg-[hsl(38,72%,52%/0.25)] text-[hsl(38,72%,80%)]"
                       : "text-[hsl(38,72%,52%)]"
                     : !scrolled
                       ? "text-white hover:bg-white/10 hover:text-[hsl(38,72%,75%)]"

@@ -32,6 +32,10 @@ export default function ClientDetail() {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
+    document.title = `${client?.name ?? "Client"} — Azhar Engineering`;
+  }, [client?.name]);
+
+  useEffect(() => {
     const API = import.meta.env.VITE_API_URL || "";
     setLoading(true);
     let clientData: Client | null = null;

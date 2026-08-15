@@ -113,7 +113,7 @@ export function AiAssistant() {
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Open AI assistant"
-            className="relative w-12 h-12 md:w-14 md:h-14 rounded-full bg-[hsl(38,72%,52%)] hover:bg-[hsl(38,72%,60%)] text-[hsl(220,18%,9%)] flex items-center justify-center shadow-xl shadow-[hsl(38,72%,52%)/30] transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[hsl(38,72%,70%)] focus:ring-offset-2 focus:ring-offset-[hsl(220,18%,9%)]"
+            className="relative w-12 h-12 md:w-14 md:h-14 rounded-full bg-[hsl(38,72%,52%)] hover:bg-[hsl(38,72%,60%)] text-[hsl(220,18%,9%)] flex items-center justify-center shadow-xl shadow-[hsl(38,72%,52%/0.3)] transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[hsl(38,72%,70%)] focus:ring-offset-2 focus:ring-offset-[hsl(220,18%,9%)]"
           >
             <Sparkles size={20} className="relative" />
             <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[hsl(220,18%,9%)]" />
